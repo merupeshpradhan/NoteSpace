@@ -1,34 +1,24 @@
-import express from "express";
+import dotenv from "dotenv";
 import { prisma } from "./lib/prisma.js";
+import { app } from "./app.js";
 
-const app = express();
+dotenv.config();
 
-app.use(express.json());
+const PORT = process.env.PORT || 8000;
 
-app.post("/users", async (req, res) => {
+async function startServer() {
   try {
-    const response = await prisma.user.create({
-      data: {
-        name: req.body.name,
-        email: req.body.email,
-      },
+    await prisma.$connect();
+    console.log("Database connected successfully!");
+
+    app.listen(PORT, () => {
+      console.log(`Server is running at PORT ${PORT}`);
     });
-    return res.status(201).json({ message: "User Created", user: response });
   } catch (error) {
-    return res.status("400").json({ message: error.message });
-  }
-});
-
-app.get("/users", async (req, res) => {
-  const users = await prisma.user.findMany();
-
-  return res.status(200).json({ users });
-});
-
-app.listen(3000, (err) => {
-  if (err) {
-    console.error(err);
+    console.log("Database connection faild!", error);
+    await prisma.$disconnect();
     process.exit(1);
   }
-  console.log("Server start on port 3000");
-});
+}
+
+startServer();
