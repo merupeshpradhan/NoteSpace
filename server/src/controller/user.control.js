@@ -32,18 +32,61 @@ export async function register(req, res) {
 
     return res.status(201).json({
       success: true,
-      message: "User register successfully",
-      password: userWithoutPassword,
+      message: "User register successfully!",
+      user: userWithoutPassword,
     });
   } catch (error) {
     const statusCode = error.statusCode || 500;
     return res.status(statusCode).json({
       success: false,
-      message: error.message || "internal Server Error",
+      message: error.message || "internal Server Error.",
     });
   }
 }
 
-export async function login(req, res) {}
+export async function login(req, res) {
+  try {
+    const { email, password } = req.body;
 
-export async function logout(req, res) {}
+    if (!email || !password) {
+      throw new ApiError(400, "All field are required.");
+    }
+
+    const user = await prisma.user.findUnique({
+      where: {
+        email,
+      },
+    });
+
+    if (!user) {
+      throw new ApiError(400, "Invalid email or password");
+    }
+
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
+      throw new ApiError(400, "Invalid email or password");
+    }
+
+    const { password: _, ...userWithoutPassword } = user;
+
+    return res.status(200).json({
+      success: true,
+      message: "User login successfully!",
+      user: userWithoutPassword,
+    });
+  } catch (error) {
+    const statusCode = error.statusCode || 500;
+    return res.status(statusCode).json({
+      success: false,
+      message: error.message || "Internal server error.",
+    });
+  }
+}
+
+export async function logout(req, res) {
+  return res.status(200).json({
+    success: true,
+    message: "User logout successfully!",
+    user: {},
+  });
+}
