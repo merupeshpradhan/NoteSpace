@@ -5,10 +5,11 @@ import {
   notesView,
   noteUpdate,
 } from "../controller/notes.control.js";
+import { verifyJWT } from "../middlewares/auth.middleware.js";
 
 const router = Router();
 
-router.post("/notecreat", noteCreation);
+router.post("/notecreat", verifyJWT, noteCreation);
 router.post("/noteview", notesView);
 router.post("/noteupdate", noteUpdate);
 router.post("/notedelete", noteDelete);
