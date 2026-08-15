@@ -1,6 +1,8 @@
+import jwt from "jsonwebtoken";
 import { ApiError } from "../utils/ApiError.js";
 import { prisma } from "../lib/prisma.js";
 import bcrypt from "bcrypt";
+import { generateToken } from "../lib/generateToken.js";
 
 export async function register(req, res) {
   try {
@@ -26,6 +28,15 @@ export async function register(req, res) {
         email,
         password: hashedPassword,
       },
+    });
+
+    const token = generateToken(newUser.id);
+
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
     const { password: _, ...userWithoutPassword } = newUser;
@@ -67,6 +78,15 @@ export async function login(req, res) {
       throw new ApiError(400, "Invalid email or password");
     }
 
+    const token = generateToken(user.id);
+
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
+
     const { password: _, ...userWithoutPassword } = user;
 
     return res.status(200).json({
@@ -84,9 +104,23 @@ export async function login(req, res) {
 }
 
 export async function logout(req, res) {
-  return res.status(200).json({
-    success: true,
-    message: "User logout successfully!",
-    user: {},
-  });
+  try {
+    return res
+      .status(200)
+      .clearCookie("token", {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict",
+      })
+      .json({
+        success: true,
+        message: "User logout successfully!",
+      });
+  } catch (error) {
+    const statusCode = error.statusCode || 500;
+    return res.status(statusCode).json({
+      success: false,
+      message: error.message || "Internal Server Error during logout.",
+    });
+  }
 }
