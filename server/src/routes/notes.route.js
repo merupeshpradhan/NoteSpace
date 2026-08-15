@@ -10,8 +10,8 @@ import { verifyJWT } from "../middlewares/auth.middleware.js";
 const router = Router();
 
 router.post("/notecreat", verifyJWT, noteCreation);
-router.post("/noteview", notesView);
-router.post("/noteupdate", noteUpdate);
-router.post("/notedelete", noteDelete);
+router.get("/noteview", verifyJWT, notesView);
+router.put("/noteupdate/:id", verifyJWT, noteUpdate);
+router.delete("/notedelete/:id", verifyJWT, noteDelete);
 
 export default router;
