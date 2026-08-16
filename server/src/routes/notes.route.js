@@ -9,9 +9,12 @@ import { verifyJWT } from "../middlewares/auth.middleware.js";
 
 const router = Router();
 
-router.post("/notecreat", verifyJWT, noteCreation);
-router.get("/noteview", verifyJWT, notesView);
-router.put("/noteupdate/:id", verifyJWT, noteUpdate);
-router.delete("/notedelete/:id", verifyJWT, noteDelete);
+// Apply varifyJWT to all note routes so req.user exists
+router.use(verifyJWT);
+
+router.post("/notecreat", noteCreation);
+router.get("/", notesView);
+router.put("/noteupdate/:id", noteUpdate);
+router.delete("/notedelete/:id", noteDelete);
 
 export default router;
