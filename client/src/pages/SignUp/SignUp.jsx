@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function SignUp() {
   const [name, setName] = useState();
@@ -10,7 +10,7 @@ function SignUp() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  async function userSignup(e) {
+  async function userSignUp(e) {
     e.preventDefault();
 
     if (!name || !email || !password) {
@@ -22,11 +22,14 @@ function SignUp() {
     const toastId = toast.loading("Sign up for Note space...");
 
     try {
-      const data = await axios.post("http://localhost:3000/api/v1/users/register", {
-        name,
-        email,
-        password,
-      });
+      const data = await axios.post(
+        "http://localhost:3000/api/v1/users/register",
+        {
+          name,
+          email,
+          password,
+        },
+      );
 
       console.log(data);
 
@@ -60,8 +63,8 @@ function SignUp() {
   return (
     <section className="w-full h-screen p-5 grid place-items-center place-content-center">
       <div className="bg-pink-300 grid place-items-center p-5 gap-5">
-        SignUp
-        <form onSubmit={userSignup} className="grid gap-5 place-items-center">
+        Sign Up
+        <form onSubmit={userSignUp} className="grid gap-5 place-items-center">
           <input
             type="text"
             placeholder="Enter full name"
@@ -84,6 +87,7 @@ function SignUp() {
             Sign Up
           </button>
         </form>
+        <Link to="/signIn">Sign In</Link>
       </div>
     </section>
   );
