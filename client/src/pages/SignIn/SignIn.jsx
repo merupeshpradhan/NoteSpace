@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
-function SignIn({ onClose }) {
+function SignIn({ onClose, onSwitchToSignUp }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -43,7 +43,8 @@ function SignIn({ onClose }) {
       navigate("/notes");
     } catch (error) {
       console.log(error);
-      const errorMsg = error?.response?.data?.message || "Something went wrong.";
+      const errorMsg =
+        error?.response?.data?.message || "Something went wrong.";
       toast.update(toastId, {
         render: errorMsg,
         type: "error",
@@ -58,10 +59,8 @@ function SignIn({ onClose }) {
     <div className="fixed top-0 min-h-screen w-screen z-50 bg-slate-950/70 backdrop-blur-md flex items-center justify-center p-4">
       {/* Outer Gradient Border Wrapper */}
       <div className="relative w-full max-w-md p-px rounded-3xl bg-linear-to-b from-teal-500/50 via-slate-800 to-indigo-500/30 shadow-2xl">
-        
         {/* Main Glass Modal Card */}
         <div className="relative bg-slate-900/95 backdrop-blur-xl rounded-[23px] p-8 sm:p-10 text-slate-100 overflow-hidden">
-          
           {/* Subtle Accent Glow */}
           <div className="absolute top-0 right-0 -mt-12 -mr-12 w-36 h-36 bg-teal-500/20 rounded-full blur-3xl pointer-events-none"></div>
 
@@ -79,7 +78,9 @@ function SignIn({ onClose }) {
             <div className="w-12 h-12 rounded-xl bg-teal-500/10 border border-teal-500/20 flex items-center justify-center text-teal-400 text-xl mb-4 shadow-inner">
               ✨
             </div>
-            <h3 className="text-2xl font-bold tracking-tight text-white">Welcome back</h3>
+            <h3 className="text-2xl font-bold tracking-tight text-white">
+              Welcome back
+            </h3>
             <p className="text-slate-400 text-sm mt-1">
               Please enter your details to sign in.
             </p>
@@ -88,7 +89,9 @@ function SignIn({ onClose }) {
           {/* Input Form */}
           <form onSubmit={userSignIn} className="space-y-4">
             <div className="space-y-1.5">
-              <label className="text-xs font-medium text-slate-300">Email</label>
+              <label className="text-xs font-medium text-slate-300">
+                Email
+              </label>
               <input
                 type="email"
                 placeholder="name@example.com"
@@ -99,7 +102,9 @@ function SignIn({ onClose }) {
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-xs font-medium text-slate-300">Password</label>
+              <label className="text-xs font-medium text-slate-300">
+                Password
+              </label>
               <input
                 type="password"
                 placeholder="••••••••"
@@ -122,16 +127,19 @@ function SignIn({ onClose }) {
           <div className="text-center mt-6">
             <p className="text-sm text-slate-400">
               Don't have an account?{" "}
-              <Link
-                to="/Signup"
-                onClick={onClose}
-                className="text-teal-400 hover:text-teal-300 font-medium transition-colors underline underline-offset-4"
+              <button
+                type="button"
+                onClick={() => {
+                  if (onSwitchToSignUp) {
+                    onSwitchToSignUp();
+                  }
+                }}
+                className="text-teal-400 hover:text-teal-300 font-medium transition-colors underline underline-offset-4 cursor-pointer bg-transparent border-none p-0 inline"
               >
                 Sign Up
-              </Link>
+              </button>
             </p>
           </div>
-
         </div>
       </div>
     </div>

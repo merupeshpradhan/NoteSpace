@@ -109,7 +109,7 @@ function HomeHeader() {
           >
             Testimonials
           </a>
-          <div className="py-1 text-sm font-semibold text-lime-700 bg-lime-50 px-3 py-2 rounded-lg text-center">
+          <div className="text-sm font-semibold text-lime-700 bg-lime-50 px-3 py-2 rounded-lg text-center">
             🎉 Completely Free to Use
           </div>
 
@@ -132,8 +132,25 @@ function HomeHeader() {
         </div>
       )}
 
-      {signinView && <SignIn onClose={() => setSigninView(false)} />}
-      {signupView && <SignUp onClose={() => setSignupView(false)} />}
+      {signinView && (
+        <SignIn
+          onClose={() => setSigninView(false)}
+          onSwitchToSignUp={() => {
+            setSigninView(false);
+            setSignupView(true);
+          }}
+        />
+      )}
+      
+      {signupView && (
+        <SignUp
+          onClose={() => setSignupView(false)}
+          onSwitchToSignIn={() => {
+            setSignupView(false);
+            setSigninView(true);
+          }}
+        />
+      )}
     </header>
   );
 }

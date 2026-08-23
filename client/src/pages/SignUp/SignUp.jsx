@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
-function SignUp({ onClose }) {
+function SignUp({ onClose, onSwitchToSignIn }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -28,7 +28,7 @@ function SignUp({ onClose }) {
           name,
           email,
           password,
-        }
+        },
       );
 
       console.log(data);
@@ -46,7 +46,10 @@ function SignUp({ onClose }) {
       setPassword("");
 
       if (onClose) onClose();
-      navigate("/signin");
+      
+      if (onSwitchToSignIn) {
+        onSwitchToSignIn();
+      }
     } catch (error) {
       console.log(error);
 
@@ -67,10 +70,8 @@ function SignUp({ onClose }) {
     <div className="fixed top-0 min-h-screen w-screen z-50 bg-slate-950/70 backdrop-blur-md flex items-center justify-center p-4">
       {/* Outer Gradient Border Wrapper */}
       <div className="relative w-full max-w-md p-px rounded-3xl bg-linear-to-b from-teal-500/50 via-slate-800 to-indigo-500/30 shadow-2xl">
-        
         {/* Main Glass Modal Card */}
         <div className="relative bg-slate-900/95 backdrop-blur-xl rounded-[23px] p-8 sm:p-10 text-slate-100 overflow-hidden">
-          
           {/* Subtle Accent Glow */}
           <div className="absolute top-0 right-0 -mt-12 -mr-12 w-36 h-36 bg-teal-500/20 rounded-full blur-3xl pointer-events-none"></div>
 
@@ -152,16 +153,19 @@ function SignUp({ onClose }) {
           <div className="text-center mt-6">
             <p className="text-sm text-slate-400">
               Already have an account?{" "}
-              <Link
-                to="/signin"
-                onClick={onClose}
-                className="text-teal-400 hover:text-teal-300 font-medium transition-colors underline underline-offset-4"
+              <button
+                type="button"
+                onClick={() => {
+                  if (onSwitchToSignIn) {
+                    onSwitchToSignIn();
+                  }
+                }}
+                className="text-teal-400 hover:text-teal-300 font-medium transition-colors underline underline-offset-4 cursor-pointer bg-transparent border-none p-0 inline"
               >
                 Sign In
-              </Link>
+              </button>
             </p>
           </div>
-
         </div>
       </div>
     </div>
