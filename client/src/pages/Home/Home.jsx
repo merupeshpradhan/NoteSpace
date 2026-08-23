@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import HomeHeader from "../../components/HomeHeader.jsx";
 import HeroSection from "../../components/HeroSection.jsx";
 import Feature from "../../components/Feature.jsx";
 import SocialProof from "../../components/SocialProof.jsx";
 import Footer from "../../components/Footer.jsx";
+import SignIn from "../SignIn/SignIn.jsx";
 
 function Home() {
   return (

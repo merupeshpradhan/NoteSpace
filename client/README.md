@@ -1,1 +1,1 @@
-# Notes app client
+# NoteSpace client
