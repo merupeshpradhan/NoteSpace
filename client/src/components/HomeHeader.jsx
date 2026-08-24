@@ -1,37 +1,9 @@
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { HiMenu, HiX } from "react-icons/hi";
-import SignIn from "../components/SignIn.jsx";
-import SignUp from "../components/SignUp.jsx";
 
-function HomeHeader() {
+function HomeHeader({ handleSignUp, handleSignIn }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [signinView, setSigninView] = useState(false);
-  const [signupView, setSignupView] = useState(false);
-
-  useEffect(() => {
-    if (signinView || signupView) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "auto";
-    }
-  });
-
-  function handleSignUp() {
-    if (signupView === false) {
-      setSignupView(true);
-    } else {
-      setSignupView(false);
-    }
-  }
-
-  function handleSignIn() {
-    if (signinView === false) {
-      setSigninView(true);
-    } else {
-      setSigninView(false);
-    }
-  }
 
   return (
     <header className="sticky top-0 z-50 w-full bg-white/85 backdrop-blur-md border-b border-zinc-200">
@@ -133,26 +105,6 @@ function HomeHeader() {
             </Link>
           </div>
         </div>
-      )}
-
-      {signinView && (
-        <SignIn
-          onClose={() => setSigninView(false)}
-          onSwitchToSignUp={() => {
-            setSigninView(false);
-            setSignupView(true);
-          }}
-        />
-      )}
-
-      {signupView && (
-        <SignUp
-          onClose={() => setSignupView(false)}
-          onSwitchToSignIn={() => {
-            setSignupView(false);
-            setSigninView(true);
-          }}
-        />
       )}
     </header>
   );

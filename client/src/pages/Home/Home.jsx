@@ -1,19 +1,47 @@
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
 import HomeHeader from "../../components/HomeHeader.jsx";
 import HeroSection from "../../components/HeroSection.jsx";
 import Feature from "../../components/Feature.jsx";
 import SocialProof from "../../components/SocialProof.jsx";
 import Footer from "../../components/Footer.jsx";
+import SignIn from "../../components/SignIn.jsx";
+import SignUp from "../../components/SignUp.jsx";
 
 function Home() {
+  const [signinView, setSigninView] = useState(false);
+  const [signupView, setSignupView] = useState(false);
+
+  useEffect(() => {
+    if (signinView || signupView) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+  }, [signinView, signupView]);
+
+  function handleSignIn() {
+    setSigninView((prev) => !prev);
+  }
+
+  function handleSignUp() {
+    setSignupView((prev) => !prev);
+  }
+
   return (
     <div className="min-h-screen w-full flex flex-col bg-white overflow-x-hidden scroll-smooth">
       {/* Sticky Header */}
-      <HomeHeader />
+      <HomeHeader
+        handleSignIn={handleSignIn}
+        handleSignUp={handleSignUp}
+        setSigninView={setSigninView}
+        setSignupView={setSignupView}
+        signinView={signinView}
+        signupView={signupView}
+      />
 
       {/* Main Page Flow Sections with Matching IDs */}
       <main className="flex-1 flex flex-col">
-        <HeroSection />
+        <HeroSection handleSignIn={handleSignIn} handleSignUp={handleSignUp} />
 
         {/* Testimonials link will scroll here */}
         <div id="testimonials">
@@ -28,6 +56,26 @@ function Home() {
 
       {/* Footer */}
       <Footer />
+
+      {signinView && (
+        <SignIn
+          onClose={() => setSigninView(false)}
+          onSwitchToSignUp={() => {
+            setSigninView(false);
+            setSignupView(true);
+          }}
+        />
+      )}
+
+      {signupView && (
+        <SignUp
+          onClose={() => setSignupView(false)}
+          onSwitchToSignIn={() => {
+            setSignupView(false);
+            setSigninView(true);
+          }}
+        />
+      )}
     </div>
   );
 }

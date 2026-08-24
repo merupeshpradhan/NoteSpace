@@ -18,20 +18,13 @@ export default function About() {
   });
 
   function handleSignIn() {
-    if (signInView === false) {
-      setSignInView(true);
-    } else {
-      setSignInView(false);
-    }
+    setSignInView((prev) => !prev);
   }
 
   function handleSignUp() {
-    if (SignUpView === false) {
-      setSignUpView(true);
-    } else {
-      setSignUpView(false);
-    }
+    SignUpView((prev) => !prev);
   }
+  
   return (
     <div className="min-h-screen bg-zinc-950 text-zinc-100 flex flex-col justify-between">
       {/* Standard Site Navbar */}
