@@ -46,10 +46,7 @@ function SignUp({ onClose, onSwitchToSignIn }) {
       setPassword("");
 
       if (onClose) onClose();
-      
-      if (onSwitchToSignIn) {
-        onSwitchToSignIn();
-      }
+      navigate("/notes");
     } catch (error) {
       console.log(error);
 

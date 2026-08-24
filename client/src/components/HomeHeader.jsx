@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { HiMenu, HiX } from "react-icons/hi";
-import SignIn from "../pages/SignIn/SignIn";
-import SignUp from "../pages/SignUp/SignUp";
+import SignIn from "../components/SignIn.jsx";
+import SignUp from "../components/SignUp.jsx";
 
 function HomeHeader() {
   const [isOpen, setIsOpen] = useState(false);
@@ -39,6 +39,9 @@ function HomeHeader() {
         {/* Brand / Logo (Unified to NoteSpace) */}
         <Link
           to="/"
+          onClick={() => {
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          }}
           className="text-xl font-extrabold text-zinc-900 tracking-tight flex items-center gap-2"
         >
           <span className="w-3 h-3 rounded-full bg-lime-500 inline-block"></span>
@@ -141,7 +144,7 @@ function HomeHeader() {
           }}
         />
       )}
-      
+
       {signupView && (
         <SignUp
           onClose={() => setSignupView(false)}

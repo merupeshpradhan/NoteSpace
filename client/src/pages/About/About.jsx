@@ -1,9 +1,37 @@
-import React from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import Navbar from "../../components/HomeHeader"; // Update path to your Navbar component if needed
-import Footer from "../../components/Footer"; // Update path to your Footer component if needed
+import Navbar from "../../components/HomeHeader.jsx";
+import Footer from "../../components/Footer.jsx";
+import SignIn from "../../components/SignIn.jsx";
+import SignUp from "../../components/SignUp.jsx";
 
 export default function About() {
+  const [signInView, setSignInView] = useState(false);
+  const [SignUpView, setSignUpView] = useState(false);
+
+  useEffect(() => {
+    if (signInView || SignUpView) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+  });
+
+  function handleSignIn() {
+    if (signInView === false) {
+      setSignInView(true);
+    } else {
+      setSignInView(false);
+    }
+  }
+
+  function handleSignUp() {
+    if (SignUpView === false) {
+      setSignUpView(true);
+    } else {
+      setSignUpView(false);
+    }
+  }
   return (
     <div className="min-h-screen bg-zinc-950 text-zinc-100 flex flex-col justify-between">
       {/* Standard Site Navbar */}
@@ -62,17 +90,36 @@ export default function About() {
           >
             &larr; Back to Home
           </Link>
-          <Link
-            to="/signin"
-            className="px-6 py-3 bg-lime-400 text-black font-semibold rounded-xl hover:bg-lime-300 transition-all"
+          <button
+            onClick={handleSignIn}
+            className="px-6 py-3 bg-lime-400 text-black font-semibold rounded-xl hover:bg-lime-300 transition-all cursor-pointer"
           >
-            Get Started Free
-          </Link>
+            Get Started
+          </button>
         </div>
       </main>
 
       {/* Standard Site Footer */}
       <Footer />
+      {signInView && (
+        <SignIn
+          onClose={() => setSignInView(false)}
+          onSwitchToSignUp={() => {
+            setSignInView(false);
+            setSignUpView(true);
+          }}
+        />
+      )}
+
+      {SignUpView && (
+        <SignUp
+          onClose={() => setSignUpView(false)}
+          onSwitchToSignIn={() => {
+            setSignUpView(false);
+            setSignInView(true);
+          }}
+        />
+      )}
     </div>
   );
 }

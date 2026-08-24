@@ -22,7 +22,7 @@ function HeroSection() {
           
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 w-full pt-2">
             <button className="px-8.5 py-4 bg-black text-white font-semibold rounded-xl shadow-lg hover:bg-zinc-800 active:scale-95 transition-all duration-200 cursor-pointer">
-              <Link to="/signin">Get started free</Link>
+              <button to="/signin">Get started free</button>
             </button>
             <button className="px-6 py-4 bg-lime-300/60 text-black font-semibold rounded-xl hover:bg-lime-300 transition-all duration-200">
               <Link to="about">Learn more &rarr;</Link>
