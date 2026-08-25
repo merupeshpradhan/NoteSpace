@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
@@ -7,9 +8,10 @@ function SignIn({ onClose, onSwitchToSignUp }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
-  async function userSignIn(e) {
+  async function handleSignIn(e) {
     e.preventDefault();
 
     if (!email || !password) {
@@ -87,7 +89,7 @@ function SignIn({ onClose, onSwitchToSignUp }) {
           </div>
 
           {/* Input Form */}
-          <form onSubmit={userSignIn} className="space-y-4">
+          <form onSubmit={handleSignIn} className="space-y-4">
             <div className="space-y-1.5">
               <label className="text-xs font-medium text-slate-300">
                 Email
@@ -105,13 +107,26 @@ function SignIn({ onClose, onSwitchToSignUp }) {
               <label className="text-xs font-medium text-slate-300">
                 Password
               </label>
-              <input
-                type="password"
-                placeholder="••••••••"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-3 bg-slate-950/80 border border-slate-800 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500 transition-all text-sm"
-              />
+              <div className="relative max-w-sm mx-auto">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  placeholder="••••••••"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="w-full flex px-4 py-3 pr-10 bg-slate-950/80 border border-slate-800 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500 transition-all text-sm"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white cursor-pointer"
+                >
+                  {showPassword ? (
+                    <FaEyeSlash size={16} />
+                  ) : (
+                    <FaEye size={16} />
+                  )}
+                </button>
+              </div>
             </div>
 
             <button
