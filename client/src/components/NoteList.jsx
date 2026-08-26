@@ -1,7 +1,11 @@
 import React from "react";
 
 function NoteList() {
-  return <div>NoteList</div>;
+  return (
+    <section className="h-screen gird justify-items-center content-center">
+      <p>NoteList</p>
+    </section>
+  );
 }
 
 export default NoteList;

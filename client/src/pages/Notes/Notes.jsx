@@ -1,5 +1,6 @@
 import NoteLeftHeader from "../../components/NoteLeftHeader.jsx";
 import NoteTopHeader from "../../components/NoteTopHeader.jsx";
+import NoteList from "../../components/NoteList.jsx";
 
 function Notes() {
   return (
@@ -7,6 +8,9 @@ function Notes() {
       <NoteLeftHeader />
       <main>
         <NoteTopHeader />
+        <section>
+          <NoteList/>
+        </section>
       </main>
     </div>
   );
