@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import Navbar from "../../components/HomeHeader.jsx";
-import Footer from "../../components/Footer.jsx";
-import SignIn from "../../components/SignIn.jsx";
-import SignUp from "../../components/SignUp.jsx";
+import HomeHeader from "../../components/Layout/Navbar/HomeHeader.jsx";
+import Footer from "../../components/Layout/Footer.jsx";
+import SignIn from "../../components/Auth/SignIn.jsx";
+import SignUp from "../../components/Auth/SignUp.jsx";
 
 export default function About() {
   const [signInView, setSignInView] = useState(false);
@@ -24,11 +24,11 @@ export default function About() {
   function handleSignUp() {
     SignUpView((prev) => !prev);
   }
-  
+
   return (
     <div className="min-h-screen bg-zinc-950 text-zinc-100 flex flex-col justify-between">
       {/* Standard Site Navbar */}
-      <Navbar />
+      <HomeHeader />
 
       {/* Main About Content */}
       <main className="max-w-4xl mx-auto px-6 py-16 md:py-24 space-y-12 w-full">

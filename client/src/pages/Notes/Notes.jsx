@@ -1,6 +1,6 @@
-import NoteLeftHeader from "../../components/NoteLeftHeader.jsx";
-import NoteTopHeader from "../../components/NoteTopHeader.jsx";
-import NoteList from "../../components/NoteList.jsx";
+import NoteLeftHeader from "../../components/Layout/Navbar/NoteLeftHeader.jsx";
+import NoteTopHeader from "../../components/Layout/Navbar/NoteTopHeader.jsx";
+import NoteList from "../../components/NotePage/NoteList.jsx";
 
 function Notes() {
   return (
@@ -9,7 +9,7 @@ function Notes() {
       <main>
         <NoteTopHeader />
         <section>
-          <NoteList/>
+          <NoteList />
         </section>
       </main>
     </div>
