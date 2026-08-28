@@ -31,15 +31,16 @@ function SignUp({ onClose, onSwitchToSignIn }) {
           email,
           password,
         },
+        { withCredentials: true },
       );
 
       // console.log(res);
 
       const userData = res.data.user;
       console.log(userData);
-      
-      localStorage.setItem("user",JSON.stringify(userData))
-      localStorage.setItem("accessToken",userData.accessToken)
+
+      localStorage.setItem("user", JSON.stringify(userData));
+      localStorage.setItem("accessToken", userData.accessToken);
 
       toast.update(toastId, {
         render: "Signup Successfully.",

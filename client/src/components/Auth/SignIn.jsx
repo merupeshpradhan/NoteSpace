@@ -23,16 +23,19 @@ function SignIn({ onClose, onSwitchToSignUp }) {
     const toastId = toast.loading("Signing in to note space...");
 
     try {
-      const res = await axios.post("http://localhost:3000/api/v1/users/login", {
-        email,
-        password,
-      });
+      const res = await axios.post(
+        "http://localhost:3000/api/v1/users/login",
+        {
+          email,
+          password,
+        },
+        { withCredentials: true },
+      );
 
       // console.log(res);
 
       const userData = res.data.user;
       console.log(userData);
-      console.log(userData.refreshToken);
 
       localStorage.setItem("user", JSON.stringify(userData));
       localStorage.setItem("accessToken", userData.accessToken);
