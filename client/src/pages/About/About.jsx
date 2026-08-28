@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import HomeHeader from "../../components/Layout/Navbar/HomeHeader.jsx";
-import Footer from "../../components/Layout/Footer.jsx";
+import Footer from "../../components/Layout/Footer/HomeFooter.jsx";
 import SignIn from "../../components/Auth/SignIn.jsx";
 import SignUp from "../../components/Auth/SignUp.jsx";
 

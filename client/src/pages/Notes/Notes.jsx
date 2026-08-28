@@ -1,6 +1,6 @@
 import NoteLeftHeader from "../../components/Layout/Navbar/NoteLeftHeader.jsx";
 import NoteTopHeader from "../../components/Layout/Navbar/NoteTopHeader.jsx";
-import Footer from "../../components/Layout/Footer.jsx";
+import Footer from "../../components/Layout/Footer/HomeFooter.jsx";
 import NoteList from "../../components/NotePage/NoteList.jsx";
 
 function Notes() {

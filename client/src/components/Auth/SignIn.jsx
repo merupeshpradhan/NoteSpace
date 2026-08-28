@@ -28,7 +28,8 @@ function SignIn({ onClose, onSwitchToSignUp }) {
         password,
       });
 
-      console.log(res);
+      console.log(res.data.data);
+
 
       toast.update(toastId, {
         render: "Welcome to Notes Space.",

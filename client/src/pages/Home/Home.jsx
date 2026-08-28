@@ -3,7 +3,7 @@ import HomeHeader from "../../components/Layout/Navbar/HomeHeader.jsx";
 import HeroSection from "../../components/HomePageView/HeroSection.jsx";
 import Feature from "../../components/HomePageView/Feature.jsx";
 import SocialProof from "../../components/HomePageView/SocialProof.jsx";
-import Footer from "../../components/Layout/Footer.jsx";
+import Footer from "../../components/Layout/Footer/HomeFooter.jsx";
 import SignIn from "../../components/Auth/SignIn.jsx";
 import SignUp from "../../components/Auth/SignUp.jsx";
 
