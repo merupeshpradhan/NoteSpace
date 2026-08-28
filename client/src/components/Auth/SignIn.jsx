@@ -28,8 +28,14 @@ function SignIn({ onClose, onSwitchToSignUp }) {
         password,
       });
 
-      console.log(res.data.data);
+      // console.log(res);
 
+      const userData = res.data.user;
+      console.log(userData);
+      console.log(userData.refreshToken);
+
+      localStorage.setItem("user", JSON.stringify(userData));
+      localStorage.setItem("accessToken", userData.accessToken);
 
       toast.update(toastId, {
         render: "Welcome to Notes Space.",

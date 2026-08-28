@@ -24,7 +24,7 @@ function SignUp({ onClose, onSwitchToSignIn }) {
     const toastId = toast.loading("Signing up for NoteSpace...");
 
     try {
-      const data = await axios.post(
+      const res = await axios.post(
         "http://localhost:3000/api/v1/users/register",
         {
           name,
@@ -33,7 +33,13 @@ function SignUp({ onClose, onSwitchToSignIn }) {
         },
       );
 
-      console.log(data);
+      // console.log(res);
+
+      const userData = res.data.user;
+      console.log(userData);
+      
+      localStorage.setItem("user",JSON.stringify(userData))
+      localStorage.setItem("accessToken",userData.accessToken)
 
       toast.update(toastId, {
         render: "Signup Successfully.",
