@@ -1,7 +1,7 @@
 import NoteLeftHeader from "../../components/Layout/Navbar/NoteLeftHeader.jsx";
 import NoteTopHeader from "../../components/Layout/Navbar/NoteTopHeader.jsx";
-import Footer from "../../components/Layout/Footer/HomeFooter.jsx";
 import NoteList from "../../components/NotePage/NoteList.jsx";
+import NoteFooter from "../../components/Layout/Footer/NoteFooter.jsx";
 
 function Notes() {
   return (
@@ -11,7 +11,7 @@ function Notes() {
         <NoteTopHeader />
         <section className="min-h-screen">
           <NoteList />
-          <Footer />
+          <NoteFooter/>
         </section>
       </main>
     </div>

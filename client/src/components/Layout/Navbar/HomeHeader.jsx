@@ -51,7 +51,7 @@ function HomeHeader({ handleSignUp, handleSignIn }) {
           <button
             type="button"
             onClick={handleSignIn}
-            className="text-sm font-semibold text-zinc-950 bg-lime-400 hover:bg-lime-500 px-5 py-2.5 rounded-xl transition-all duration-200 shadow-sm active:scale-95"
+            className="text-sm font-semibold text-zinc-950 bg-lime-400 hover:bg-lime-500 px-5 py-2.5 rounded-xl transition-all duration-200 shadow-sm active:scale-95 cursor-pointer"
           >
             Get Started
           </button>

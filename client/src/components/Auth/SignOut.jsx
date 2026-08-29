@@ -49,7 +49,7 @@ function SignOut() {
         type="button"
         onClick={handleSignOut}
         disabled={loading}
-        className="w-44 border-0 rounded-2xl py-1.5 font-bold bg-yellow-400 hover:bg-yellow-500 cursor-pointer"
+        className="w-44 border-0 rounded-2xl py-1.5 font-bold text-black/85 bg-yellow-400 hover:bg-yellow-500 cursor-pointer"
       >
         {loading ? "Logout..." : "Logout"}
       </button>
