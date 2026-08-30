@@ -11,7 +11,7 @@ import {
 } from "react-icons/fa";
 import SignOut from "../../Auth/SignOut";
 
-function NoteLeftHeader({ isOpen, onClose }) {
+function NoteLeftHeader({ isOpen, onClose, onSelectContent }) {
   const [activeTab, setActiveTab] = useState("all");
 
   return (
@@ -67,7 +67,10 @@ function NoteLeftHeader({ isOpen, onClose }) {
                 Menu
               </p>
               <button
-                onClick={() => setActiveTab("all")}
+                onClick={() => {
+                  setActiveTab("all");
+                  onSelectContent("all");
+                }}
                 className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors cursor-pointer ${
                   activeTab === "all"
                     ? "bg-lime-50 text-lime-800 font-semibold"
@@ -134,7 +137,13 @@ function NoteLeftHeader({ isOpen, onClose }) {
 
         {/* Bottom Section: User Profile & SignOut */}
         <div className="p-4 border-t border-zinc-100 bg-zinc-50/50">
-          <div className="flex items-center gap-3 mb-3 px-2">
+          <button
+            onClick={() => {
+              onSelectContent("profile");
+              setActiveTab("profile");
+            }}
+            className="flex items-center gap-3 mb-3 px-2"
+          >
             <div className="w-9 h-9 rounded-full bg-zinc-200 flex items-center justify-center text-zinc-700 font-semibold text-sm border border-zinc-300">
               <FaUser className="text-xs" />
             </div>
@@ -144,7 +153,7 @@ function NoteLeftHeader({ isOpen, onClose }) {
               </p>
               <p className="text-xs text-zinc-400 truncate">Active session</p>
             </div>
-          </div>
+          </button>
 
           <div className="grid gap-2">
             <SignOut className="w-full border border-zinc-200 rounded-xl py-2 text-xs font-semibold bg-white text-zinc-700 hover:bg-zinc-100 hover:text-red-600 transition-all cursor-pointer shadow-xs" />
