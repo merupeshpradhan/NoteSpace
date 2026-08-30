@@ -1,4 +1,5 @@
 import { FaSearch, FaBell, FaBars } from "react-icons/fa";
+import CreateNote from "../../NotePage/CreateNote.jsx";
 
 function NoteTopHeader({ onOpenSidebar }) {
   return (
