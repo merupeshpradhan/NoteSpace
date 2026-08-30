@@ -1,7 +1,19 @@
 import { FaSearch, FaBell, FaBars } from "react-icons/fa";
 import CreateNote from "../../NotePage/CreateNote.jsx";
+import { useEffect, useState } from "react";
 
 function NoteTopHeader({ onOpenSidebar }) {
+  const [user, setUser] = useState("");
+  
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    } else {
+      setUser(null);
+    }
+    console.log(storedUser);
+  }, []);
   return (
     <header className="fixed top-0 left-0 md:left-72 right-0 h-16 bg-white border-b border-zinc-200 px-4 sm:px-8 flex items-center justify-between z-30 shadow-xs">
       {/* Left side: Mobile Hamburger & Search */}
@@ -37,8 +49,8 @@ function NoteTopHeader({ onOpenSidebar }) {
         {/* User Details */}
         <div className="flex items-center gap-3 pl-2 border-l border-zinc-200">
           <div className="text-right hidden sm:block">
-            <p className="text-xs font-semibold text-zinc-800">John Doe</p>
-            <p className="text-[10px] text-zinc-400">john@example.com</p>
+            <p className="text-xs font-semibold text-zinc-800">{user.name}</p>
+            <p className="text-[10px] text-zinc-400">{user.email}</p>
           </div>
           <div className="w-9 h-9 rounded-full overflow-hidden bg-zinc-100 border border-zinc-200 flex items-center justify-center font-bold text-zinc-700 text-xs">
             <img
