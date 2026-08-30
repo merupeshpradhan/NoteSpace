@@ -2,6 +2,7 @@ import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import api from "../../Api/api.js";
 
 function SignOut() {
   const [loading, setLoading] = useState(false);
@@ -11,11 +12,7 @@ function SignOut() {
     setLoading(true);
     const toastId = toast.loading("Logout...");
     try {
-      const res = await axios.post(
-        "http://localhost:3000/api/v1/users/logout",
-        {},
-        { withCredentials: true },
-      );
+      const res = await api.post("/users/logout", {}, { withCredentials: true });
 
       setLoading(false);
       const successMsg = res.data?.message || "Logout successfully!";

@@ -3,6 +3,7 @@ import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import api from "../../Api/api.js";
 
 function SignUp({ onClose, onSwitchToSignIn }) {
   const [name, setName] = useState("");
@@ -24,8 +25,8 @@ function SignUp({ onClose, onSwitchToSignIn }) {
     const toastId = toast.loading("Signing up for NoteSpace...");
 
     try {
-      const res = await axios.post(
-        "http://localhost:3000/api/v1/users/register",
+      const res = await api.post(
+        "/users/register",
         {
           name,
           email,
