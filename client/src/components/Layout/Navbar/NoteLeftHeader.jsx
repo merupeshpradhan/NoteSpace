@@ -84,7 +84,10 @@ function NoteLeftHeader({ isOpen, onClose, onSelectContent }) {
                 All Notes
               </button>
               <button
-                onClick={() => setActiveTab("favorites")}
+                onClick={() => {
+                  setActiveTab("favorites");
+                  onSelectContent("favorites");
+                }}
                 className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors cursor-pointer ${
                   activeTab === "favorites"
                     ? "bg-lime-50 text-lime-800 font-semibold"
@@ -102,7 +105,10 @@ function NoteLeftHeader({ isOpen, onClose, onSelectContent }) {
                 Categories
               </p>
               <button
-                onClick={() => setActiveTab("study")}
+                onClick={() => {
+                  setActiveTab("study");
+                  onSelectContent("study");
+                }}
                 className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors cursor-pointer ${
                   activeTab === "study"
                     ? "bg-zinc-100 text-zinc-900 font-semibold"
@@ -113,7 +119,10 @@ function NoteLeftHeader({ isOpen, onClose, onSelectContent }) {
                 Study Times
               </button>
               <button
-                onClick={() => setActiveTab("marketing")}
+                onClick={() => {
+                  setActiveTab("marketing");
+                  onSelectContent("Marketing");
+                }}
                 className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors cursor-pointer ${
                   activeTab === "marketing"
                     ? "bg-zinc-100 text-zinc-900 font-semibold"
@@ -124,7 +133,10 @@ function NoteLeftHeader({ isOpen, onClose, onSelectContent }) {
                 Marketing Dates
               </button>
               <button
-                onClick={() => setActiveTab("movies")}
+                onClick={() => {
+                  setActiveTab("movies");
+                  onSelectContent("movies");
+                }}
                 className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors cursor-pointer ${
                   activeTab === "movies"
                     ? "bg-zinc-100 text-zinc-900 font-semibold"
@@ -145,7 +157,7 @@ function NoteLeftHeader({ isOpen, onClose, onSelectContent }) {
               onSelectContent("profile");
               setActiveTab("profile");
             }}
-            className="flex items-center gap-3 mb-3 px-2"
+            className="flex items-center gap-3 mb-3 px-2 cursor-pointer"
           >
             <div className="w-9 h-9 rounded-full bg-zinc-200 flex items-center justify-center text-zinc-700 font-semibold text-sm border border-zinc-300">
               <FaUser className="text-xs" />

@@ -4,6 +4,10 @@ import NoteTopHeader from "../../components/Layout/Navbar/NoteTopHeader.jsx";
 import NoteList from "../../components/NotePage/NoteList.jsx";
 import NoteFooter from "../../components/Layout/Footer/NoteFooter.jsx";
 import Profile from "../../components/UserView/Profile.jsx";
+import StudyTime from "../../components/NotePage/CateGories/StudyTime.jsx";
+import FavoritesNotes from "../../components/NotePage/FavoritesNotes.jsx";
+import Marketing from "../../components/NotePage/CateGories/Marketing.jsx";
+import MovieWatching from "../../components/NotePage/CateGories/MovieWatching.jsx";
 
 function Notes() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -26,6 +30,10 @@ function Notes() {
           <div className="space-y-6">
             {/* <NoteList /> */}
             {activeContent === "all" && <NoteList />}
+            {activeContent === "favorites" && <FavoritesNotes />}
+            {activeContent === "study" && <StudyTime />}
+            {activeContent === "Marketing" && <Marketing />}
+            {activeContent === "movies" && <MovieWatching />}
             {activeContent === "profile" && <Profile />}
           </div>
         </main>
