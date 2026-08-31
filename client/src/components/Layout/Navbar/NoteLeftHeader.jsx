@@ -33,7 +33,10 @@ function NoteLeftHeader({ isOpen, onClose, onSelectContent }) {
         {/* Top Section: Brand & Search */}
         <div>
           <div className="flex items-center justify-between px-6 py-5 border-b border-zinc-100">
-            <div className="flex items-center gap-2.5">
+            <div
+              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+              className="flex items-center gap-2.5 cursor-pointer"
+            >
               <span className="w-3.5 h-3.5 rounded-full bg-lime-500 inline-block ring-4 ring-lime-100"></span>
               <span className="font-bold text-lg tracking-tight text-zinc-900">
                 NoteSpace
