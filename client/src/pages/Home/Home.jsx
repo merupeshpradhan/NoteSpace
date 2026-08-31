@@ -6,10 +6,19 @@ import SocialProof from "../../components/HomePageView/SocialProof.jsx";
 import Footer from "../../components/Layout/Footer/HomeFooter.jsx";
 import SignIn from "../../components/Auth/SignIn.jsx";
 import SignUp from "../../components/Auth/SignUp.jsx";
+import { useNavigate } from "react-router-dom";
 
 function Home() {
   const [signinView, setSigninView] = useState(false);
   const [signupView, setSignupView] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      navigate("/notes", { replace: true });
+    }
+  }, [navigate]);
 
   useEffect(() => {
     if (signinView || signupView) {
@@ -27,17 +36,12 @@ function Home() {
     setSignupView((prev) => !prev);
   }
 
+  // console.log(localStorage.getItem("user"));
+
   return (
     <div className="min-h-screen w-full flex flex-col bg-white overflow-x-hidden scroll-smooth">
       {/* Sticky Header */}
-      <HomeHeader
-        handleSignIn={handleSignIn}
-        handleSignUp={handleSignUp}
-        setSigninView={setSigninView}
-        setSignupView={setSignupView}
-        signinView={signinView}
-        signupView={signupView}
-      />
+      <HomeHeader handleSignIn={handleSignIn} handleSignUp={handleSignUp} />
 
       {/* Main Page Flow Sections with Matching IDs */}
       <main className="flex-1 flex flex-col">
