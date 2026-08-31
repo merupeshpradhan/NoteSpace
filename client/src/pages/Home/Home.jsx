@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 function Home() {
   const [signinView, setSigninView] = useState(false);
   const [signupView, setSignupView] = useState(false);
+  const [authView, setAuthView] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -41,7 +42,7 @@ function Home() {
   return (
     <div className="min-h-screen w-full flex flex-col bg-white overflow-x-hidden scroll-smooth">
       {/* Sticky Header */}
-      <HomeHeader handleSignIn={handleSignIn} handleSignUp={handleSignUp} />
+      <HomeHeader handleSignIn={handleSignIn} handleSignUp={handleSignUp} setAuthView={setAuthView} />
 
       {/* Main Page Flow Sections with Matching IDs */}
       <main className="flex-1 flex flex-col">

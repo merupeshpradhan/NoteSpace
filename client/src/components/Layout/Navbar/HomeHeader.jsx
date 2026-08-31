@@ -89,20 +89,20 @@ function HomeHeader({ handleSignUp, handleSignIn }) {
           </div>
 
           <div className="flex flex-col gap-3 pt-4 border-t border-zinc-100">
-            <Link
-              to="/signin"
-              onClick={() => setIsOpen(false)}
+            <button
+              type="button"
+              onClick={handleSignUp}
               className="w-full text-center py-2.5 font-semibold text-zinc-800 hover:bg-zinc-100 rounded-xl transition-colors"
             >
-              Sign In
-            </Link>
-            <Link
-              to="/signup"
-              onClick={() => setIsOpen(false)}
+              Sign Up
+            </button>
+            <button
+              type="button"
+              onClick={handleSignIn}
               className="w-full text-center py-2.5 font-semibold text-zinc-950 bg-lime-400 hover:bg-lime-500 rounded-xl transition-colors"
             >
-              Get Started Free
-            </Link>
+              Get Started
+            </button>
           </div>
         </div>
       )}
