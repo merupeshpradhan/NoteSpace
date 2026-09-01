@@ -8,10 +8,17 @@ import StudyTime from "../../components/NotePage/CateGories/StudyTime.jsx";
 import FavoritesNotes from "../../components/NotePage/FavoritesNotes.jsx";
 import Marketing from "../../components/NotePage/CateGories/Marketing.jsx";
 import MovieWatching from "../../components/NotePage/CateGories/MovieWatching.jsx";
+import CreateNote from "../../components/NotePage/CreateNote.jsx";
 
 function Notes() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [activeContent, setActiveContent] = useState("all");
+  const [viewCreateNot, setViewCreateNote] = useState(true);
+  const [crateNoteFormView,setcrateNoteFormView]=useState(false)
+
+    function onClose() {
+    
+  }
 
   return (
     <div className="min-h-screen bg-zinc-50/50 flex">
@@ -41,6 +48,7 @@ function Notes() {
           <NoteFooter />
         </div>
       </div>
+      <div className="w-full h-fit z-30">{viewCreateNot && <CreateNote onClose={()=>setcrateNoteFormView(false)}/>}</div>
     </div>
   );
 }

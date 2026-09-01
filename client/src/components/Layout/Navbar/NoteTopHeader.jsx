@@ -40,6 +40,8 @@ function NoteTopHeader({ onOpenSidebar }) {
 
       {/* Right side: Notifications & Profile */}
       <div className="flex items-center gap-4 sm:gap-6">
+        {/* Notes Create */}
+
         {/* Notification Bell */}
         <button className="relative p-2 text-zinc-500 hover:text-zinc-800 hover:bg-zinc-100 rounded-full transition-colors cursor-pointer">
           <FaBell className="text-sm" />
