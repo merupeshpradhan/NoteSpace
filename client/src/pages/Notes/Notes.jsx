@@ -14,10 +14,10 @@ function Notes() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [activeContent, setActiveContent] = useState("all");
   const [viewCreateNot, setViewCreateNote] = useState(true);
-  const [crateNoteFormView,setcrateNoteFormView]=useState(false)
+  const [crateNoteFormView, setcrateNoteFormView] = useState(false);
 
-    function onClose() {
-    
+  function onClose() {
+    setViewCreateNote(false);
   }
 
   return (
@@ -48,7 +48,11 @@ function Notes() {
           <NoteFooter />
         </div>
       </div>
-      <div className="w-full h-fit z-30">{viewCreateNot && <CreateNote onClose={()=>setcrateNoteFormView(false)}/>}</div>
+      <div className="w-full h-fit z-30">
+        {viewCreateNot && (
+          <CreateNote onClose={() => setcrateNoteFormView(false)} />
+        )}
+      </div>
     </div>
   );
 }

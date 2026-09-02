@@ -4,16 +4,19 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 function CreateNote({ onClose }) {
-  const [noteName, setNoteName] = useState();
-  const [description, setDescription] = useState();
+  const [noteName, setNoteName] = useState("");
+  const [description, setDescription] = useState("");
   const [loading, setLoading] = useState(false);
-  const navigat = useNavigate();
+  const navigate = useNavigate();
 
-  async function handleCrateNote() {
+  async function handleCrateNote(e) {
+    e.preventDefault();
     setLoading(true);
     const todoId = toast.loading("Creating note...");
 
     try {
+      console.log("Submit..");
+
       const res = await api.post(
         "/note/notecreat",
         {
@@ -23,7 +26,7 @@ function CreateNote({ onClose }) {
         { withCredentials: true },
       );
 
-      toast.loading(todoId, {
+      toast.update(todoId, {
         render: "Successfully add note!",
         type: "success",
         isLoading: false,
@@ -34,9 +37,17 @@ function CreateNote({ onClose }) {
       setNoteName("");
       setDescription("");
 
-      navigat('/notes')
+      if (onClose) onClose();
+      navigate("/notes");
     } catch (error) {
       console.log(error);
+      toast.update(todoId, {
+        render: "Somting wrong to add note!",
+        type: "error",
+        isLoading: false,
+        autoClose: 3000,
+      });
+      setLoading(false);
     }
   }
 
@@ -60,6 +71,8 @@ function CreateNote({ onClose }) {
             <input
               type="text"
               placeholder="Note name"
+              value={noteName}
+              onChange={(e) => setNoteName(e.target.value)}
               className="border px-3 py-1 "
             />
           </div>
@@ -68,6 +81,8 @@ function CreateNote({ onClose }) {
             <input
               type="text"
               placeholder="Description"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
               className="border px-3 py-1 "
             />
           </div>
