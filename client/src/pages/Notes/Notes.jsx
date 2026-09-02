@@ -13,12 +13,7 @@ import CreateNote from "../../components/NotePage/CreateNote.jsx";
 function Notes() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [activeContent, setActiveContent] = useState("all");
-  const [viewCreateNot, setViewCreateNote] = useState(true);
-  const [crateNoteFormView, setcrateNoteFormView] = useState(false);
-
-  function onClose() {
-    setViewCreateNote(false);
-  }
+  const [viewCreateNot, setViewCreateNote] = useState(false);
 
   return (
     <div className="min-h-screen bg-zinc-50/50 flex">
@@ -31,7 +26,10 @@ function Notes() {
 
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col min-w-0 md:pl-72">
-        <NoteTopHeader onOpenSidebar={() => setIsSidebarOpen(true)} />
+        <NoteTopHeader
+          onOpenSidebar={() => setIsSidebarOpen(true)}
+          clickNewNote={() => setViewCreateNote(true)}
+        />
 
         <main className="flex-1 pt-20 px-4 sm:px-8 pb-8 flex flex-col justify-between">
           <div className="space-y-6">
@@ -48,11 +46,7 @@ function Notes() {
           <NoteFooter />
         </div>
       </div>
-      <div className="w-full h-fit z-30">
-        {viewCreateNot && (
-          <CreateNote onClose={() => setcrateNoteFormView(false)} />
-        )}
-      </div>
+      {viewCreateNot && <CreateNote onClose={() => setViewCreateNote(false)} />}
     </div>
   );
 }

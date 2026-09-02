@@ -1,19 +1,20 @@
-import { FaSearch, FaBell, FaBars } from "react-icons/fa";
-import CreateNote from "../../NotePage/CreateNote.jsx";
+import { FaSearch, FaBell, FaBars, FaPlus } from "react-icons/fa";
 import { useEffect, useState } from "react";
 
-function NoteTopHeader({ onOpenSidebar }) {
-  const [user, setUser] = useState("");
+function NoteTopHeader({ onOpenSidebar, clickNewNote }) {
+  const [user, setUser] = useState({ name: "", email: "" });
   
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
-      setUser(JSON.parse(storedUser));
-    } else {
-      setUser(null);
+      try {
+        setUser(JSON.parse(storedUser));
+      } catch (e) {
+        setUser({ name: "User", email: "" });
+      }
     }
-    console.log(storedUser);
   }, []);
+
   return (
     <header className="fixed top-0 left-0 md:left-72 right-0 h-16 bg-white border-b border-zinc-200 px-4 sm:px-8 flex items-center justify-between z-30 shadow-xs">
       {/* Left side: Mobile Hamburger & Search */}
@@ -39,8 +40,15 @@ function NoteTopHeader({ onOpenSidebar }) {
       </div>
 
       {/* Right side: Notifications & Profile */}
-      <div className="flex items-center gap-4 sm:gap-6">
-        {/* Notes Create */}
+      <div className="flex items-center gap-3 sm:gap-5">
+        {/* Beautiful Create Note Button */}
+        <button
+          onClick={clickNewNote}
+          className="flex items-center gap-2 bg-lime-500 hover:bg-lime-600 text-zinc-900 font-semibold px-3.5 py-2 rounded-xl text-xs sm:text-sm shadow-sm hover:shadow transition-all duration-200 cursor-pointer active:scale-95"
+        >
+          <FaPlus className="text-xs" />
+          <span className="hidden sm:inline">New Note</span>
+        </button>
 
         {/* Notification Bell */}
         <button className="relative p-2 text-zinc-500 hover:text-zinc-800 hover:bg-zinc-100 rounded-full transition-colors cursor-pointer">
@@ -51,8 +59,8 @@ function NoteTopHeader({ onOpenSidebar }) {
         {/* User Details */}
         <div className="flex items-center gap-3 pl-2 border-l border-zinc-200">
           <div className="text-right hidden sm:block">
-            <p className="text-xs font-semibold text-zinc-800">{user.name}</p>
-            <p className="text-[10px] text-zinc-400">{user.email}</p>
+            <p className="text-xs font-semibold text-zinc-800">{user?.name || "User"}</p>
+            <p className="text-[10px] text-zinc-400">{user?.email || ""}</p>
           </div>
           <div className="w-9 h-9 rounded-full overflow-hidden bg-zinc-100 border border-zinc-200 flex items-center justify-center font-bold text-zinc-700 text-xs">
             <img
