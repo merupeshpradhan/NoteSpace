@@ -20,9 +20,9 @@ function NoteList() {
     fetchNots();
   }, []);
 
-  function handleDeleteNote(noteId) {
+  async function handleDeleteNote(noteId) {
     try {
-      const res = api.delete(`/note/notedelete/${noteId}`);
+      const res = await api.delete(`/note/notedelete/${noteId}`);
 
       setNotes((prevNotes) => prevNotes.filter((note) => note.id !== noteId));
 
