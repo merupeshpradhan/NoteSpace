@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import api from "../../Api/api.js";
+import DeleteNote from "./DeleteNote.jsx";
 
 function NoteList() {
   const [notes, setNotes] = useState([]);
@@ -18,6 +19,19 @@ function NoteList() {
 
     fetchNots();
   }, []);
+
+  function handleDeleteNote(noteId) {
+    try {
+      const res = api.delete(`/note/notedelete/${noteId}`);
+
+      setNotes((prevNotes) => prevNotes.filter((note) => note.id !== noteId));
+
+      console.log("Not deleted now");
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
     <section className="h-full grid justify-items-center content-center">
       <div className="grid grid-cols-2 gap-10">
@@ -33,9 +47,13 @@ function NoteList() {
               <button className="bg-indigo-500 hover:bg-indigo-600 text-white text-sm font-medium px-4 py-1.5 rounded-full shadow-sm transition-colors duration-200 cursor-pointer">
                 Update
               </button>
-              <button className="bg-red-500 hover:bg-red-600 text-white text-sm font-medium px-4 py-1.5 rounded-full shadow-sm transition-colors duration-200 cursor-pointer">
+              {/* <button
+                onClick={() => handleDeleteNote(note.id)}
+                className="bg-red-500 hover:bg-red-600 text-white text-sm font-medium px-4 py-1.5 rounded-full shadow-sm transition-colors duration-200 cursor-pointer"
+              >
                 Delete
-              </button>
+              </button> */}
+              <DeleteNote deleteNote={() => handleDeleteNote(note.id)} />
             </div>
           </div>
         ))}
