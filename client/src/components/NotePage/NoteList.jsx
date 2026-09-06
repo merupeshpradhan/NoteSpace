@@ -1,9 +1,15 @@
 import { useEffect, useState } from "react";
 import api from "../../Api/api.js";
 import DeleteNote from "./DeleteNote.jsx";
+import UpdateNote from "./UpdateNote.jsx";
 
 function NoteList() {
   const [notes, setNotes] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [noteName, setNoteName] = useState("");
+  const [description, setDescription] = useState("");
+  const [selectedNote, setSelectedNote] = useState(null);
+  const [updateNoteView, setUpdateNoteView] = useState(false);
 
   useEffect(() => {
     async function fetchNots() {
@@ -21,14 +27,37 @@ function NoteList() {
   }, []);
 
   async function handleDeleteNote(noteId) {
+    setLoading(true);
+
     try {
       const res = await api.delete(`/note/notedelete/${noteId}`);
 
       setNotes((prevNotes) => prevNotes.filter((note) => note.id !== noteId));
 
       console.log("Not deleted now");
+
+      setLoading(false);
     } catch (error) {
       console.log(error);
+      setLoading(false);
+    }
+  }
+
+  async function handleUpdateNote(notId) {
+    setLoading(true);
+    try {
+      const res = await api.put(`/noteupdate/${notId}`, {
+        noteName,
+        description,
+      });
+
+      console.log(res.data.note);
+
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+
+      setLoading(false);
     }
   }
 
@@ -44,20 +73,26 @@ function NoteList() {
             <p>{note.noteName}</p>
             <p>{note.description}</p>
             <div className="flex items-center gap-3 mt-4">
-              <button className="bg-indigo-500 hover:bg-indigo-600 text-white text-sm font-medium px-4 py-1.5 rounded-full shadow-sm transition-colors duration-200 cursor-pointer">
+              <button
+                onClick={() => {
+                  setSelectedNote(note);
+                  setUpdateNoteView(true);
+                }}
+                className="bg-indigo-500 hover:bg-indigo-600 text-white text-sm font-medium px-4 py-1.5 rounded-full shadow-sm transition-colors duration-200 cursor-pointer"
+              >
                 Update
               </button>
-              {/* <button
-                onClick={() => handleDeleteNote(note.id)}
-                className="bg-red-500 hover:bg-red-600 text-white text-sm font-medium px-4 py-1.5 rounded-full shadow-sm transition-colors duration-200 cursor-pointer"
-              >
-                Delete
-              </button> */}
               <DeleteNote deleteNote={() => handleDeleteNote(note.id)} />
             </div>
           </div>
         ))}
       </div>
+      {updateNoteView && (
+        <UpdateNote
+          noteData={selectedNote}
+          viewUpdateNote={() => setUpdateNoteView(false)}
+        />
+      )}
     </section>
   );
 }
