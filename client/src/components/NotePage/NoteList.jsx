@@ -1,7 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import api from "../../Api/api.js";
 import DeleteNote from "./DeleteNote.jsx";
 import UpdateNote from "./UpdateNote.jsx";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 function NoteList() {
   const [notes, setNotes] = useState([]);
@@ -10,16 +12,46 @@ function NoteList() {
   const [description, setDescription] = useState("");
   const [selectedNote, setSelectedNote] = useState(null);
   const [updateNoteView, setUpdateNoteView] = useState(false);
+  const navigate = useNavigate();
+
+  const hasFetched = useRef(false);
 
   useEffect(() => {
+    
+    if (hasFetched.current) return;
+    hasFetched.current = true;
+    
+    const toastId = toast.loading("Featching note...");
+
     async function fetchNots() {
       try {
         const res = await api.get("/note");
         console.log(res.data.notes);
         setNotes(res.data.notes || []);
         console.log(notes);
+
+        toast.update(toastId, {
+          render: "Welcome to note area!",
+          type: "success",
+          isLoading: false,
+          autoClose: 3000,
+        });
       } catch (error) {
+        if (error.response?.status === 401) {
+          toast.dismiss(toastId);
+          return;
+        }
+
+        toast.update(toastId, {
+          render: "Signin again and access the website!",
+          type: "error",
+          isLoading: false,
+          autoClose: 3000,
+        });
+
         console.log(error);
+
+        navigate("/");
       }
     }
 

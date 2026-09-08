@@ -15,7 +15,7 @@ function CreateNote({ onClose }) {
     const todoId = toast.loading("Creating note...");
 
     try {
-      console.log("Submit..");
+      console.log("Submit...");
 
       const res = await api.post(
         "/note/notecreat",
