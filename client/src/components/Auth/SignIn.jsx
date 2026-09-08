@@ -41,7 +41,7 @@ function SignIn({ onClose, onSwitchToSignUp }) {
       localStorage.setItem("accessToken", userData.accessToken);
 
       toast.update(toastId, {
-        render: "Welcome to Notes Space.",
+        render: "Welcome to Notes Space!",
         type: "success",
         isLoading: false,
         autoClose: 3000,

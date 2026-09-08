@@ -43,7 +43,7 @@ function NoteList() {
         }
 
         toast.update(toastId, {
-          render: "Signin again and access the website!",
+          render: "Signin again and access the website",
           type: "error",
           isLoading: false,
           autoClose: 3000,
