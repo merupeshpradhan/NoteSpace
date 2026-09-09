@@ -39,8 +39,6 @@ function UpdateNote({ noteData, viewUpdateNote,onUpdateSuccess }) {
         onUpdateSuccess(res.data.note)
       }
 
-      window.location.reload();
-
       setLoading(false);
       viewUpdateNote();
     } catch (error) {
