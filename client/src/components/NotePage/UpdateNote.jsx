@@ -2,9 +2,9 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import api from "../../Api/api.js";
 
-function UpdateNote({ noteData, viewUpdateNote }) {
+function UpdateNote({ noteData, viewUpdateNote,onUpdateSuccess }) {
   const [noteName, setNoteName] = useState(noteData?.noteName || "");
-  const [description, setDescription] = useState(noteData?.description ||"");
+  const [description, setDescription] = useState(noteData?.description || "");
   const [loading, setLoading] = useState(false);
 
   console.log(noteData);
@@ -35,11 +35,14 @@ function UpdateNote({ noteData, viewUpdateNote }) {
         autoClose: 3000,
       });
 
-      setLoading(false);
-      setNoteName("");
-      setDescription("");
-      viewUpdateNote()
+      if(res.data.note){
+        onUpdateSuccess(res.data.note)
+      }
 
+      window.location.reload();
+
+      setLoading(false);
+      viewUpdateNote();
     } catch (error) {
       console.log(error);
       toast.update(todoId, {

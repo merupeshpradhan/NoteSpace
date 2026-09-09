@@ -75,22 +75,10 @@ function NoteList() {
     }
   }
 
-  async function handleUpdateNote(notId) {
-    setLoading(true);
-    try {
-      const res = await api.put(`/noteupdate/${notId}`, {
-        noteName,
-        description,
-      });
-
-      console.log(res.data.note);
-
-      setLoading(false);
-    } catch (error) {
-      console.log(error);
-
-      setLoading(false);
-    }
+  function handleUpdateSuccess(updateNote) {
+   setNotes((prevNotes)=>[
+    updateNote,...prevNotes.filter((note)=>note.id !== updateNote.id)
+   ])
   }
 
   return (
@@ -123,6 +111,7 @@ function NoteList() {
         <UpdateNote
           noteData={selectedNote}
           viewUpdateNote={() => setUpdateNoteView(false)}
+          onUpdateSuccess={handleUpdateSuccess}
         />
       )}
     </section>

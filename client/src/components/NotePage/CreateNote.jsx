@@ -38,7 +38,8 @@ function CreateNote({ onClose }) {
       setDescription("");
 
       if (onClose) onClose();
-      navigate("/notes");
+      // navigate("/notes");
+      window.location.reload();
     } catch (error) {
       console.log(error);
       toast.update(todoId, {
