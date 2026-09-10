@@ -18,14 +18,12 @@ function NoteList() {
     if (hasFetched.current) return;
     hasFetched.current = true;
 
-    const toastId = toast.loading("Featching note...");
+    const toastId = toast.loading("Fetching notes...");
 
     async function fetchNots() {
       try {
         const res = await api.get("/note");
-        console.log(res.data.notes);
         setNotes((res.data.notes || []).reverse());
-        console.log(notes);
 
         toast.update(toastId, {
           render: "Welcome to note area!",
@@ -47,27 +45,24 @@ function NoteList() {
         });
 
         console.log(error);
-
         navigate("/");
       }
     }
 
     fetchNots();
-  }, []);
+  }, [navigate]);
 
   async function handleDeleteNote(noteId) {
     setLoading(true);
 
     try {
-      const res = await api.delete(`/note/notedelete/${noteId}`);
-
+      await api.delete(`/note/notedelete/${noteId}`);
       setNotes((prevNotes) => prevNotes.filter((note) => note.id !== noteId));
-
-      console.log("Not deleted now");
-
-      setLoading(false);
+      toast.success("Note deleted successfully!");
     } catch (error) {
       console.log(error);
+      toast.error("Failed to delete note.");
+    } finally {
       setLoading(false);
     }
   }
@@ -80,37 +75,69 @@ function NoteList() {
   }
 
   return (
-    <section className="h-full grid justify-items-center content-center">
-      <div className="grid grid-cols-2 gap-10">
-        {notes.map((note) => (
-          <div
-            key={note.id}
-            className="w-md grid justify-items-center p-5 border border-cyan-500 rounded-2xl shadow-lg shadow-cyan-400"
-          >
-            <p>{note.id}</p>
-            <p>{note.noteName}</p>
-            <p>{note.description}</p>
-            <div className="flex items-center gap-3 mt-4">
-              <button
-                onClick={() => {
-                  setSelectedNote(note);
-                  setUpdateNoteView(true);
-                }}
-                className="bg-indigo-500 hover:bg-indigo-600 text-white text-sm font-medium px-4 py-1.5 rounded-full shadow-sm transition-colors duration-200 cursor-pointer"
-              >
-                Update
-              </button>
-              <DeleteNote deleteNote={() => handleDeleteNote(note.id)} />
-            </div>
+    <section className="w-full min-h-full py-4 px-2 sm:px-6">
+      {notes.length === 0 ? (
+        <div className="flex flex-col items-center justify-center py-20 text-center animate-in fade-in zoom-in-95 duration-500">
+          <div className="w-16 h-16 rounded-2xl bg-teal-500/10 border border-teal-500/20 flex items-center justify-center text-teal-400 text-2xl mb-4 shadow-inner">
+            📝
           </div>
-        ))}
-      </div>
+          <h3 className="text-xl font-semibold text-white tracking-tight">No notes found</h3>
+          <p className="text-slate-400 text-sm mt-1 max-w-sm">
+            Create your first note using the "+ New Note" button above to start organizing your thoughts.
+          </p>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
+          {notes.map((note, index) => (
+            <div
+              key={note.id}
+              style={{ animationDelay: `${index * 50}ms` }}
+              className="group relative bg-slate-900/80 backdrop-blur-xl border border-slate-800 hover:border-teal-500/40 rounded-2xl p-6 shadow-xl hover:shadow-2xl hover:shadow-teal-500/10 transition-all duration-300 flex flex-col justify-between animate-in fade-in zoom-in-95 fill-mode-forwards cursor-pointer"
+            >
+              {/* Subtle top card glow effect on hover */}
+              <div className="absolute inset-0 rounded-2xl bg-gradient-to-b from-teal-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
+
+              <div className="relative z-10 space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-[10px] font-mono tracking-wider text-slate-500 uppercase px-2.5 py-1 rounded-md bg-slate-800/50 border border-slate-700/50">
+                    ID: {note.id}
+                  </span>
+                </div>
+                <h4 className="text-lg font-bold text-white tracking-tight group-hover:text-teal-400 transition-colors line-clamp-1">
+                  {note.noteName}
+                </h4>
+                <p className="text-slate-300 text-sm leading-relaxed line-clamp-4 break-words">
+                  {note.description}
+                </p>
+              </div>
+
+              <div className="relative z-10 flex items-center justify-end gap-3 mt-6 pt-4 border-t border-slate-800/80">
+                <button
+                  onClick={() => {
+                    setSelectedNote(note);
+                    setUpdateNoteView(true);
+                  }}
+                  className="px-4 py-2 bg-indigo-500/10 hover:bg-indigo-500 text-indigo-400 hover:text-white text-xs font-semibold rounded-xl border border-indigo-500/20 transition-all duration-200 cursor-pointer active:scale-95"
+                >
+                  Update
+                </button>
+                <DeleteNote deleteNote={() => handleDeleteNote(note.id)} />
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
       {updateNoteView && (
-        <UpdateNote
-          noteData={selectedNote}
-          viewUpdateNote={() => setUpdateNoteView(false)}
-          onUpdateSuccess={handleUpdateSuccess}
-        />
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-in fade-in duration-200">
+          <div className="w-full max-w-lg transform transition-all animate-in zoom-in-95 duration-200">
+            <UpdateNote
+              noteData={selectedNote}
+              viewUpdateNote={() => setUpdateNoteView(false)}
+              onUpdateSuccess={handleUpdateSuccess}
+            />
+          </div>
+        </div>
       )}
     </section>
   );

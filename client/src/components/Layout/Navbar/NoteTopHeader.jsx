@@ -16,53 +16,53 @@ function NoteTopHeader({ onOpenSidebar, clickNewNote }) {
   }, []);
 
   return (
-    <header className="fixed top-0 left-0 md:left-72 right-0 h-16 bg-white border-b border-zinc-200 px-4 sm:px-8 flex items-center justify-between z-30 shadow-xs">
+    <header className="fixed top-0 left-0 md:left-72 right-0 h-16 bg-slate-900/85 backdrop-blur-xl border-b border-slate-800 px-3 sm:px-6 md:px-8 flex items-center justify-between z-30 shadow-lg gap-2 sm:gap-4">
       {/* Left side: Mobile Hamburger & Search */}
-      <div className="flex items-center gap-3 w-full max-w-md">
+      <div className="flex items-center gap-2 sm:gap-3 flex-1 max-w-xs sm:max-w-md">
         <button
           onClick={onOpenSidebar}
-          className="md:hidden text-zinc-600 hover:text-zinc-900 p-2 rounded-xl hover:bg-zinc-100 transition-colors cursor-pointer"
+          className="md:hidden text-slate-400 hover:text-white p-2 rounded-xl hover:bg-slate-800 transition-colors cursor-pointer shrink-0"
           aria-label="Open Sidebar"
         >
-          <FaBars className="text-lg" />
+          <FaBars className="text-base sm:text-lg" />
         </button>
 
         <div className="relative w-full">
-          <span className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-zinc-400">
+          <span className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-slate-500">
             <FaSearch className="text-xs" />
           </span>
           <input
             type="text"
-            placeholder="Search notes globally..."
-            className="w-full bg-zinc-50 border border-zinc-200 rounded-xl pl-9 pr-4 py-2 text-xs sm:text-sm text-zinc-800 placeholder-zinc-400 focus:outline-none focus:border-lime-500 focus:ring-2 focus:ring-lime-100 transition-all"
+            placeholder="Search notes..."
+            className="w-full bg-slate-950/60 border border-slate-800 rounded-xl pl-9 pr-3 py-1.5 sm:py-2 text-[11px] sm:text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 transition-all"
           />
         </div>
       </div>
 
       {/* Right side: Notifications & Profile */}
-      <div className="flex items-center gap-3 sm:gap-5">
-        {/* Beautiful Create Note Button */}
+      <div className="flex items-center gap-2 sm:gap-4 shrink-0">
+        {/* Responsive Create Note Button */}
         <button
           onClick={clickNewNote}
-          className="flex items-center gap-2 bg-lime-500 hover:bg-lime-600 text-zinc-900 font-semibold px-3.5 py-2 rounded-xl text-xs sm:text-sm shadow-sm hover:shadow transition-all duration-200 cursor-pointer active:scale-95"
+          className="flex items-center gap-1.5 sm:gap-2 bg-teal-500 hover:bg-teal-600 text-slate-950 font-semibold px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm shadow-md hover:shadow-teal-500/20 transition-all duration-200 cursor-pointer active:scale-95 shrink-0"
         >
-          <FaPlus className="text-xs" />
-          <span className="hidden sm:inline">New Note</span>
+          <FaPlus className="text-[10px] sm:text-xs" />
+          <span className="hidden xs:inline sm:inline">New Note</span>
         </button>
 
         {/* Notification Bell */}
-        <button className="relative p-2 text-zinc-500 hover:text-zinc-800 hover:bg-zinc-100 rounded-full transition-colors cursor-pointer">
-          <FaBell className="text-sm" />
-          <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-lime-500 rounded-full ring-2 ring-white"></span>
+        <button className="relative p-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded-full transition-colors cursor-pointer shrink-0">
+          <FaBell className="text-xs sm:text-sm" />
+          <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 sm:w-2 sm:h-2 bg-teal-500 rounded-full ring-2 ring-slate-900"></span>
         </button>
 
         {/* User Details */}
-        <div className="flex items-center gap-3 pl-2 border-l border-zinc-200">
-          <div className="text-right hidden sm:block">
-            <p className="text-xs font-semibold text-zinc-800">{user?.name || "User"}</p>
-            <p className="text-[10px] text-zinc-400">{user?.email || ""}</p>
+        <div className="flex items-center gap-2 sm:gap-3 pl-2 border-l border-slate-800">
+          <div className="text-right hidden md:block">
+            <p className="text-xs font-semibold text-slate-200 truncate max-w-[120px]">{user?.name || "User"}</p>
+            <p className="text-[10px] text-slate-500 truncate max-w-[120px]">{user?.email || ""}</p>
           </div>
-          <div className="w-9 h-9 rounded-full overflow-hidden bg-zinc-100 border border-zinc-200 flex items-center justify-center font-bold text-zinc-700 text-xs">
+          <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full overflow-hidden bg-slate-800 border border-slate-700 flex items-center justify-center font-bold text-slate-300 text-xs shrink-0">
             <img
               src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop&crop=faces"
               alt="User Profile"
