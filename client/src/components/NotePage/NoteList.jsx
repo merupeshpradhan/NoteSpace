@@ -17,17 +17,16 @@ function NoteList() {
   const hasFetched = useRef(false);
 
   useEffect(() => {
-    
     if (hasFetched.current) return;
     hasFetched.current = true;
-    
+
     const toastId = toast.loading("Featching note...");
 
     async function fetchNots() {
       try {
         const res = await api.get("/note");
         console.log(res.data.notes);
-        setNotes(res.data.notes || []);
+        setNotes((res.data.notes || []).reverse());
         console.log(notes);
 
         toast.update(toastId, {
@@ -76,9 +75,10 @@ function NoteList() {
   }
 
   function handleUpdateSuccess(updateNote) {
-   setNotes((prevNotes)=>[
-    updateNote,...prevNotes.filter((note)=>note.id !== updateNote.id)
-   ])
+    setNotes((prevNotes) => [
+      updateNote,
+      ...prevNotes.filter((note) => note.id !== updateNote.id),
+    ]);
   }
 
   return (
