@@ -8,8 +8,6 @@ import { useNavigate } from "react-router-dom";
 function NoteList() {
   const [notes, setNotes] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [noteName, setNoteName] = useState("");
-  const [description, setDescription] = useState("");
   const [selectedNote, setSelectedNote] = useState(null);
   const [updateNoteView, setUpdateNoteView] = useState(false);
   const navigate = useNavigate();

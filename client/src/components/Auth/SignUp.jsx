@@ -40,7 +40,6 @@ function SignUp({ onClose, onSwitchToSignIn }) {
       console.log(userData);
 
       localStorage.setItem("user", JSON.stringify(userData));
-      localStorage.setItem("accessToken", userData.accessToken);
 
       toast.update(toastId, {
         render: "Signup Successfully.",
