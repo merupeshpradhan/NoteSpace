@@ -24,19 +24,7 @@ function NoteList() {
       try {
         const res = await api.get("/note");
         setNotes((res.data.notes || []).reverse());
-
-        toast.update(toastId, {
-          render: "Welcome to note area!",
-          type: "success",
-          isLoading: false,
-          autoClose: 3000,
-        });
       } catch (error) {
-        if (error.response?.status === 401) {
-          toast.dismiss(toastId);
-          return;
-        }
-
         toast.update(toastId, {
           render: "Signin again and access the website",
           type: "error",
