@@ -3,7 +3,7 @@ import { ApiError } from "../utils/ApiError.js";
 
 export async function noteCreation(req, res) {
   try {
-    const { noteName, description } = req.body;
+    const { type, noteName, description } = req.body;
 
     if (!noteName || !description) {
       throw new ApiError(401, "Please provide all detials to create note.");
@@ -17,9 +17,10 @@ export async function noteCreation(req, res) {
 
     const NewNote = await prisma.note.create({
       data: {
+        userId,
+        type,
         noteName,
         description,
-        userId,
       },
     });
 
@@ -61,7 +62,7 @@ export async function notesView(req, res) {
 
 export async function noteUpdate(req, res) {
   try {
-    const { noteName, description } = req.body;
+    const { type, noteName, description } = req.body;
     const { id } = req.params;
     const userId = req.user.id;
 
@@ -86,6 +87,7 @@ export async function noteUpdate(req, res) {
     const updatedNote = await prisma.note.update({
       where: { id: Number(id) },
       data: {
+        type: type || existingNote.type,
         noteName: noteName || existingNote.noteName,
         description: description || existingNote.description,
       },
