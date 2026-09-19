@@ -28,7 +28,6 @@ api.interceptors.response.use(
       // Stop infinite loop if refresh route itself fails
       if (originalRequest.url === "/users/refresh-token") {
         localStorage.removeItem("user"); // Clear ghost local storage state
-        window.location.href = "/";
         return Promise.reject(error);
       }
 
@@ -51,7 +50,7 @@ api.interceptors.response.use(
       } catch (refreshError) {
         processQueue(refreshError);
         localStorage.removeItem("user"); // Clear ghost local storage state on failure
-        window.location.href = "/"; // Logout if refresh fails
+        
         return Promise.reject(refreshError);
       } finally {
         isRefreshing = false;

@@ -24,6 +24,14 @@ function NoteList() {
       try {
         const res = await api.get("/note");
         setNotes((res.data.notes || []).reverse());
+
+        toast.update(toastId, {
+          render: "Your all notes",
+          type: "success",
+          isLoading: false,
+          autoClose: 3000,
+        });
+        
       } catch (error) {
         toast.update(toastId, {
           render: "Signin again and access the website",
@@ -69,9 +77,12 @@ function NoteList() {
           <div className="w-16 h-16 rounded-2xl bg-teal-500/10 border border-teal-500/20 flex items-center justify-center text-teal-400 text-2xl mb-4 shadow-inner">
             📝
           </div>
-          <h3 className="text-xl font-semibold text-white tracking-tight">No notes found</h3>
+          <h3 className="text-xl font-semibold text-white tracking-tight">
+            No notes found
+          </h3>
           <p className="text-slate-400 text-sm mt-1 max-w-sm">
-            Create your first note using the "+ New Note" button above to start organizing your thoughts.
+            Create your first note using the "+ New Note" button above to start
+            organizing your thoughts.
           </p>
         </div>
       ) : (

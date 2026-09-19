@@ -12,47 +12,84 @@ export async function refreshAccessToken(req, res) {
     const incomingRefreshToken = req.cookies?.refreshToken;
 
     if (!incomingRefreshToken) {
-      return res.status(401, "Unauthorized request. No refresh token.");
-    }
-
-    // Verify Token
-    const decodedToken = jwt.verify(
-      incomingRefreshToken,
-      process.env.REFRESH_TOKEN_SECRET,
-    );
-
-    const user = await prisma.user.findUnique({
-      where: {
-        id: decodedToken.id,
-      },
-    });
-
-    if (!user || user.refreshToken !== incomingRefreshToken) {
       return res.status(401).json({
         success: false,
-        message: "Refresh token is expired or Invalid.",
+        message: "Unauthorized request. No refresh token.",
       });
     }
 
-    // Generate brand new Access Token
-    const newAccessToken = generateAccessToken(user.id);
+    try {
+      // Verify Token
+      const decodedToken = jwt.verify(
+        incomingRefreshToken,
+        process.env.REFRESH_TOKEN_SECRET,
+      );
 
-    // Send new access token cookie
-    res.cookie("accessToken", newAccessToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
-      maxAge: 15 * 60 * 1000,
-    });
+      const user = await prisma.user.findUnique({
+        where: {
+          id: decodedToken.id,
+        },
+      });
 
-    return res.status(200).json({
-      success: true,
-      message: "Access token refreshed successfully.",
-    });
+      if (!user || user.refreshToken !== incomingRefreshToken) {
+        return res.status(401).json({
+          success: false,
+          message: "Refresh token is expired or Invalid.",
+        });
+      }
+
+      // Generate brand new Access Token
+      const newAccessToken = generateAccessToken(user.id);
+
+      // Send new access token cookie
+      res.cookie("accessToken", newAccessToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict",
+        // maxAge: 15 * 60 * 1000,
+        maxAge: 2 * 60 * 1000, // 2 minute
+      });
+
+      return res.status(200).json({
+        success: true,
+        message: "Access token refreshed successfully.",
+      });
+    } catch (error) {
+      console.log(error);
+
+      if (error.name === "TokenExpiredError") {
+        const decodedToken = jwt.decode(incomingRefreshToken);
+
+        if (decodedToken?.id) {
+          await prisma.user.updateMany({
+            where: {
+              id: decodedToken.id,
+              refreshToken: incomingRefreshToken,
+            },
+            data: {
+              refreshToken: null,
+            },
+          });
+        }
+
+        res.clearCookie("refreshToken");
+        res.clearCookie("accessToken");
+
+        return res.status(401).json({
+          success: false,
+          message: "Refresh token expired. User logged out.",
+        });
+      }
+
+      return res.status(403).json({
+        success: false,
+        message: "Invalid refresh token.",
+      });
+    }
   } catch (error) {
     return res
-      .status(403)
-      .json({ success: false, message: "Invalid refresh token." });
+      .status(500)
+      .json({ success: false, message: "Internal server error." });
   }
 }
 
@@ -92,12 +129,13 @@ export async function register(req, res) {
       data: { refreshToken: refreshToken },
     });
 
-    // Send Access Token to cookie (Expire in 15 mins)
+    // Send Access Token to cookie (Expire in 15 minute)
     res.cookie("accessToken", accessToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "strict",
-      maxAge: 15 * 60 * 1000,
+      // maxAge: 15 * 60 * 1000,
+      maxAge: 2 * 60 * 1000, // 2 minut
     });
 
     // Send Refresh Token to cookie (Expire in 7 days)
@@ -105,7 +143,8 @@ export async function register(req, res) {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "strict",
-      maxAge: 7 * 24 * 60 * 60 * 1000,
+      // maxAge: 7 * 24 * 60 * 60 * 1000,
+      maxAge: 6 * 60 * 1000, // 6 minute
     });
 
     const { password: _, ...userWithoutPassword } = updatedUser;
@@ -164,7 +203,8 @@ export async function login(req, res) {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "strict",
-      maxAge: 15 * 60 * 1000,
+      // maxAge: 15 * 60 * 1000,
+      maxAge: 2 * 60 * 1000, // 2 minute
     });
 
     // Send Refresh Token to cookie (Expire in 7 Days)
@@ -173,7 +213,7 @@ export async function login(req, res) {
       secure: process.env.NODE_ENV === "production",
       sameSite: "strict",
       // maxAge: 7 * 24 * 60 * 60 * 1000,
-      maxAge: 1 * 24 * 60 * 60 * 1000,
+      maxAge: 6 * 60 * 1000, // 6 minute
     });
 
     const { password: _, ...userWithoutPassword } = updateUser;
