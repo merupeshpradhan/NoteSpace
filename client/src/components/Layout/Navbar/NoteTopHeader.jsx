@@ -59,8 +59,8 @@ function NoteTopHeader({ onOpenSidebar, clickNewNote }) {
         {/* User Details */}
         <div className="flex items-center gap-2 sm:gap-3 pl-2 border-l border-slate-800">
           <div className="text-right hidden md:block">
-            <p className="text-xs font-semibold text-slate-200 truncate max-w-[120px]">{user?.name || "User"}</p>
-            <p className="text-[10px] text-slate-500 truncate max-w-[120px]">{user?.email || ""}</p>
+            <p className="text-xs font-semibold text-slate-200 truncate max-w-30">{user?.name || "User"}</p>
+            <p className="text-[10px] text-slate-500 truncate max-w-30">{user?.email || ""}</p>
           </div>
           <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full overflow-hidden bg-slate-800 border border-slate-700 flex items-center justify-center font-bold text-slate-300 text-xs shrink-0">
             <img

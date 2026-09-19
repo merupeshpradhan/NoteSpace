@@ -59,7 +59,7 @@ function Notes() {
 
       {/* Create Note Modal with Smooth Backdrop Blur */}
       {viewCreateNot && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-in fade-in duration-200">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 animate-in fade-in duration-200">
           <div className="w-full max-w-lg transform transition-all animate-in zoom-in-95 duration-200">
             <CreateNote onClose={() => setViewCreateNote(false)} />
           </div>
