@@ -27,6 +27,7 @@ model User {
 
 model Note {
   id          Int    @id @default(autoincrement())
+  type        String
   noteName    String
   description String
 
