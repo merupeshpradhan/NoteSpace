@@ -62,7 +62,6 @@ function NoteList() {
     }
   }
 
-  // Updated to replace the note in its original spot rather than jumping to the top
   function handleUpdateSuccess(updatedNote) {
     setNotes((prevNotes) =>
       prevNotes.map((note) => (note.id === updatedNote.id ? updatedNote : note))
@@ -70,7 +69,22 @@ function NoteList() {
   }
 
   return (
-    <section className="w-full min-h-full py-4 px-2 sm:px-6">
+    <section className="w-full min-h-full py-6 px-2 sm:px-6">
+      {/* Page Header Section */}
+      <div className="max-w-7xl mx-auto mb-8 flex items-center justify-between">
+        <div>
+          <h2 className="text-2xl font-bold text-white tracking-tight flex items-center gap-3">
+            <span className="w-10 h-10 rounded-xl bg-teal-500/10 border border-teal-500/20 flex items-center justify-center text-teal-400 shadow-inner">
+              📝
+            </span>
+            All Notes
+          </h2>
+          <p className="text-slate-400 text-sm mt-1">
+            Manage, update, and organize all your created notes in one place.
+          </p>
+        </div>
+      </div>
+
       {notes.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-20 text-center animate-in fade-in zoom-in-95 duration-500">
           <div className="w-16 h-16 rounded-2xl bg-teal-500/10 border border-teal-500/20 flex items-center justify-center text-teal-400 text-2xl mb-4 shadow-inner">
@@ -90,7 +104,7 @@ function NoteList() {
             <div
               key={note.id}
               style={{ animationDelay: `${index * 50}ms` }}
-              className="group relative bg-slate-900/80 backdrop-blur-xl border border-slate-800 hover:border-teal-500/40 rounded-2xl p-6 shadow-xl hover:shadow-2xl hover:shadow-teal-500/10 transition-all duration-300 flex flex-col justify-between animate-in fade-in zoom-in-95 fill-mode-forwards cursor-pointer"
+              className="group relative bg-slate-900/85 backdrop-blur-xl border border-slate-800 hover:border-teal-500/40 rounded-2xl p-6 shadow-xl hover:shadow-2xl hover:shadow-teal-500/10 transition-all duration-300 flex flex-col justify-between animate-in fade-in zoom-in-95 fill-mode-forwards cursor-pointer"
             >
               {/* Subtle top card glow effect on hover */}
               <div className="absolute inset-0 rounded-2xl bg-gradient-to-b from-teal-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
@@ -98,7 +112,7 @@ function NoteList() {
               <div className="relative z-10 space-y-3">
                 {/* Styled Category/Type Badge */}
                 {note.type && (
-                  <span className="inline-block text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-lg bg-teal-500/10 text-teal-400 border border-teal-500/20">
+                  <span className="inline-block text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-lg bg-teal-500/15 text-teal-400 border border-teal-500/20 shadow-sm">
                     {note.type}
                   </span>
                 )}
