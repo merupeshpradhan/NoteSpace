@@ -26,15 +26,14 @@ function NoteList() {
         setNotes((res.data.notes || []).reverse());
 
         toast.update(toastId, {
-          render: "Your all notes",
+          render: "All notes loaded successfully!",
           type: "success",
           isLoading: false,
           autoClose: 3000,
         });
-        
       } catch (error) {
         toast.update(toastId, {
-          render: "Signin again and access the website",
+          render: "Please signIn again to access your notes.",
           type: "error",
           isLoading: false,
           autoClose: 3000,
@@ -63,11 +62,11 @@ function NoteList() {
     }
   }
 
-  function handleUpdateSuccess(updateNote) {
-    setNotes((prevNotes) => [
-      updateNote,
-      ...prevNotes.filter((note) => note.id !== updateNote.id),
-    ]);
+  // Updated to replace the note in its original spot rather than jumping to the top
+  function handleUpdateSuccess(updatedNote) {
+    setNotes((prevNotes) =>
+      prevNotes.map((note) => (note.id === updatedNote.id ? updatedNote : note))
+    );
   }
 
   return (
@@ -97,14 +96,17 @@ function NoteList() {
               <div className="absolute inset-0 rounded-2xl bg-gradient-to-b from-teal-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
 
               <div className="relative z-10 space-y-3">
-                <div className="flex items-center justify-between">
-                  <span className="text-[10px] font-mono tracking-wider text-slate-500 uppercase px-2.5 py-1 rounded-md bg-slate-800/50 border border-slate-700/50">
-                    ID: {note.id}
+                {/* Styled Category/Type Badge */}
+                {note.type && (
+                  <span className="inline-block text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-lg bg-teal-500/10 text-teal-400 border border-teal-500/20">
+                    {note.type}
                   </span>
-                </div>
+                )}
+
                 <h4 className="text-lg font-bold text-white tracking-tight group-hover:text-teal-400 transition-colors line-clamp-1">
                   {note.noteName}
                 </h4>
+                
                 <p className="text-slate-300 text-sm leading-relaxed line-clamp-4 break-words">
                   {note.description}
                 </p>
@@ -116,7 +118,7 @@ function NoteList() {
                     setSelectedNote(note);
                     setUpdateNoteView(true);
                   }}
-                  className="px-4 py-2 bg-indigo-500/10 hover:bg-indigo-500 text-indigo-400 hover:text-white text-xs font-semibold rounded-xl border border-indigo-500/20 transition-all duration-200 cursor-pointer active:scale-95"
+                  className="px-4 py-2 bg-indigo-500/10 hover:bg-indigo-500 text-indigo-400 hover:text-white text-xs font-semibold rounded-xl border border-indigo-500/25 transition-all duration-200 cursor-pointer active:scale-95"
                 >
                   Update
                 </button>
