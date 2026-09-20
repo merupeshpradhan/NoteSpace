@@ -11,8 +11,13 @@ import {
 } from "react-icons/fa";
 import SignOut from "../../Auth/SignOut";
 
-function NoteLeftHeader({ isOpen, onClose, onSelectContent }) {
-  const [activeTab, setActiveTab] = useState("all");
+function NoteLeftHeader({
+  isOpen,
+  onClose,
+  onSelectContent,
+  activeTab,
+  setActiveTab,
+}) {
 
   return (
     <>

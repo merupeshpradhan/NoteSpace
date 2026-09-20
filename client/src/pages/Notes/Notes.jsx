@@ -13,6 +13,7 @@ import CreateNote from "../../components/NotePage/CreateNote.jsx";
 function Notes() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [activeContent, setActiveContent] = useState("all");
+  const [activeTab, setActiveTab] = useState("all");
   const [viewCreateNot, setViewCreateNote] = useState(false);
 
   return (
@@ -25,6 +26,8 @@ function Notes() {
       <NoteLeftHeader
         isOpen={isSidebarOpen}
         onClose={() => setIsSidebarOpen(false)}
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
         onSelectContent={(content) => {
           setActiveContent(content);
           setIsSidebarOpen(false); // Auto-close drawer on mobile selection
@@ -36,6 +39,11 @@ function Notes() {
         <NoteTopHeader
           onOpenSidebar={() => setIsSidebarOpen(true)}
           clickNewNote={() => setViewCreateNote(true)}
+          setActiveTab={setActiveTab}
+          onSelectContent={(content) => {
+            setActiveContent(content);
+            setIsSidebarOpen(false); // Auto-close drawer on mobile selection
+          }}
         />
 
         <main className="flex-1 pt-24 px-4 sm:px-8 pb-12 flex flex-col justify-between">
