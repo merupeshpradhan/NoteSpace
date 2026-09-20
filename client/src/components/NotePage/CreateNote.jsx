@@ -132,10 +132,10 @@ function CreateNote({ onClose }) {
                 Movie Watching Time
               </option>
               <option
-                value="marketing-day-time"
+                value="marketing-dates"
                 className="bg-slate-900 text-slate-200"
               >
-                Marketing Day Time
+                Marketing Dates
               </option>
             </select>
           </div>
