@@ -126,16 +126,16 @@ function CreateNote({ onClose }) {
                 Study
               </option>
               <option
-                value="movie-watching-time"
-                className="bg-slate-900 text-slate-200"
-              >
-                Movie Watching Time
-              </option>
-              <option
                 value="marketing-dates"
                 className="bg-slate-900 text-slate-200"
               >
                 Marketing Dates
+              </option>
+              <option
+                value="movie-watching-time"
+                className="bg-slate-900 text-slate-200"
+              >
+                Movie Watching Time
               </option>
             </select>
           </div>

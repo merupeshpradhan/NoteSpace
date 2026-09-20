@@ -37,7 +37,7 @@ function Marketing() {
 
         toast.update(toastId, {
           render: "Please signIn again and access your notes.",
-          type: "error", // Fixed from success to error
+          type: "error", 
           isLoading: false,
           autoClose: 3000,
         });
