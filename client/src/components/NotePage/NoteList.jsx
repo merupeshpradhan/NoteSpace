@@ -4,6 +4,7 @@ import DeleteNote from "./DeleteNote.jsx";
 import UpdateNote from "./UpdateNote.jsx";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import StarNote from "./StarNote.jsx";
 
 function NoteList() {
   const [notes, setNotes] = useState([]);
@@ -64,7 +65,9 @@ function NoteList() {
 
   function handleUpdateSuccess(updatedNote) {
     setNotes((prevNotes) =>
-      prevNotes.map((note) => (note.id === updatedNote.id ? updatedNote : note))
+      prevNotes.map((note) =>
+        note.id === updatedNote.id ? updatedNote : note,
+      ),
     );
   }
 
@@ -110,17 +113,23 @@ function NoteList() {
               <div className="absolute inset-0 rounded-2xl bg-gradient-to-b from-teal-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
 
               <div className="relative z-10 space-y-3">
-                {/* Styled Category/Type Badge */}
-                {note.type && (
-                  <span className="inline-block text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-lg bg-teal-500/15 text-teal-400 border border-teal-500/20 shadow-sm">
-                    {note.type}
-                  </span>
-                )}
+                <div className="w-full grid grid-cols-2 items-center">
+                  {/* Styled Category/Type Badge */}
+                  {note.type && (
+                    <span className="inline-block text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-lg bg-teal-500/15 text-teal-400 border border-teal-500/20 shadow-sm">
+                      {note.type}
+                    </span>
+                  )}
+
+                  <StarNote
+                    className="justify-self-end"
+                  />
+                </div>
 
                 <h4 className="text-lg font-bold text-white tracking-tight group-hover:text-teal-400 transition-colors line-clamp-1">
                   {note.noteName}
                 </h4>
-                
+
                 <p className="text-slate-300 text-sm leading-relaxed line-clamp-4 break-words">
                   {note.description}
                 </p>
