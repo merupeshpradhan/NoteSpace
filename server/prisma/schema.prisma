@@ -26,9 +26,10 @@ model User {
 }
 
 model Note {
-  id          Int    @id @default(autoincrement())
+  id          Int     @id @default(autoincrement())
   type        String
   noteName    String
+  isStarred   Boolean @default(false)
   description String
 
   user   User @relation(fields: [userId], references: [id], onDelete: Cascade)

@@ -107,6 +107,54 @@ export async function noteUpdate(req, res) {
   }
 }
 
+export async function starNote(req, res) {
+  try {
+    const { noteId } = req.params;
+    const userId = req.user.id;
+
+    // Find the note and make sure it belongs to the logged-in user
+    const note = await prisma.note.findFirst({
+      where: {
+        id: Number(noteId),
+        userId: userId,
+      },
+    });
+
+    // If note does not exist or belongs to another user
+    if (!note) {
+      return res.status(404).json({
+        success: false,
+        message: "Note not found or unauthorized.",
+      });
+    }
+
+    // Toggle star
+    const updateNote = await prisma.note.update({
+      where: {
+        id: Number(noteId),
+      },
+      data: {
+        isStarred: !note.isStarred,
+      },
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: updateNote.isStarred
+        ? "Note starred successfully"
+        : "Note understand successfully",
+      note: updateNote,
+    });
+  } catch (error) {
+    console.error(error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Faild to update star.",
+    });
+  }
+}
+
 export async function noteDelete(req, res) {
   try {
     const userId = req.user.id;

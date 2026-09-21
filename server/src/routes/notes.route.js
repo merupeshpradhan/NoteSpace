@@ -4,6 +4,7 @@ import {
   noteDelete,
   notesView,
   noteUpdate,
+  starNote,
 } from "../controller/notes.control.js";
 import { verifyJWT } from "../middlewares/auth.middleware.js";
 
@@ -14,7 +15,8 @@ router.use(verifyJWT);
 
 router.post("/notecreat", noteCreation);
 router.get("/", notesView);
-router.put("/noteupdate/:id", noteUpdate);
-router.delete("/notedelete/:id", noteDelete);
+router.put("/noteupdate/:noteId", noteUpdate);
+router.post("/star/:noteId", starNote);
+router.delete("/notedelete/:noteId", noteDelete);
 
 export default router;
