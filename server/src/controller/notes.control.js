@@ -142,7 +142,7 @@ export async function starNote(req, res) {
       success: true,
       message: updateNote.isStarred
         ? "Note starred successfully"
-        : "Note understand successfully",
+        : "Note unstarred successfully",
       note: updateNote,
     });
   } catch (error) {
