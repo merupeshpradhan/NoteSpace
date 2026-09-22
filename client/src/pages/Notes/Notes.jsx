@@ -5,7 +5,7 @@ import NoteList from "../../components/NotePage/NoteList.jsx";
 import NoteFooter from "../../components/Layout/Footer/NoteFooter.jsx";
 import Profile from "../../components/UserView/Profile.jsx";
 import StudyTime from "../../components/NotePage/CateGories/StudyTime.jsx";
-import FavoritesNotes from "../../components/NotePage/FavoritesNotes.jsx";
+import FavoritesNotes from "../../components/NotePage/CateGories/FavoriteNotes.jsx";
 import Marketing from "../../components/NotePage/CateGories/Marketing.jsx";
 import MovieWatching from "../../components/NotePage/CateGories/MovieWatching.jsx";
 import CreateNote from "../../components/NotePage/CreateNote.jsx";

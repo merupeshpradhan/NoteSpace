@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import api from "../../../Api/api";
+import api from "../../../Api/api.js";
 
 function MovieWatching() {
   const [movieWatchingNote, setMovieWatchingNote] = useState([]);
