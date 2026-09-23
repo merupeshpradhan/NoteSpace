@@ -10,27 +10,31 @@ function StarNote({ className }) {
 
   const hasFetched = useRef(false);
 
+  async function fetchStars() {
+    try {
+      const res = await api.post("/note");
+      console.log(res.data.notes);
+    } catch (error) {
+      console.log(error);
+
+      toast.update(toastId, {
+        render: "Please signIn again to access your notes.",
+        type: "error",
+        isLoading: false,
+        autoClose: 3000,
+      });
+
+      console.log(error);
+      navigate("/");
+    }
+  }
+
   useEffect(() => {
     if (!hasFetched.current) return;
     hasFetched.current = true;
 
-    async function fetchStars() {
-      try {
-        const res = await api.post("/note");
-        console.log(res.data.notes);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-
     fetchStars();
   }, [navigate]);
-
-  async function handleStarNote() {
-    try {
-      const res = await api.post(`/note/star/${noteId}`);
-    } catch (error) {}
-  }
 
   return (
     <div className={className}>

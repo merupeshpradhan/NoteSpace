@@ -1,5 +1,6 @@
 import { FaSearch, FaBell, FaBars, FaPlus } from "react-icons/fa";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function NoteTopHeader({
   onOpenSidebar,
@@ -10,6 +11,7 @@ function NoteTopHeader({
   noteSearch,
 }) {
   const [user, setUser] = useState({ name: "", email: "" });
+  const navigate = useNavigate();
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
@@ -18,6 +20,16 @@ function NoteTopHeader({
         setUser(JSON.parse(storedUser));
       } catch (e) {
         setUser({ name: "User", email: "" });
+        
+        toast.update(toastId, {
+          render: "Please signIn again to access your notes.",
+          type: "error",
+          isLoading: false,
+          autoClose: 3000,
+        });
+
+        console.log(error);
+        navigate("/");
       }
     }
   }, []);
