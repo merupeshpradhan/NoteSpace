@@ -23,10 +23,12 @@ function UpdateNote({ noteData, viewUpdateNote, onUpdateSuccess }) {
       toast.error("Please select a note type!");
       return;
     }
+
     if (!noteName.trim()) {
       toast.error("Please enter a note name!");
       return;
     }
+
     if (!description.trim()) {
       toast.error("Please enter a description!");
       return;
@@ -60,12 +62,15 @@ function UpdateNote({ noteData, viewUpdateNote, onUpdateSuccess }) {
       viewUpdateNote();
     } catch (error) {
       console.log(error);
-      toast.update(todoId, {
-        render: "Something went wrong while updating note.",
+
+      toast.update(toastId, {
+        render: "Please signIn again to access your notes.",
         type: "error",
         isLoading: false,
         autoClose: 3000,
       });
+
+      navigate("/");
     } finally {
       setLoading(false);
     }

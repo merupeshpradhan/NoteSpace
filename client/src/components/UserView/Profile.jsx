@@ -17,7 +17,7 @@ function Profile() {
   }, []);
 
   return (
-    <section className="w-full min-h-[calc(100vh-4rem)] flex items-center justify-center p-4 sm:p-6 md:p-8">
+    <section className="w-full flex items-center justify-center p-4 sm:p-6 md:p-8">
       <div className="relative w-full max-w-md bg-slate-900/90 border border-slate-800 backdrop-blur-xl p-6 sm:p-8 rounded-3xl shadow-2xl overflow-hidden group">
         
         {/* Subtle decorative moving background glow */}

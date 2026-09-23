@@ -59,6 +59,13 @@ function Notes() {
       <NoteLeftHeader
         isOpen={isSidebarOpen}
         onClose={() => setIsSidebarOpen(false)}
+        onGoToAllNotes={() => {
+          (
+            setIsSidebarOpen(false),
+            setActiveContent("all"),
+            setActiveTab("all"),
+            setSearchText(""));
+        }}
         activeTab={activeTab}
         setActiveTab={setActiveTab}
         onSelectContent={(content) => {

@@ -35,7 +35,7 @@ function CreateNote({ onClose }) {
     }
 
     setLoading(true);
-    const todoId = toast.loading("Creating note...");
+    const toastId = toast.loading("Creating note...");
 
     try {
       await api.post(
@@ -48,7 +48,7 @@ function CreateNote({ onClose }) {
         { withCredentials: true },
       );
 
-      toast.update(todoId, {
+      toast.update(toastId, {
         render: "Successfully added note!",
         type: "success",
         isLoading: false,
@@ -62,7 +62,7 @@ function CreateNote({ onClose }) {
       if (onClose) onClose();
     } catch (error) {
       console.log(error);
-      toast.update(todoId, {
+      toast.update(toastId, {
         render: "Something went wrong adding note!",
         type: "error",
         isLoading: false,

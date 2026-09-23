@@ -28,7 +28,7 @@ function StudyTime() {
         setStudyNote(filteredStudyNotes);
 
         toast.update(toastId, {
-          render: "All Study notes loaded successfully!",
+          render: "All Study notes!",
           type: "success",
           isLoading: false,
           autoClose: 3000,
@@ -50,7 +50,7 @@ function StudyTime() {
   }, [navigate]);
 
   return (
-    <section className="w-full min-h-full py-6 px-2 sm:px-6">
+    <section className="w-full min-h-full px-2 sm:px-6">
       {/* Page Title Header */}
       <div className="max-w-7xl mx-auto mb-8 flex items-center justify-between">
         <div>

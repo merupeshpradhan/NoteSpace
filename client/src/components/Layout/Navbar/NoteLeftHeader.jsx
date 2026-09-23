@@ -14,6 +14,7 @@ import SignOut from "../../Auth/SignOut";
 function NoteLeftHeader({
   isOpen,
   onClose,
+  onGoToAllNotes,
   onSelectContent,
   activeTab,
   setActiveTab,
@@ -21,7 +22,7 @@ function NoteLeftHeader({
   setSearchText,
 }) {
   return (
-    <>
+    <section>
       {/* Mobile Overlay Background */}
       {isOpen && (
         <div
@@ -40,7 +41,11 @@ function NoteLeftHeader({
         <div>
           <div className="flex items-center justify-between px-6 py-4.5 border-b border-slate-800/80">
             <div
-              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+              onClick={() => {
+                window.scrollTo({ top: 0, behavior: "smooth" }),
+                  onGoToAllNotes();
+              }}
+              // onClick={navigate}
               className="flex items-center gap-2.5 cursor-pointer"
             >
               <span className="w-3.5 h-3.5 rounded-full bg-teal-500 inline-block ring-4 ring-teal-500/25"></span>
@@ -183,7 +188,7 @@ function NoteLeftHeader({
           </div>
         </div>
       </aside>
-    </>
+    </section>
   );
 }
 
