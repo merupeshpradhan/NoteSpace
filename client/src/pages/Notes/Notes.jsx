@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import NoteLeftHeader from "../../components/Layout/Navbar/NoteLeftHeader.jsx";
 import NoteTopHeader from "../../components/Layout/Navbar/NoteTopHeader.jsx";
 import NoteList from "../../components/NotePage/NoteList.jsx";
@@ -9,12 +9,34 @@ import FavoritesNotes from "../../components/NotePage/CateGories/FavoriteNotes.j
 import Marketing from "../../components/NotePage/CateGories/Marketing.jsx";
 import MovieWatching from "../../components/NotePage/CateGories/MovieWatching.jsx";
 import CreateNote from "../../components/NotePage/CreateNote.jsx";
+import api from "../../Api/api.js";
 
 function Notes() {
+  const [notes, setNotes] = useState([]);
+  const [searchText, setSearchText] = useState("");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [activeContent, setActiveContent] = useState("all");
   const [activeTab, setActiveTab] = useState("all");
   const [viewCreateNot, setViewCreateNote] = useState(false);
+
+  async function fetchNotes() {
+    try {
+      const res = await api.get("/note");
+      console.log(res.data.notes);
+
+      setNotes((res.data.notes || []).reverse());
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  useEffect(() => {
+    fetchNotes();
+  }, []);
+
+  const filterNotes = notes.filter((note) =>
+    note.noteName.toLowerCase().includes(searchText.toLowerCase()),
+  );
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 flex overflow-x-hidden selection:bg-teal-500 selection:text-white relative">
@@ -42,19 +64,31 @@ function Notes() {
           setActiveTab={setActiveTab}
           onSelectContent={(content) => {
             setActiveContent(content);
-            setIsSidebarOpen(false); // Auto-close drawer on mobile selection
+            setIsSidebarOpen(false); // Auto-close drawer on mobile 
           }}
+          searchText={searchText}
+          noteSearch={setSearchText}
         />
 
         <main className="flex-1 pt-24 px-4 sm:px-8 pb-12 flex flex-col justify-between">
           {/* Dynamic Content Container with Smooth Fade-In Emotion */}
           <div className="space-y-6 animate-in fade-in zoom-in-95 duration-300 fill-mode-forwards">
-            {activeContent === "all" && <NoteList />}
-            {activeContent === "favorites" && <FavoritesNotes />}
-            {activeContent === "study" && <StudyTime />}
-            {activeContent === "Marketing" && <Marketing />}
-            {activeContent === "movies" && <MovieWatching />}
-            {activeContent === "profile" && <Profile />}
+            {searchText === "" ? (
+              <>
+                {activeContent === "all" && <NoteList />}
+                {activeContent === "favorites" && <FavoritesNotes />}
+                {activeContent === "study" && <StudyTime />}
+                {activeContent === "Marketing" && <Marketing />}
+                {activeContent === "movies" && <MovieWatching />}
+                {activeContent === "profile" && <Profile />}
+              </>
+            ) : (
+              <div>
+                {filterNotes.map((note) => (
+                  <p>{note.noteName}</p>
+                ))}
+              </div>
+            )}
           </div>
         </main>
 

@@ -6,6 +6,8 @@ function NoteTopHeader({
   clickNewNote,
   onSelectContent,
   setActiveTab,
+  searchText,
+  noteSearch,
 }) {
   const [user, setUser] = useState({ name: "", email: "" });
 
@@ -38,6 +40,8 @@ function NoteTopHeader({
           </span>
           <input
             type="text"
+            value={searchText}
+            onChange={(e) => noteSearch(e.target.value)}
             placeholder="Search notes..."
             className="w-full bg-slate-950/60 border border-slate-800 rounded-xl pl-9 pr-3 py-1.5 sm:py-2 text-[11px] sm:text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 transition-all"
           />

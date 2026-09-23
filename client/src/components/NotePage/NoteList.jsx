@@ -90,7 +90,7 @@ function NoteList() {
   }
 
   return (
-    <section className="w-full min-h-full py-6 px-2 sm:px-6">
+    <section className="w-full min-h-full px-2 sm:px-6">
       {/* Page Header Section */}
       <div className="max-w-7xl mx-auto mb-8 flex items-center justify-between">
         <div>
