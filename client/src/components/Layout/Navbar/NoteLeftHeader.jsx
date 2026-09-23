@@ -17,8 +17,9 @@ function NoteLeftHeader({
   onSelectContent,
   activeTab,
   setActiveTab,
+  searchText,
+  setSearchText,
 }) {
-
   return (
     <>
       {/* Mobile Overlay Background */}
@@ -62,6 +63,8 @@ function NoteLeftHeader({
               <FaSearch className="text-slate-500 text-xs" />
               <input
                 type="text"
+                value={searchText}
+                onChange={(e) => setSearchText(e.target.value)}
                 placeholder="Search notes..."
                 className="bg-transparent border-none outline-none w-full text-slate-200 placeholder-slate-500 text-xs"
               />

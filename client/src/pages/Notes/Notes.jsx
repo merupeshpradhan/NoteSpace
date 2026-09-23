@@ -65,6 +65,8 @@ function Notes() {
           setActiveContent(content);
           setIsSidebarOpen(false); // Auto-close drawer on mobile selection
         }}
+        searchText={searchText}
+        setSearchText={setSearchText}
       />
 
       {/* Main Content Area */}
@@ -78,7 +80,7 @@ function Notes() {
             setIsSidebarOpen(false); // Auto-close drawer on mobile
           }}
           searchText={searchText}
-          noteSearch={setSearchText}
+          setSearchText={setSearchText}
         />
 
         <main className="flex-1 pt-24 px-4 sm:px-8 pb-12 flex flex-col justify-between">
