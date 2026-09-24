@@ -17,7 +17,7 @@ model User {
   email        String  @unique
   name         String
   password     String
-  phoneNumber  String?
+  phoneNumber  String
   refreshToken String?
 
   notes Note[]
