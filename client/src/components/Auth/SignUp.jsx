@@ -7,6 +7,7 @@ import api from "../../Api/api.js";
 function SignUp({ onClose, onSwitchToSignIn }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -15,10 +16,13 @@ function SignUp({ onClose, onSwitchToSignIn }) {
   async function userSignUp(e) {
     e.preventDefault();
 
-    if (!name || !email || !password) {
+    if (!name || !email || !phoneNumber || !password) {
       toast.error("Please provide all your details.");
       return;
     }
+
+    // Automatically format the phone number to include +91 for Twilio
+    const formattedPhoneNumber = `+91${phoneNumber.trim()}`;
 
     setLoading(true);
     const toastId = toast.loading("Signing up for NoteSpace...");
@@ -29,12 +33,11 @@ function SignUp({ onClose, onSwitchToSignIn }) {
         {
           name,
           email,
+          phoneNumber: formattedPhoneNumber,
           password,
         },
         { withCredentials: true },
       );
-
-      // console.log(res);
 
       const userData = res.data.user;
       console.log(userData);
@@ -51,6 +54,7 @@ function SignUp({ onClose, onSwitchToSignIn }) {
       setLoading(false);
       setName("");
       setEmail("");
+      setPhoneNumber("");
       setPassword("");
 
       if (onClose) onClose();
@@ -130,6 +134,26 @@ function SignUp({ onClose, onSwitchToSignIn }) {
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full px-4 py-3 bg-slate-950/80 border border-slate-800 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500 transition-all text-sm"
               />
+            </div>
+
+            {/* Phone Number Input with permanent +91 prefix container */}
+            <div className="space-y-1.5">
+              <label className="text-xs font-medium text-slate-300">
+                Phone Number
+              </label>
+              <div className="flex items-center w-full px-4 py-3 bg-slate-950/80 border border-slate-800 rounded-xl focus-within:border-teal-500 focus-within:ring-1 focus-within:ring-teal-500 transition-all text-sm">
+                <span className="text-white font-medium mr-2 select-none">
+                  +91
+                </span>
+                <input
+                  type="tel"
+                  placeholder="9876543210"
+                  maxLength="10"
+                  value={phoneNumber}
+                  onChange={(e) => setPhoneNumber(e.target.value)}
+                  className="w-full bg-transparent text-white placeholder-slate-600 focus:outline-none"
+                />
+              </div>
             </div>
 
             <div className="space-y-1.5">

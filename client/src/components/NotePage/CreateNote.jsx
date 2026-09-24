@@ -8,11 +8,13 @@ import {
   FaTag,
   FaHeading,
   FaAlignLeft,
+  FaClock,
 } from "react-icons/fa";
 
 function CreateNote({ onClose }) {
   const [type, setType] = useState("");
   const [noteName, setNoteName] = useState("");
+  const [reminderDate, setReminderDate] = useState(""); // state for reminder date
   const [description, setDescription] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -20,7 +22,7 @@ function CreateNote({ onClose }) {
   async function handleCrateNote(e) {
     e.preventDefault();
 
-    // Custom Validation: Check if fields are empty and show custom toast
+    // Custom Validation
     if (!type) {
       toast.error("Please select a note type!");
       return;
@@ -43,6 +45,9 @@ function CreateNote({ onClose }) {
         {
           type,
           noteName,
+          reminderDate: reminderDate
+            ? new Date(reminderDate).toISOString()
+            : null, // reminder date to backend
           description,
         },
         { withCredentials: true },
@@ -56,6 +61,7 @@ function CreateNote({ onClose }) {
       });
 
       setNoteName("");
+      setReminderDate("");
       setDescription("");
       setType("");
 
@@ -74,10 +80,9 @@ function CreateNote({ onClose }) {
   }
 
   return (
-    <section className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-in fade-in duration-200">
-      {/* Modal Container with Glassmorphism and Ambient Glow */}
+    <section className="fixed inset-0 z-50 flex items-center justify-center p-4">
+      {/* Modal Container */}
       <div className="relative w-full max-w-lg bg-slate-900/90 border border-slate-800 backdrop-blur-xl p-6 sm:p-8 rounded-3xl shadow-2xl overflow-hidden group animate-in zoom-in-95 duration-200">
-        {/* Subtle background glow elements */}
         <div className="absolute -top-24 -right-24 w-48 h-48 bg-teal-500/10 rounded-full blur-3xl pointer-events-none"></div>
         <div className="absolute -bottom-24 -left-24 w-48 h-48 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
 
@@ -100,7 +105,7 @@ function CreateNote({ onClose }) {
               Create a New Note
             </h3>
             <p className="text-xs text-slate-400 mt-0.5">
-              Organize your thoughts and categories easily.
+              Organize your thoughts and set automated reminders.
             </p>
           </div>
         </div>
@@ -110,7 +115,8 @@ function CreateNote({ onClose }) {
           {/* Note Type Select */}
           <div className="space-y-1.5">
             <label className="flex items-center gap-2 text-xs font-medium text-slate-300 uppercase tracking-wider">
-              <FaTag className="text-teal-400 text-[10px]" /> Note Type
+              <FaTag className="text-teal-400 text-[10px]" /> Note Type{" "}
+              <span className="text-red-400">*</span>
             </label>
             <select
               name="type"
@@ -143,7 +149,8 @@ function CreateNote({ onClose }) {
           {/* Note Name Input */}
           <div className="space-y-1.5">
             <label className="flex items-center gap-2 text-xs font-medium text-slate-300 uppercase tracking-wider">
-              <FaHeading className="text-teal-400 text-[10px]" /> Note Name
+              <FaHeading className="text-teal-400 text-[10px]" /> Note Name{" "}
+              <span className="text-red-400">*</span>
             </label>
             <input
               type="text"
@@ -154,10 +161,25 @@ function CreateNote({ onClose }) {
             />
           </div>
 
+          {/* Reminder Date Input (Fixed state binding & label) */}
+          <div className="space-y-1.5">
+            <label className="flex items-center gap-2 text-xs font-medium text-slate-300 uppercase tracking-wider">
+              <FaClock className="text-teal-400 text-[10px]" /> Reminder Date &
+              Time (Optional)
+            </label>
+            <input
+              type="datetime-local"
+              value={reminderDate}
+              onChange={(e) => setReminderDate(e.target.value)}
+              className="w-full bg-slate-950/60 border border-slate-800/80 px-4 py-3 rounded-2xl text-sm text-slate-200 outline-none focus:border-teal-500/80 focus:ring-2 focus:ring-teal-500/25 transition-all cursor-pointer"
+            />
+          </div>
+
           {/* Description Input */}
           <div className="space-y-1.5">
             <label className="flex items-center gap-2 text-xs font-medium text-slate-300 uppercase tracking-wider">
-              <FaAlignLeft className="text-teal-400 text-[10px]" /> Description
+              <FaAlignLeft className="text-teal-400 text-[10px]" /> Description{" "}
+              <span className="text-red-400">*</span>
             </label>
             <textarea
               rows="3"
