@@ -47,7 +47,6 @@ export async function refreshAccessToken(req, res) {
         secure: process.env.NODE_ENV === "production",
         sameSite: "strict",
         maxAge: 15 * 60 * 1000,
-        // maxAge: 2 * 60 * 1000, // 2 minute
       });
 
       return res.status(200).json({
@@ -135,7 +134,6 @@ export async function register(req, res) {
       secure: process.env.NODE_ENV === "production",
       sameSite: "strict",
       maxAge: 15 * 60 * 1000,
-      // maxAge: 2 * 60 * 1000, // 2 minute
     });
 
     // Send Refresh Token to cookie (Expire in 7 days)
@@ -143,11 +141,7 @@ export async function register(req, res) {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "strict",
-      // maxAge: 7 * 24 * 60 * 60 * 1000,
-      // maxAge: 6 * 60 * 1000, // 6 minute
-
-      // Send Refresh Token to cookie (Expire in 1 day + 5 minutes)
-      maxAge: 1 * 24 * 60 * 60 * 1000 + 5 * 60 * 1000, // 1 Day 5 minute
+      maxAge: 7 * 24 * 60 * 60 * 1000 + 5 * 60 * 1000, // Send Refresh Token to cookie (Expire in 7 day + 5 minutes)
     });
 
     const { password: _, ...userWithoutPassword } = updatedUser;
@@ -207,7 +201,6 @@ export async function login(req, res) {
       secure: process.env.NODE_ENV === "production",
       sameSite: "strict",
       maxAge: 15 * 60 * 1000,
-      // maxAge: 2 * 60 * 1000, // 2 minute
     });
 
     // Send Refresh Token to cookie (Expire in 7 Days)
@@ -215,11 +208,7 @@ export async function login(req, res) {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "strict",
-      // maxAge: 7 * 24 * 60 * 60 * 1000, // 7 Days
-      // maxAge: 6 * 60 * 1000, // 6 minute
-
-      // Send Refresh Token to cookie (Expire in 1 day + 5 minutes)
-      maxAge: 1 * 24 * 60 * 60 * 1000 + 5 * 60 * 1000, // 1 Day 5 minute
+      maxAge: 7 * 24 * 60 * 60 * 1000 + 5 * 60 * 1000, // Send Refresh Token to cookie (Expire in 7 day + 5 minutes)
     });
 
     const { password: _, ...userWithoutPassword } = updateUser;
