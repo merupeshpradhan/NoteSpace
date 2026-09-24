@@ -41,7 +41,7 @@ function Profile() {
     const toastId = toast.loading("Updating profile...");
 
     try {
-      const res = await api.put("/users/update", updatedData, {
+      const res = await api.put("/users/update-details", updatedData, {
         withCredentials: true,
       });
 

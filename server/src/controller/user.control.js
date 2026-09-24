@@ -229,15 +229,47 @@ export async function login(req, res) {
 }
 
 export async function updateUserDetials(req, res) {
-  const { name, email, phoneNumber } = req.body;
-  const userId = req.userId;
+  try {
+    const { name, email, phoneNumber } = req.body;
+    // Fix: extract id from req.user (or req.user.id depending on your auth middleware implementation)
+    const userId = req.user?.id || req.userId;
 
-  const updateUser = await prisma.user.update({
-    where: { id: userId },
-    data: { name, email, phoneNumber },
-  });
+    if (!userId) {
+      return res.status(401).json({ 
+        success: false, 
+        message: "Unauthorized. Please login again." 
+      });
+    }
 
-  return res.status(200).json({ success: true, user: updateUser });
+    const updateUser = await prisma.user.update({
+      where: { id: userId },
+      data: { name, email, phoneNumber },
+    });
+
+    // Remove password before sending user object back
+    const { password: _, ...userWithoutPassword } = updateUser;
+
+    return res.status(200).json({ 
+      success: true, 
+      message: "Profile updated successfully",
+      user: userWithoutPassword 
+    });
+
+  } catch (error) {
+    console.error("Update profile error:", error);
+    
+    if (error.code === 'P2002') {
+      return res.status(400).json({ 
+        success: false, 
+        message: "This email is already registered with another account." 
+      });
+    }
+
+    return res.status(500).json({ 
+      success: false, 
+      message: "Internal server error. Failed to update profile." 
+    });
+  }
 }
 
 export async function logout(req, res) {

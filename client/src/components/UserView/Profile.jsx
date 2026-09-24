@@ -44,7 +44,7 @@ function Profile() {
     try {
       // Assuming your backend update endpoint is something like /users/update or /users/profile
       const res = await api.put(
-        "/users/update",
+        "/users/update-details",
         {
           name,
           email,

@@ -13,7 +13,7 @@ const router = Router();
 router.post("/register", register);
 router.post("/login", login);
 
-router.post("/update-detials", verifyJWT, updateUserDetials);
+router.put("/update-details", verifyJWT, updateUserDetials);
 
 router.post("/logout", verifyJWT, logout);
 router.post("/refresh-token", refreshAccessToken);
