@@ -17,6 +17,7 @@ model User {
   email        String  @unique
   name         String
   password     String
+  phoneNumber  String?
   refreshToken String?
 
   notes Note[]
@@ -26,11 +27,13 @@ model User {
 }
 
 model Note {
-  id          Int     @id @default(autoincrement())
-  type        String
-  noteName    String
-  isStarred   Boolean @default(false)
-  description String
+  id           Int       @id @default(autoincrement())
+  type         String
+  noteName     String
+  isStarred    Boolean   @default(false)
+  reminderDate DateTime?
+  smsSent      Boolean   @default(false)
+  description  String
 
   user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId Int
