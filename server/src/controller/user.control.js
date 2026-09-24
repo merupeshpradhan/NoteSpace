@@ -94,9 +94,9 @@ export async function refreshAccessToken(req, res) {
 
 export async function register(req, res) {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, phoneNumber, password } = req.body;
 
-    if (!name || !email || !password) {
+    if (!name || !email || !phoneNumber || !password) {
       throw new ApiError(400, "Please provide your all detials.");
     }
 
@@ -114,6 +114,7 @@ export async function register(req, res) {
       data: {
         name,
         email,
+        phoneNumber,
         password: hashedPassword,
       },
     });
@@ -225,6 +226,18 @@ export async function login(req, res) {
       message: error.message || "Internal server error.",
     });
   }
+}
+
+export async function updateUserDetials(req, res) {
+  const { name, email, phoneNumber } = req.body;
+  const userId = req.userId;
+
+  const updateUser = await prisma.user.update({
+    where: { id: userId },
+    data: { name, email, phoneNumber },
+  });
+
+  return res.status(200).json({ success: true, user: updateUser });
 }
 
 export async function logout(req, res) {
