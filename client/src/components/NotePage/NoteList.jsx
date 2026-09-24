@@ -1,52 +1,14 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import api from "../../Api/api.js";
 import DeleteNote from "./DeleteNote.jsx";
 import UpdateNote from "./UpdateNote.jsx";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
 import { FaRegStar, FaStar } from "react-icons/fa";
 
-function NoteList() {
-  const [notes, setNotes] = useState([]);
+function NoteList({ notes, setNotes }) {
   const [loading, setLoading] = useState(false);
   const [selectedNote, setSelectedNote] = useState(null);
   const [updateNoteView, setUpdateNoteView] = useState(false);
-  const navigate = useNavigate();
-
-  const hasFetched = useRef(false);
-
-  const fetchNotes = async () => {
-    const toastId = toast.loading("Fetching notes...");
-
-    try {
-      const res = await api.get("/note");
-      setNotes((res.data.notes || []).reverse());
-
-      toast.update(toastId, {
-        render: "All notes loaded successfully!",
-        type: "success",
-        isLoading: false,
-        autoClose: 3000,
-      });
-    } catch (error) {
-      toast.update(toastId, {
-        render: "Please signIn again to access your notes.",
-        type: "error",
-        isLoading: false,
-        autoClose: 3000,
-      });
-
-      console.log(error);
-      navigate("/");
-    }
-  };
-
-  useEffect(() => {
-    if (hasFetched.current) return;
-    hasFetched.current = true;
-
-    fetchNotes();
-  }, []);
 
   async function handleDeleteNote(noteId) {
     setLoading(true);
@@ -74,7 +36,7 @@ function NoteList() {
   async function handleStarNote(noteId) {
     try {
       const res = await api.post(`/note/star/${noteId}`);
-      
+
       // Update state using the 'star' property matching your Prisma schema
       setNotes((prevNotes) =>
         prevNotes.map((note) =>
@@ -115,7 +77,8 @@ function NoteList() {
             No notes found
           </h3>
           <p className="text-slate-400 text-sm mt-1 max-w-sm">
-            Create your first note using the "+ New Note" button above to start organizing your thoughts.
+            Create your first note using the "+ New Note" button above to start
+            organizing your thoughts.
           </p>
         </div>
       ) : (
@@ -145,9 +108,9 @@ function NoteList() {
                     type="button"
                     onClick={() => handleStarNote(note.id)}
                     className="w-9 h-9 rounded-xl bg-slate-800/60 hover:bg-slate-800 border border-slate-700/50 flex items-center justify-center transition-all cursor-pointer active:scale-90"
-                    title={note.isStarred  ? "Unstar note" : "Star note"}
+                    title={note.isStarred ? "Unstar note" : "Star note"}
                   >
-                    {note.isStarred  ? (
+                    {note.isStarred ? (
                       <FaStar className="text-amber-400 text-sm drop-shadow-[0_0_8px_rgba(251,191,36,0.5)]" />
                     ) : (
                       <FaRegStar className="text-slate-400 hover:text-amber-300 text-sm transition-colors" />

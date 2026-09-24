@@ -104,11 +104,12 @@ function SignIn({ onClose, onSwitchToSignUp }) {
                 Email
               </label>
               <input
-                type="email"
+                type="text"
                 placeholder="name@example.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full px-4 py-3 bg-slate-950/80 border border-slate-800 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500 transition-all text-sm"
+                
               />
             </div>
 

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import NoteLeftHeader from "../../components/Layout/Navbar/NoteLeftHeader.jsx";
 import NoteTopHeader from "../../components/Layout/Navbar/NoteTopHeader.jsx";
 import NoteList from "../../components/NotePage/NoteList.jsx";
@@ -12,6 +12,7 @@ import CreateNote from "../../components/NotePage/CreateNote.jsx";
 import api from "../../Api/api.js";
 import { FaStar, FaRegStar } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 function Notes() {
   const [notes, setNotes] = useState([]);
@@ -22,10 +23,16 @@ function Notes() {
   const [viewCreateNot, setViewCreateNote] = useState(false);
   const navigate = useNavigate();
 
+  const hasFetched = useRef(false);
+
   async function fetchNotes() {
+    const toastId = toast.loading("Fetching Note...")
+    
     try {
       const res = await api.get("/note");
       setNotes((res.data.notes || []).reverse());
+
+      toast.dismiss(toastId);
     } catch (error) {
       console.error(error);
 
@@ -41,9 +48,12 @@ function Notes() {
     }
   }
 
-  useEffect(() => {
-    fetchNotes();
-  }, []);
+ useEffect(() => {
+  if (hasFetched.current) return;
+
+  hasFetched.current = true;
+  fetchNotes();
+}, []);
 
   const filterNotes = notes.filter((note) =>
     note.noteName.toLowerCase().includes(searchText.toLowerCase()),
@@ -95,7 +105,7 @@ function Notes() {
           <div className="space-y-6 animate-in fade-in zoom-in-95 duration-300 fill-mode-forwards">
             {searchText === "" ? (
               <>
-                {activeContent === "all" && <NoteList />}
+                {activeContent === "all" && <NoteList notes={notes} setNotes={setNotes}/>}
                 {activeContent === "favorites" && <FavoritesNotes />}
                 {activeContent === "study" && <StudyTime />}
                 {activeContent === "Marketing" && <Marketing />}

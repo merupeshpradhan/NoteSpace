@@ -124,7 +124,7 @@ function SignUp({ onClose, onSwitchToSignIn }) {
                 Email
               </label>
               <input
-                type="email"
+                type="text"
                 placeholder="name@example.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
