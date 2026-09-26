@@ -3,6 +3,7 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import api from "../../Api/api.js";
+import { GoogleLogin } from "@react-oauth/google";
 
 function SignIn({ onClose, onSwitchToSignUp }) {
   const [email, setEmail] = useState("");
@@ -10,6 +11,22 @@ function SignIn({ onClose, onSwitchToSignUp }) {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
+
+  async function handleGoogleSignIn(credentialResponse) {
+    try {
+      const res = await api.post("/users/google-login", {
+        token: credentialResponse.credential,
+      });
+
+      console.log("Login successful:", res.data);
+      navigate("/notes");
+    } catch (error) {
+      console.error(
+        "Google login error:",
+        error.response?.data || error.message,
+      );
+    }
+  }
 
   async function handleSignIn(e) {
     e.preventDefault();
@@ -109,7 +126,6 @@ function SignIn({ onClose, onSwitchToSignUp }) {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full px-4 py-3 bg-slate-950/80 border border-slate-800 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500 transition-all text-sm"
-                
               />
             </div>
 
@@ -163,6 +179,12 @@ function SignIn({ onClose, onSwitchToSignUp }) {
               >
                 Sign Up
               </button>
+            </p>
+            <p>
+              <GoogleLogin
+                onSuccess={handleGoogleSignIn}
+                onError={() => console.log("Google SignIn Faild")}
+              />
             </p>
           </div>
         </div>
