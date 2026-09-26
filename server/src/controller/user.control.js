@@ -150,7 +150,7 @@ export async function register(req, res) {
   try {
     const { name, email, password } = req.body;
 
-    if (!name || !email || !phoneNumber || !password) {
+    if (!name || !email || !password) {
       throw new ApiError(400, "Please provide your all detials.");
     }
 
