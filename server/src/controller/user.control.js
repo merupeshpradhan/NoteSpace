@@ -6,6 +6,50 @@ import {
   generateAccessToken,
   generateRefreshToken,
 } from "../lib/generateToken.js";
+import { OAuth2Client } from "google-auth-library";
+
+const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+
+export async function googleAuth(req, res) {
+  try {
+    const { token } = req.body;
+
+    // Verify token with Google
+    const ticket = await googleClient.verifyIdToken({
+      idToken: token,
+      audience: process.env.GOOGLE_CLIENT_ID,
+    });
+
+    const { email, name } = ticket.getPayload();
+
+    let user = await prisma.user.findUnique({ where: { email } });
+
+    // Check if user exists in PostgreSQL database via Prisma
+    if (!user) {
+      user = await prisma.user.create({
+        data: {
+          email,
+          name,
+          password: "",
+        },
+      });
+    }
+
+    const accessToken = generateAccessToken(user);
+    const refreshToken = generateRefreshToken(user);
+
+    // Set cookies or send tokens back just like your regular login/register
+    return res
+      .status(200)
+      .cookie("accessToken", accessToken, { httpOnly: true, secure: true })
+      .cookie("refreshToken", refreshToken, { httpOnly: true, secure: true })
+      .json({ message: "Google login successful", user, accessToken });
+
+  } catch (error) {
+    console.error("Google Auth Error:", error);
+    return res.status(400).json({ error: "Google authentication faild" });
+  }
+}
 
 export async function refreshAccessToken(req, res) {
   try {
