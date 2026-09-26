@@ -20,9 +20,7 @@ function Profile() {
         setUser(parsedUser);
         setName(parsedUser.name || "");
         setEmail(parsedUser.email || "");
-        // If phone number starts with +91, extract the 10 digits for the input
-        const rawPhone = parsedUser.phoneNumber || "";
-        setPhoneNumber(rawPhone.startsWith("+91") ? rawPhone.slice(3) : rawPhone);
+        
       } catch (error) {
         setUser({});
       }
@@ -32,7 +30,7 @@ function Profile() {
   async function handleUpdateProfile(e) {
     e.preventDefault();
 
-    if (!name.trim() || !email.trim() || !phoneNumber.trim()) {
+    if (!name.trim() || !email.trim()) {
       toast.error("Please fill out all fields.");
       return;
     }
@@ -42,15 +40,12 @@ function Profile() {
     const toastId = toast.loading("Updating profile...");
 
     try {
-      // Assuming your backend update endpoint is something like /users/update or /users/profile
       const res = await api.put(
         "/users/update-details",
         {
           name,
           email,
-          phoneNumber: formattedPhoneNumber,
         },
-        { withCredentials: true }
       );
 
       const updatedUser = res.data.user || { ...user, name, email, phoneNumber: formattedPhoneNumber };
@@ -89,8 +84,16 @@ function Profile() {
 
         {/* Header Section */}
         <div className="relative flex flex-col items-center text-center mb-6">
-          <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-linear-to-tr from-slate-800 to-slate-900 border border-slate-700/80 flex items-center justify-center text-teal-400 shadow-xl mb-4 animate-[bounce_3s_ease-in-out_infinite]">
-            <FaUser className="text-3xl sm:text-4xl" />
+          <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-linear-to-tr from-slate-800 to-slate-900 border border-slate-700/80 flex items-center justify-center text-teal-400 shadow-xl mb-4 overflow-hidden">
+            {user?.avatar ? (
+              <img
+                src={user.avatar}
+                alt={user.name}
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <FaUser className="text-3xl sm:text-4xl animate-[bounce_3s_ease-in-out_infinite]" />
+            )}
           </div>
           <h2 className="text-lg sm:text-xl font-bold text-slate-100 tracking-tight">
             User Profile
@@ -101,9 +104,10 @@ function Profile() {
           <button
             type="button"
             onClick={() => {
-              setIsEditing(!isEditing);
+              const nextEditingState = !isEditing;
+              setIsEditing(nextEditingState);
               // Reset fields back to user data if canceled
-              if (isEditing) {
+              if (!nextEditingState) {
                 setName(user.name || "");
                 setEmail(user.email || "");
                 const rawPhone = user.phoneNumber || "";
@@ -130,7 +134,7 @@ function Profile() {
             {/* Name Field */}
             <div className="flex items-center gap-3.5 bg-slate-950/60 border border-slate-800/80 p-3.5 sm:p-4 rounded-2xl transition-all hover:border-slate-700">
               <div className="w-10 h-10 rounded-xl bg-teal-500/10 flex items-center justify-center text-teal-400 shrink-0">
-                <FaUser className="text-sm animate-pulse" />
+                <FaUser className="text-sm" />
               </div>
               <div className="overflow-hidden">
                 <span className="text-[11px] font-medium text-slate-400 uppercase tracking-wider block">
@@ -145,7 +149,7 @@ function Profile() {
             {/* Email Field */}
             <div className="flex items-center gap-3.5 bg-slate-950/60 border border-slate-800/80 p-3.5 sm:p-4 rounded-2xl transition-all hover:border-slate-700">
               <div className="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-400 shrink-0">
-                <FaEnvelope className="text-sm animate-pulse" />
+                <FaEnvelope className="text-sm" />
               </div>
               <div className="overflow-hidden">
                 <span className="text-[11px] font-medium text-slate-400 uppercase tracking-wider block">
@@ -153,21 +157,6 @@ function Profile() {
                 </span>
                 <p className="text-sm sm:text-base font-semibold text-slate-200 truncate">
                   {user?.email || "No email provided"}
-                </p>
-              </div>
-            </div>
-
-            {/* Phone Number Field */}
-            <div className="flex items-center gap-3.5 bg-slate-950/60 border border-slate-800/80 p-3.5 sm:p-4 rounded-2xl transition-all hover:border-slate-700">
-              <div className="w-10 h-10 rounded-xl bg-emerald-500/10 flex items-center justify-center text-emerald-400 shrink-0">
-                <FaPhone className="text-sm animate-pulse" />
-              </div>
-              <div className="overflow-hidden">
-                <span className="text-[11px] font-medium text-slate-400 uppercase tracking-wider block">
-                  Phone Number
-                </span>
-                <p className="text-sm sm:text-base font-semibold text-slate-200 truncate">
-                  {user?.phoneNumber || "No phone number provided"}
                 </p>
               </div>
             </div>
@@ -193,7 +182,7 @@ function Profile() {
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full px-4 py-3 bg-slate-950/80 border border-slate-800 rounded-xl text-white text-sm focus:outline-none focus:border-teal-500"
+                className="w-full px-4 py-3 bg-slate-950/80 border border-slate-800 rounded-xl text-white text-sm focus:outline-none focus:border-teal-500 transition-all"
               />
             </div>
 
@@ -205,30 +194,14 @@ function Profile() {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-3 bg-slate-950/80 border border-slate-800 rounded-xl text-white text-sm focus:outline-none focus:border-teal-500"
+                className="w-full px-4 py-3 bg-slate-950/80 border border-slate-800 rounded-xl text-white text-sm focus:outline-none focus:border-teal-500 transition-all"
               />
-            </div>
-
-            <div className="space-y-1">
-              <label className="text-[11px] font-medium text-slate-400 uppercase tracking-wider">
-                Phone Number
-              </label>
-              <div className="flex items-center w-full px-4 py-3 bg-slate-950/80 border border-slate-800 rounded-xl focus-within:border-teal-500 text-sm">
-                <span className="text-white font-medium mr-2 select-none">+91</span>
-                <input
-                  type="tel"
-                  maxLength="10"
-                  value={phoneNumber}
-                  onChange={(e) => setPhoneNumber(e.target.value)}
-                  className="w-full bg-transparent text-white focus:outline-none"
-                />
-              </div>
             </div>
 
             <button
               type="submit"
               disabled={loading}
-              className="w-full mt-2 py-3 px-4 bg-teal-500 hover:bg-teal-400 text-slate-950 font-bold rounded-xl transition-all duration-200 cursor-pointer text-xs flex items-center justify-center gap-2 shadow-lg shadow-teal-500/20 disabled:opacity-50"
+              className="w-full mt-2 py-3 px-4 bg-linear-to-r from-teal-500 to-teal-600 hover:from-teal-400 hover:to-teal-500 text-white font-medium rounded-xl transition-all duration-200 cursor-pointer text-xs flex items-center justify-center gap-2 shadow-lg shadow-teal-500/20 disabled:opacity-50"
             >
               <FaCheck /> {loading ? "Saving..." : "Save Changes"}
             </button>

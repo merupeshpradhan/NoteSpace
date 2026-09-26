@@ -20,7 +20,7 @@ function NoteTopHeader({
         setUser(JSON.parse(storedUser));
       } catch (e) {
         setUser({ name: "User", email: "" });
-        
+
         toast.update(toastId, {
           render: "Please signIn again to access your notes.",
           type: "error",
@@ -95,8 +95,11 @@ function NoteTopHeader({
             className="w-8 h-8 sm:w-9 sm:h-9 rounded-full overflow-hidden bg-slate-800 border border-slate-700 flex items-center justify-center font-bold text-slate-300 text-xs shrink-0 cursor-pointer"
           >
             <img
-              src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop&crop=faces"
-              alt="User Profile"
+              src={
+                user?.avatar ||
+                "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop&crop=faces"
+              }
+              alt={user?.name || "User Profile"}
               className="w-full h-full object-cover"
             />
           </div>

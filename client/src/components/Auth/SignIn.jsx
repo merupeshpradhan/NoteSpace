@@ -13,18 +13,40 @@ function SignIn({ onClose, onSwitchToSignUp }) {
   const navigate = useNavigate();
 
   async function handleGoogleSignIn(credentialResponse) {
+    const toastId = toast.loading("Signing in to note space...");
+
     try {
       const res = await api.post("/users/google-login", {
         token: credentialResponse.credential,
       });
 
-      console.log("Login successful:", res.data);
+      const userData = res.data.user;
+      localStorage.setItem("user", JSON.stringify(userData));
+
+      toast.update(toastId, {
+        render: "Welcome to Notes Space!",
+        type: "success",
+        isLoading: false,
+        autoClose: 3000,
+      });
+
+      if (onClose) onClose();
       navigate("/notes");
     } catch (error) {
       console.error(
         "Google login error:",
         error.response?.data || error.message,
       );
+
+      const errorMsg =
+        error?.response?.data?.message || "Something went wrong.";
+      
+      toast.update(toastId, {
+        render: errorMsg,
+        type: "error",
+        isLoading: false,
+        autoClose: 3000,
+      });
     }
   }
 
@@ -49,11 +71,7 @@ function SignIn({ onClose, onSwitchToSignUp }) {
         { withCredentials: true },
       );
 
-      // console.log(res);
-
       const userData = res.data.user;
-      console.log(userData);
-
       localStorage.setItem("user", JSON.stringify(userData));
 
       toast.update(toastId, {
@@ -88,7 +106,7 @@ function SignIn({ onClose, onSwitchToSignUp }) {
       {/* Outer Gradient Border Wrapper */}
       <div className="relative w-full max-w-md p-px rounded-3xl bg-linear-to-b from-teal-500/50 via-slate-800 to-indigo-500/30 shadow-2xl">
         {/* Main Glass Modal Card */}
-        <div className="relative bg-slate-900/95 backdrop-blur-xl rounded-[23px] p-8 sm:p-10 text-slate-100 overflow-hidden">
+        <div className="relative bg-slate-900/95 backdrop-blur-xl rounded-[23px] p-6 sm:p-8 text-slate-100 overflow-hidden">
           {/* Subtle Accent Glow */}
           <div className="absolute top-0 right-0 -mt-12 -mr-12 w-36 h-36 bg-teal-500/20 rounded-full blur-3xl pointer-events-none"></div>
 
@@ -102,8 +120,8 @@ function SignIn({ onClose, onSwitchToSignUp }) {
           </button>
 
           {/* Header Info */}
-          <div className="mb-8">
-            <div className="w-12 h-12 rounded-xl bg-teal-500/10 border border-teal-500/20 flex items-center justify-center text-teal-400 text-xl mb-4 shadow-inner">
+          <div className="mb-6">
+            <div className="w-12 h-12 rounded-xl bg-teal-500/10 border border-teal-500/20 flex items-center justify-center text-teal-400 text-xl mb-3 shadow-inner">
               ✨
             </div>
             <h3 className="text-2xl font-bold tracking-tight text-white">
@@ -121,7 +139,7 @@ function SignIn({ onClose, onSwitchToSignUp }) {
                 Email
               </label>
               <input
-                type="text"
+                type="email"
                 placeholder="name@example.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -133,13 +151,13 @@ function SignIn({ onClose, onSwitchToSignUp }) {
               <label className="text-xs font-medium text-slate-300">
                 Password
               </label>
-              <div className="relative max-w-sm mx-auto">
+              <div className="relative w-full">
                 <input
                   type={showPassword ? "text" : "password"}
                   placeholder="••••••••"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full flex px-4 py-3 pr-10 bg-slate-950/80 border border-slate-800 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500 transition-all text-sm"
+                  className="w-full px-4 py-3 pr-10 bg-slate-950/80 border border-slate-800 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500 transition-all text-sm"
                 />
                 <button
                   type="button"
@@ -164,8 +182,31 @@ function SignIn({ onClose, onSwitchToSignUp }) {
             </button>
           </form>
 
+          {/* Divider */}
+          <div className="flex items-center my-5">
+            <div className="flex-grow border-t border-slate-800"></div>
+            <span className="px-3 text-xs text-slate-500 uppercase tracking-wider font-medium">
+              or
+            </span>
+            <div className="flex-grow border-t border-slate-800"></div>
+          </div>
+
+          {/* Google Login Section */}
+          <div className="flex justify-center w-full">
+            <div className="w-full flex justify-center [&>div]:w-full">
+              <GoogleLogin
+                onSuccess={handleGoogleSignIn}
+                onError={() => toast.error("Google Sign-In Failed")}
+                theme="filled_black"
+                shape="pill"
+                size="large"
+                width="100%"
+              />
+            </div>
+          </div>
+
           {/* Footer Navigation Link */}
-          <div className="text-center mt-6">
+          <div className="text-center mt-5">
             <p className="text-sm text-slate-400">
               Don't have an account?{" "}
               <button
@@ -179,12 +220,6 @@ function SignIn({ onClose, onSwitchToSignUp }) {
               >
                 Sign Up
               </button>
-            </p>
-            <p>
-              <GoogleLogin
-                onSuccess={handleGoogleSignIn}
-                onError={() => console.log("Google SignIn Faild")}
-              />
             </p>
           </div>
         </div>
