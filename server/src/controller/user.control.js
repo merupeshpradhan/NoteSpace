@@ -94,7 +94,7 @@ export async function refreshAccessToken(req, res) {
 
 export async function register(req, res) {
   try {
-    const { name, email, phoneNumber, password } = req.body;
+    const { name, email, password } = req.body;
 
     if (!name || !email || !phoneNumber || !password) {
       throw new ApiError(400, "Please provide your all detials.");
@@ -114,7 +114,6 @@ export async function register(req, res) {
       data: {
         name,
         email,
-        phoneNumber,
         password: hashedPassword,
       },
     });
@@ -230,44 +229,43 @@ export async function login(req, res) {
 
 export async function updateUserDetials(req, res) {
   try {
-    const { name, email, phoneNumber } = req.body;
+    const { name, email } = req.body;
     // Fix: extract id from req.user (or req.user.id depending on your auth middleware implementation)
     const userId = req.user?.id || req.userId;
 
     if (!userId) {
-      return res.status(401).json({ 
-        success: false, 
-        message: "Unauthorized. Please login again." 
+      return res.status(401).json({
+        success: false,
+        message: "Unauthorized. Please login again.",
       });
     }
 
     const updateUser = await prisma.user.update({
       where: { id: userId },
-      data: { name, email, phoneNumber },
+      data: { name, email },
     });
 
     // Remove password before sending user object back
     const { password: _, ...userWithoutPassword } = updateUser;
 
-    return res.status(200).json({ 
-      success: true, 
+    return res.status(200).json({
+      success: true,
       message: "Profile updated successfully",
-      user: userWithoutPassword 
+      user: userWithoutPassword,
     });
-
   } catch (error) {
     console.error("Update profile error:", error);
-    
-    if (error.code === 'P2002') {
-      return res.status(400).json({ 
-        success: false, 
-        message: "This email is already registered with another account." 
+
+    if (error.code === "P2002") {
+      return res.status(400).json({
+        success: false,
+        message: "This email is already registered with another account.",
       });
     }
 
-    return res.status(500).json({ 
-      success: false, 
-      message: "Internal server error. Failed to update profile." 
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error. Failed to update profile.",
     });
   }
 }

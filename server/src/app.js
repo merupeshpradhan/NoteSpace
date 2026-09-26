@@ -14,13 +14,9 @@ app.use(express.static("public"));
 // import rutes
 import userRoutes from "./routes/user.route.js";
 import notesRoutes from "./routes/notes.route.js";
-import { startReminderCron } from "./utils/reminderWorker.js";
 
 // Use routes with correct leading slashes
 app.use("/api/v1/users", userRoutes);
 app.use("/api/v1/note", notesRoutes);
-
-// Start the 24/7 background cron job for Twilio reminders
-startReminderCron();
 
 export { app };

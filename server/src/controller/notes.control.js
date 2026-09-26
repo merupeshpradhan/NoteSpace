@@ -3,7 +3,7 @@ import { ApiError } from "../utils/ApiError.js";
 
 export async function noteCreation(req, res) {
   try {
-    const { type, noteName, reminderDate, description } = req.body;
+    const { type, noteName, description } = req.body;
 
     if (!noteName || !description) {
       throw new ApiError(401, "Please provide all detials to create note.");
@@ -20,7 +20,6 @@ export async function noteCreation(req, res) {
         noteName,
         description,
         type,
-        reminderDate: reminderDate ? new Date(reminderDate) : null, // Save reminder time if provided
         userId,
       },
     });
