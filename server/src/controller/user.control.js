@@ -20,7 +20,7 @@ export async function googleAuth(req, res) {
       audience: process.env.GOOGLE_CLIENT_ID,
     });
 
-    const { email, name } = ticket.getPayload();
+    const { email, name, picture } = ticket.getPayload();
 
     let user = await prisma.user.findUnique({ where: { email } });
 
@@ -30,21 +30,31 @@ export async function googleAuth(req, res) {
         data: {
           email,
           name,
-          password: "",
+          password: null,
+          avatar: picture,
         },
       });
     }
 
-    const accessToken = generateAccessToken(user);
-    const refreshToken = generateRefreshToken(user);
+    const accessToken = generateAccessToken(user.id);
+    const refreshToken = generateRefreshToken(user.id);
+
+    // Save refresh token to database (optional, but matches your login logic)
+    const updateUser = await prisma.user.update({
+      where: { id: user.id },
+      data: { refreshToken: refreshToken },
+    });
 
     // Set cookies or send tokens back just like your regular login/register
     return res
       .status(200)
       .cookie("accessToken", accessToken, { httpOnly: true, secure: true })
       .cookie("refreshToken", refreshToken, { httpOnly: true, secure: true })
-      .json({ message: "Google login successful", user, accessToken });
-
+      .json({
+        message: "Google login successful",
+        user: updateUser,
+        accessToken,
+      });
   } catch (error) {
     console.error("Google Auth Error:", error);
     return res.status(400).json({ error: "Google authentication faild" });

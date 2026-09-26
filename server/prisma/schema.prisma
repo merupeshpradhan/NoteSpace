@@ -15,9 +15,10 @@ datasource db {
 model User {
   id           Int     @id @default(autoincrement())
   email        String  @unique
-  name         String
-  password     String
-  refreshToken String?
+  name         String?
+  password     String?
+  avatar       String?
+  refreshToken String?  
 
   notes Note[]
 
