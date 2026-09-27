@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import NoteLeftHeader from "../../components/Layout/Navbar/NoteLeftHeader.jsx";
 import NoteTopHeader from "../../components/Layout/Navbar/NoteTopHeader.jsx";
 import NoteList from "../../components/NotePage/NoteList.jsx";
@@ -11,16 +11,33 @@ import MovieWatching from "../../components/NotePage/CateGories/MovieWatching.js
 import CreateNote from "../../components/NotePage/CreateNote.jsx";
 import api from "../../Api/api.js";
 import { FaStar, FaRegStar } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { useLocation } from "react-router-dom";
 
 function Notes() {
   const [notes, setNotes] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [activeContent, setActiveContent] = useState("all");
-  const [activeTab, setActiveTab] = useState("all");
   const [viewCreateNot, setViewCreateNote] = useState(false);
+  const location = useLocation();
+
+  const currentPath = location.pathname;
+
+  // Get the active sidebar item from the URL
+  const activeTab =
+    currentPath === "/notes" || currentPath === "/notes/all"
+      ? "all"
+      : currentPath === "/notes/favorites"
+        ? "favorites"
+        : currentPath === "/notes/study"
+          ? "study"
+          : currentPath === "/notes/marketing"
+            ? "marketing"
+            : currentPath === "/notes/movies"
+              ? "movies"
+              : currentPath === "/notes/profile"
+                ? "profile"
+                : "all";
 
   async function fetchNote() {
     const toastId = toast.loading("Fetching Note...");
@@ -66,18 +83,11 @@ function Notes() {
         isOpen={isSidebarOpen}
         onClose={() => setIsSidebarOpen(false)}
         onGoToAllNotes={() => {
-          (setIsSidebarOpen(false),
-            setActiveContent("all"),
-            setActiveTab("all"),
-            setSearchText(""));
+          setIsSidebarOpen(false);
+          setSearchText("");
         }}
         fetchNote={fetchNote}
         activeTab={activeTab}
-        setActiveTab={setActiveTab}
-        onSelectContent={(content) => {
-          setActiveContent(content);
-          setIsSidebarOpen(false); // Auto-close drawer on mobile selection
-        }}
         searchText={searchText}
         setSearchText={setSearchText}
       />
@@ -87,9 +97,7 @@ function Notes() {
         <NoteTopHeader
           onOpenSidebar={() => setIsSidebarOpen(true)}
           clickNewNote={() => setViewCreateNote(true)}
-          setActiveTab={setActiveTab}
           onSelectContent={(content) => {
-            setActiveContent(content);
             setIsSidebarOpen(false); // Auto-close drawer on mobile
           }}
           searchText={searchText}
@@ -101,14 +109,14 @@ function Notes() {
           <div className="space-y-6 animate-in fade-in zoom-in-95 duration-300 fill-mode-forwards">
             {searchText === "" ? (
               <>
-                {activeContent === "all" && (
+                {(currentPath === "/notes" || currentPath === "/notes/all") && (
                   <NoteList notes={notes} setNotes={setNotes} />
                 )}
-                {activeContent === "favorites" && <FavoritesNotes />}
-                {activeContent === "study" && <StudyTime />}
-                {activeContent === "Marketing" && <Marketing />}
-                {activeContent === "movies" && <MovieWatching />}
-                {activeContent === "profile" && <Profile />}
+                {currentPath === "/notes/favorites" && <FavoritesNotes />}
+                {currentPath === "/notes/study" && <StudyTime />}
+                {currentPath === "/notes/marketing" && <Marketing />}
+                {currentPath === "/notes/movies" && <MovieWatching />}
+                {currentPath === "/notes/profile" && <Profile />}
               </>
             ) : (
               <section className="w-full min-h-full py-6 px-2 sm:px-6">

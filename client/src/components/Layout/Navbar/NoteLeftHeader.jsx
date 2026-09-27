@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   FaBook,
   FaStar,
@@ -9,19 +8,22 @@ import {
   FaFilm,
   FaTimes,
 } from "react-icons/fa";
-import SignOut from "../../Auth/SignOut";
+import SignOut from "../../Auth/SignOut.jsx";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function NoteLeftHeader({
   fetchNote,
   isOpen,
   onClose,
   onGoToAllNotes,
-  onSelectContent,
-  activeTab,
-  setActiveTab,
   searchText,
   setSearchText,
 }) {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const currentPath = location.pathname;
+
   return (
     <section>
       {/* Mobile Overlay Background */}
@@ -43,8 +45,9 @@ function NoteLeftHeader({
           <div className="flex items-center justify-between px-6 py-4.5 border-b border-slate-800/80">
             <div
               onClick={() => {
-                (window.scrollTo({ top: 0, behavior: "smooth" }),
-                  onGoToAllNotes());
+                window.scrollTo({ top: 0, behavior: "smooth" });
+                onGoToAllNotes();
+                navigate("/notes/all");
               }}
               // onClick={navigate}
               className="flex items-center gap-2.5 cursor-pointer"
@@ -85,12 +88,13 @@ function NoteLeftHeader({
               </p>
               <button
                 onClick={() => {
-                  setActiveTab("all");
-                  onSelectContent("all");
+                  setSearchText("");
+                  onClose();
+                  navigate("/notes/all");
                   fetchNote();
                 }}
                 className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors cursor-pointer ${
-                  activeTab === "all"
+                  currentPath === "/notes" || currentPath === "/notes/all"
                     ? "bg-teal-500/10 text-teal-400 font-semibold border border-teal-500/20"
                     : "text-slate-400 hover:bg-slate-800/50 hover:text-slate-200"
                 }`}
@@ -100,11 +104,12 @@ function NoteLeftHeader({
               </button>
               <button
                 onClick={() => {
-                  setActiveTab("favorites");
-                  onSelectContent("favorites");
+                  setSearchText("");
+                  navigate("/notes/favorites");
+                  onClose();
                 }}
                 className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors cursor-pointer ${
-                  activeTab === "favorites"
+                  currentPath === "/notes/favorites"
                     ? "bg-teal-500/10 text-teal-400 font-semibold border border-teal-500/20"
                     : "text-slate-400 hover:bg-slate-800/50 hover:text-slate-200"
                 }`}
@@ -121,11 +126,12 @@ function NoteLeftHeader({
               </p>
               <button
                 onClick={() => {
-                  setActiveTab("study");
-                  onSelectContent("study");
+                  setSearchText("");
+                  navigate("/notes/study");
+                  onClose();
                 }}
                 className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors cursor-pointer ${
-                  activeTab === "study"
+                  currentPath === "/notes/study"
                     ? "bg-slate-800 text-white font-semibold border border-slate-700"
                     : "text-slate-400 hover:bg-slate-800/50 hover:text-slate-200"
                 }`}
@@ -135,11 +141,12 @@ function NoteLeftHeader({
               </button>
               <button
                 onClick={() => {
-                  setActiveTab("marketing");
-                  onSelectContent("Marketing");
+                  setSearchText("");
+                  navigate("/notes/marketing");
+                  onClose();
                 }}
                 className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors cursor-pointer ${
-                  activeTab === "marketing"
+                  currentPath === "/notes/marketing"
                     ? "bg-slate-800 text-white font-semibold border border-slate-700"
                     : "text-slate-400 hover:bg-slate-800/50 hover:text-slate-200"
                 }`}
@@ -149,11 +156,12 @@ function NoteLeftHeader({
               </button>
               <button
                 onClick={() => {
-                  setActiveTab("movies");
-                  onSelectContent("movies");
+                  setSearchText("");
+                  navigate("/notes/movies");
+                  onClose();
                 }}
                 className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors cursor-pointer ${
-                  activeTab === "movies"
+                  currentPath === "/notes/movies"
                     ? "bg-slate-800 text-white font-semibold border border-slate-700"
                     : "text-slate-400 hover:bg-slate-800/50 hover:text-slate-200"
                 }`}
@@ -169,8 +177,9 @@ function NoteLeftHeader({
         <div className="p-4 border-t border-slate-800/80 bg-slate-950/30">
           <button
             onClick={() => {
-              onSelectContent("profile");
-              setActiveTab("profile");
+              setSearchText("");
+              navigate("/notes/profile");
+              onClose();
             }}
             className="flex items-center gap-3 mb-3 px-2 cursor-pointer w-full text-left"
           >
