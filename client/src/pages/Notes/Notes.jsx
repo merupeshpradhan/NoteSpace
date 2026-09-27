@@ -21,42 +21,38 @@ function Notes() {
   const [activeContent, setActiveContent] = useState("all");
   const [activeTab, setActiveTab] = useState("all");
   const [viewCreateNot, setViewCreateNote] = useState(false);
-  const navigate = useNavigate();
 
-  const hasFetched = useRef(false);
-
-  async function fetchNotes() {
-    const toastId = toast.loading("Fetching Note...")
-    
+  async function fetchNote() {
+    const toastId = toast.loading("Fetching Note...");
     try {
       const res = await api.get("/note");
-      setNotes((res.data.notes || []).reverse());
 
-      toast.dismiss(toastId);
+      setNotes(res.data.notes || []);
+      toast.update(toastId, {
+        render: "Your all notes!",
+        type: "success",
+        isLoading: false,
+        autoClose: 3000,
+      });
     } catch (error) {
-      console.error(error);
-
+      console.log(error);
       toast.update(toastId, {
         render: "Please signIn again to access your notes.",
         type: "error",
         isLoading: false,
         autoClose: 3000,
       });
-
-      console.log(error);
-      navigate("/");
     }
   }
 
- useEffect(() => {
-  if (hasFetched.current) return;
+  useEffect(() => {
+    fetchNote();
+  }, []);
 
-  hasFetched.current = true;
-  fetchNotes();
-}, []);
+  console.log(notes);
 
   const filterNotes = notes.filter((note) =>
-    note.noteName.toLowerCase().includes(searchText.toLowerCase()),
+    note?.noteName?.toLowerCase().includes(searchText.toLowerCase()),
   );
 
   return (
@@ -70,12 +66,12 @@ function Notes() {
         isOpen={isSidebarOpen}
         onClose={() => setIsSidebarOpen(false)}
         onGoToAllNotes={() => {
-          (
-            setIsSidebarOpen(false),
+          (setIsSidebarOpen(false),
             setActiveContent("all"),
             setActiveTab("all"),
             setSearchText(""));
         }}
+        fetchNote={fetchNote}
         activeTab={activeTab}
         setActiveTab={setActiveTab}
         onSelectContent={(content) => {
@@ -105,7 +101,9 @@ function Notes() {
           <div className="space-y-6 animate-in fade-in zoom-in-95 duration-300 fill-mode-forwards">
             {searchText === "" ? (
               <>
-                {activeContent === "all" && <NoteList notes={notes} setNotes={setNotes}/>}
+                {activeContent === "all" && (
+                  <NoteList notes={notes} setNotes={setNotes} />
+                )}
                 {activeContent === "favorites" && <FavoritesNotes />}
                 {activeContent === "study" && <StudyTime />}
                 {activeContent === "Marketing" && <Marketing />}
@@ -199,7 +197,10 @@ function Notes() {
       {viewCreateNot && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 backdrop-blur-sm animate-in fade-in duration-200">
           <div className="w-full max-w-lg transform transition-all animate-in zoom-in-95 duration-200">
-            <CreateNote onClose={() => setViewCreateNote(false)} />
+            <CreateNote
+              onClose={() => setViewCreateNote(false)}
+              setNotes={setNotes}
+            />
           </div>
         </div>
       )}

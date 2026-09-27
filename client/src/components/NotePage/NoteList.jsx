@@ -1,4 +1,4 @@
-import { useState } from "react";
+import {useState } from "react";
 import api from "../../Api/api.js";
 import DeleteNote from "./DeleteNote.jsx";
 import UpdateNote from "./UpdateNote.jsx";
@@ -6,9 +6,9 @@ import { toast } from "react-toastify";
 import { FaRegStar, FaStar } from "react-icons/fa";
 
 function NoteList({ notes, setNotes }) {
-  const [loading, setLoading] = useState(false);
   const [selectedNote, setSelectedNote] = useState(null);
   const [updateNoteView, setUpdateNoteView] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   async function handleDeleteNote(noteId) {
     setLoading(true);

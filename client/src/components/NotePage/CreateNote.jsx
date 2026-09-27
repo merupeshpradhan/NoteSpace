@@ -11,7 +11,7 @@ import {
   FaClock,
 } from "react-icons/fa";
 
-function CreateNote({ onClose }) {
+function CreateNote({ onClose, setNotes }) {
   const [type, setType] = useState("");
   const [noteName, setNoteName] = useState("");
   const [reminderDate, setReminderDate] = useState(""); // state for reminder date
@@ -40,7 +40,7 @@ function CreateNote({ onClose }) {
     const toastId = toast.loading("Creating note...");
 
     try {
-      await api.post(
+      const res = await api.post(
         "/note/notecreat",
         {
           type,
@@ -53,6 +53,9 @@ function CreateNote({ onClose }) {
         { withCredentials: true },
       );
 
+      const newNote = res.data.note;
+      setNotes((prevNotes) => [newNote, ...prevNotes]);
+
       toast.update(toastId, {
         render: "Successfully added note!",
         type: "success",
@@ -60,7 +63,6 @@ function CreateNote({ onClose }) {
         autoClose: 3000,
       });
 
-      setNoteName("");
       setReminderDate("");
       setDescription("");
       setType("");

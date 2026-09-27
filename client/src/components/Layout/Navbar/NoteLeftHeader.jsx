@@ -12,6 +12,7 @@ import {
 import SignOut from "../../Auth/SignOut";
 
 function NoteLeftHeader({
+  fetchNote,
   isOpen,
   onClose,
   onGoToAllNotes,
@@ -42,8 +43,8 @@ function NoteLeftHeader({
           <div className="flex items-center justify-between px-6 py-4.5 border-b border-slate-800/80">
             <div
               onClick={() => {
-                window.scrollTo({ top: 0, behavior: "smooth" }),
-                  onGoToAllNotes();
+                (window.scrollTo({ top: 0, behavior: "smooth" }),
+                  onGoToAllNotes());
               }}
               // onClick={navigate}
               className="flex items-center gap-2.5 cursor-pointer"
@@ -86,6 +87,7 @@ function NoteLeftHeader({
                 onClick={() => {
                   setActiveTab("all");
                   onSelectContent("all");
+                  fetchNote();
                 }}
                 className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors cursor-pointer ${
                   activeTab === "all"

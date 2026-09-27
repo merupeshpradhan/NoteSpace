@@ -63,7 +63,7 @@ function UpdateNote({ noteData, viewUpdateNote, onUpdateSuccess }) {
     } catch (error) {
       console.log(error);
 
-      toast.update(toastId, {
+      toast.update(todoId, {
         render: "Please signIn again to access your notes.",
         type: "error",
         isLoading: false,
