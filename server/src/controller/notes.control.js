@@ -46,6 +46,9 @@ export async function notesView(req, res) {
       where: {
         userId: userId,
       },
+      orderBy: {
+        id: "desc",
+      },
     });
 
     return res.status(200).json({
@@ -63,16 +66,16 @@ export async function notesView(req, res) {
 export async function noteUpdate(req, res) {
   try {
     const { type, noteName, description } = req.body;
-    const { id } = req.params;
+    const { noteId } = req.params;
     const userId = req.user.id;
 
-    if (!id) {
+    if (!noteId) {
       throw new ApiError(400, "This note avilable in Database.");
     }
 
     const existingNote = await prisma.note.findFirst({
       where: {
-        id: Number(id),
+        id: Number(noteId),
         userId: userId,
       },
     });
@@ -85,7 +88,7 @@ export async function noteUpdate(req, res) {
     }
 
     const updatedNote = await prisma.note.update({
-      where: { id: Number(id) },
+      where: { id: Number(noteId) },
       data: {
         type: type || existingNote.type,
         noteName: noteName || existingNote.noteName,
@@ -158,11 +161,11 @@ export async function starNote(req, res) {
 export async function noteDelete(req, res) {
   try {
     const userId = req.user.id;
-    const { id } = req.params;
+    const { noteId } = req.params;
 
     const userNote = await prisma.note.findFirst({
       where: {
-        id: Number(id),
+        id: Number(noteId),
         userId: userId,
       },
     });
@@ -173,7 +176,7 @@ export async function noteDelete(req, res) {
 
     const deleteNote = await prisma.note.delete({
       where: {
-        id: Number(id),
+        id: Number(noteId),
       },
     });
 
