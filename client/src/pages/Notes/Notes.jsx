@@ -40,25 +40,20 @@ function Notes() {
                 : "all";
 
   async function fetchNote() {
-    const toastId = toast.loading("Fetching Note...");
     try {
       const res = await api.get("/note");
 
+      console.log("All notes: ", res.data.notes);
+
       setNotes(res.data.notes || []);
-      toast.update(toastId, {
-        render: "Your all notes!",
-        type: "success",
-        isLoading: false,
-        autoClose: 3000,
-      });
     } catch (error) {
       console.log(error);
-      toast.update(toastId, {
-        render: "Please signIn again to access your notes.",
-        type: "error",
-        isLoading: false,
+
+      toast.error("Please sign in again to see your notes.", {
         autoClose: 3000,
       });
+
+      navigate("/");
     }
   }
 
@@ -156,7 +151,7 @@ function Notes() {
                         className="group relative bg-slate-900/85 backdrop-blur-xl border border-slate-800 hover:border-teal-500/40 rounded-2xl p-6 shadow-xl hover:shadow-2xl hover:shadow-teal-500/10 transition-all duration-300 flex flex-col justify-between animate-in fade-in zoom-in-95 fill-mode-forwards"
                       >
                         {/* Glow effect on hover */}
-                        <div className="absolute inset-0 rounded-2xl bg-gradient-to-b from-teal-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
+                        <div className="absolute inset-0 rounded-2xl bg-linear-to-b from-teal-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
 
                         <div className="relative z-10 space-y-3">
                           <div className="w-full flex items-center justify-between">
@@ -181,7 +176,7 @@ function Notes() {
                             {note.noteName}
                           </h4>
 
-                          <p className="text-slate-300 text-sm leading-relaxed line-clamp-4 break-words">
+                          <p className="text-slate-300 text-sm leading-relaxed line-clamp-4 wrap-break-words">
                             {note.description}
                           </p>
                         </div>

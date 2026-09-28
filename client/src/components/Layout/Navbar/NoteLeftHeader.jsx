@@ -10,9 +10,9 @@ import {
 } from "react-icons/fa";
 import SignOut from "../../Auth/SignOut.jsx";
 import { useLocation, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 function NoteLeftHeader({
-  fetchNote,
   isOpen,
   onClose,
   onGoToAllNotes,
@@ -22,7 +22,7 @@ function NoteLeftHeader({
   const navigate = useNavigate();
   const location = useLocation();
 
-  const currentPath = location.pathname;
+  const currentPath = location.pathname;  
 
   return (
     <section>
@@ -91,7 +91,6 @@ function NoteLeftHeader({
                   setSearchText("");
                   onClose();
                   navigate("/notes/all");
-                  fetchNote();
                 }}
                 className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors cursor-pointer ${
                   currentPath === "/notes" || currentPath === "/notes/all"

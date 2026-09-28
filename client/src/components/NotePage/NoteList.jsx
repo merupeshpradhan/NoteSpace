@@ -1,4 +1,4 @@
-import {useState } from "react";
+import { useState } from "react";
 import api from "../../Api/api.js";
 import DeleteNote from "./DeleteNote.jsx";
 import UpdateNote from "./UpdateNote.jsx";
@@ -16,7 +16,9 @@ function NoteList({ notes, setNotes }) {
     try {
       await api.delete(`/note/notedelete/${noteId}`);
       setNotes((prevNotes) => prevNotes.filter((note) => note.id !== noteId));
-      toast.success("Note deleted successfully!");
+      toast.success("Note deleted successfully!", {
+        autoClose: 3000,
+      });
     } catch (error) {
       console.log(error);
       toast.error("Failed to delete note.");

@@ -6,7 +6,6 @@ function NoteTopHeader({
   onOpenSidebar,
   clickNewNote,
   onSelectContent,
-  setActiveTab,
   searchText,
   setSearchText,
 }) {
@@ -90,7 +89,7 @@ function NoteTopHeader({
           <div
             onClick={() => {
               onSelectContent("profile");
-              setActiveTab("profile");
+              navigate("/notes/profile");
             }}
             className="w-8 h-8 sm:w-9 sm:h-9 rounded-full overflow-hidden bg-slate-800 border border-slate-700 flex items-center justify-center font-bold text-slate-300 text-xs shrink-0 cursor-pointer"
           >

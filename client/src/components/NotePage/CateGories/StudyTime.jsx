@@ -13,8 +13,6 @@ function StudyTime() {
     if (hasFetched.current) return;
     hasFetched.current = true;
 
-    const toastId = toast.loading("Fetching study notes...");
-
     async function fetchStudyNotes() {
       try {
         const res = await api.get("/note");
@@ -22,26 +20,17 @@ function StudyTime() {
 
         // Filter out only the study notes
         const filteredStudyNotes = notes.filter(
-          (note) => note.type?.toLowerCase() === "study"
+          (note) => note.type?.toLowerCase() === "study",
         );
 
         setStudyNote(filteredStudyNotes);
-
-        toast.update(toastId, {
-          render: "All Study notes!",
-          type: "success",
-          isLoading: false,
-          autoClose: 3000,
-        });
       } catch (error) {
-        toast.update(toastId, {
-          render: "Please signIn again and access your notes.",
-          type: "error",
-          isLoading: false,
+        console.log(error);
+
+        toast.error("Please sign in again to see your notes.", {
           autoClose: 3000,
         });
-
-        console.log(error);
+        
         navigate("/");
       }
     }
@@ -61,7 +50,8 @@ function StudyTime() {
             Study Notes
           </h2>
           <p className="text-slate-400 text-sm mt-1">
-            Focused repository for your learning materials and academic thoughts.
+            Focused repository for your learning materials and academic
+            thoughts.
           </p>
         </div>
       </div>
@@ -75,7 +65,8 @@ function StudyTime() {
             No study notes found
           </h3>
           <p className="text-slate-400 text-sm mt-1 max-w-sm">
-            You haven't created any notes with the "study" type yet. Add one to see it listed here!
+            You haven't created any notes with the "study" type yet. Add one to
+            see it listed here!
           </p>
         </div>
       ) : (

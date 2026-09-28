@@ -14,8 +14,6 @@ function FavoriteNotes() {
     if (hashFetched.current) return;
     hashFetched.current = true;
 
-    const toastId = toast.loading("Fetching Favorite notes...");
-
     try {
       const res = await api.get("/note");
 
@@ -24,20 +22,10 @@ function FavoriteNotes() {
       // Filter for starred notes (adjust note.star vs note.isStarred to match your backend model)
       const filterStarNote = notes.filter((note) => note.isStarred === true);
       setStarNotes(filterStarNote);
-
-      toast.update(toastId, {
-        render: "Favorite notes!",
-        type: "success",
-        isLoading: false,
-        autoClose: 3000,
-      });
     } catch (error) {
       console.log(error);
 
-      toast.update(toastId, {
-        render: "Please sign in again to see your notes.",
-        type: "error",
-        isLoading: false,
+      toast.error("Please sign in again to see your notes.", {
         autoClose: 3000,
       });
 

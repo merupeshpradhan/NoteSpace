@@ -13,32 +13,20 @@ function Marketing() {
     if (hasFetched.current) return;
     hasFetched.current = true;
 
-    const toastId = toast.loading("Fetching marketing notes...");
-
     async function fetchMarketingNotes() {
       try {
         const res = await api.get("/note");
         const notes = (res.data.notes || []).reverse();
 
         const filterMarketingNote = notes.filter(
-          (note) => note.type?.toLowerCase() === "marketing-dates"
+          (note) => note.type?.toLowerCase() === "marketing-dates",
         );
 
         setMarketingNotes(filterMarketingNote);
-
-        toast.update(toastId, {
-          render: "marketing notes!",
-          type: "success",
-          isLoading: false,
-          autoClose: 3000,
-        });
       } catch (error) {
         console.log(error);
 
-        toast.update(toastId, {
-          render: "Please signIn again and access your notes.",
-          type: "error", 
-          isLoading: false,
+        toast.error("Please sign in again to see your notes.", {
           autoClose: 3000,
         });
 
@@ -75,7 +63,8 @@ function Marketing() {
             No marketing notes found
           </h3>
           <p className="text-slate-400 text-sm mt-1 max-w-sm">
-            You haven't created any notes with the "marketing-dates" type yet. Add one to see it listed here!
+            You haven't created any notes with the "marketing-dates" type yet.
+            Add one to see it listed here!
           </p>
         </div>
       ) : (

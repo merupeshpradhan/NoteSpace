@@ -13,32 +13,21 @@ function MovieWatching() {
     if (hasFetched.current) return;
     hasFetched.current = true;
 
-    const toastId = toast.loading("Fetching movie watching notes...");
-
     async function fetchMovieWatchingNotes() {
       try {
         const res = await api.get("/note");
         const notes = (res.data.notes || []).reverse();
 
         const filterMovieWatchingNote = notes.filter(
-          (note) => note.type?.toLowerCase() === "movie-watching-time"
+          (note) => note.type?.toLowerCase() === "movie-watching-time",
         );
 
         setMovieWatchingNote(filterMovieWatchingNote);
 
-        toast.update(toastId, {
-          render: "Movie watching notes!",
-          type: "success",
-          isLoading: false,
-          autoClose: 3000,
-        });
       } catch (error) {
         console.log(error);
 
-        toast.update(toastId, {
-          render: "Please signIn again and access your notes.",
-          type: "error",
-          isLoading: false,
+        toast.error("Please sign in again to see your notes.", {
           autoClose: 3000,
         });
 
@@ -75,7 +64,8 @@ function MovieWatching() {
             No movie notes found
           </h3>
           <p className="text-slate-400 text-sm mt-1 max-w-sm">
-            You haven't created any notes with the "movie-watching-time" type yet. Add one to see it listed here!
+            You haven't created any notes with the "movie-watching-time" type
+            yet. Add one to see it listed here!
           </p>
         </div>
       ) : (
