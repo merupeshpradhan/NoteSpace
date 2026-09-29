@@ -22,7 +22,7 @@ function NoteLeftHeader({
   const navigate = useNavigate();
   const location = useLocation();
 
-  const currentPath = location.pathname;  
+  const currentPath = location.pathname;
 
   return (
     <section>
@@ -66,17 +66,33 @@ function NoteLeftHeader({
             </button>
           </div>
 
-          {/* Quick Search Bar */}
           <div className="px-4 pt-5">
-            <div className="flex items-center gap-2 bg-slate-950/50 border border-slate-800 rounded-xl px-3 py-2 text-sm text-slate-400 focus-within:border-teal-500 focus-within:ring-2 focus-within:ring-teal-500/20 transition-all">
-              <FaSearch className="text-slate-500 text-xs" />
-              <input
-                type="text"
-                value={searchText}
-                onChange={(e) => setSearchText(e.target.value)}
-                placeholder="Search notes..."
-                className="bg-transparent border-none outline-none w-full text-slate-200 placeholder-slate-500 text-xs"
-              />
+            <div className="relative bg-slate-900/60 border border-slate-800/80 rounded-2xl p-3 backdrop-blur-xl flex items-center gap-3 group hover:border-teal-500/40 transition-all duration-300">
+              {/* Compact Animated GIF Thumbnail */}
+              <div className="relative w-11 h-11 shrink-0 rounded-xl bg-slate-950 border border-slate-800 p-1 flex items-center justify-center overflow-hidden shadow-inner group-hover:border-teal-500/50">
+                <div className="absolute inset-0 bg-teal-500/10 blur-sm"></div>
+                <img
+                  src="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExM2ZsOTNmamc3cDYzMnlzZzV4eXdvZzc3d2NpYndtbDZxNTRubWc5OCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/WNhxL5edM8Tn6aISYh/giphy.gif"
+                  alt="Productivity"
+                  className="relative z-10 w-full h-full object-contain filter drop-shadow-sm"
+                />
+              </div>
+
+              {/* Dynamic Status / Quick Info */}
+              <div className="flex flex-col justify-center min-w-0">
+                <div className="flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-teal-400 animate-pulse"></span>
+                  <span className="text-[9px] uppercase tracking-wider font-mono text-teal-400 font-semibold">
+                    Synced
+                  </span>
+                </div>
+                <h3 className="text-xs font-bold text-slate-100 tracking-tight truncate">
+                  Cloud Ready
+                </h3>
+                <p className="text-[10px] text-slate-400 truncate">
+                  All notes are synced
+                </p>
+              </div>
             </div>
           </div>
 
