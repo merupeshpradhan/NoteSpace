@@ -96,7 +96,7 @@ function NoteTopHeader({
             <img
               src={
                 user?.avatar ||
-                "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop&crop=faces"
+                "https://media.giphy.com/media/3oKIPnAiaMCws8nOsE/giphy.gif"
               }
               alt={user?.name || "User Profile"}
               className="w-full h-full object-cover"

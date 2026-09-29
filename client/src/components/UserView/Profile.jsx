@@ -1,5 +1,13 @@
 import { useEffect, useState } from "react";
-import { FaUser, FaEnvelope, FaShieldAlt, FaPhone, FaEdit, FaTimes, FaCheck } from "react-icons/fa";
+import {
+  FaUser,
+  FaEnvelope,
+  FaShieldAlt,
+  FaPhone,
+  FaEdit,
+  FaTimes,
+  FaCheck,
+} from "react-icons/fa";
 import { toast } from "react-toastify";
 import api from "../../Api/api.js";
 
@@ -20,7 +28,6 @@ function Profile() {
         setUser(parsedUser);
         setName(parsedUser.name || "");
         setEmail(parsedUser.email || "");
-        
       } catch (error) {
         setUser({});
       }
@@ -40,15 +47,17 @@ function Profile() {
     const toastId = toast.loading("Updating profile...");
 
     try {
-      const res = await api.put(
-        "/users/update-details",
-        {
-          name,
-          email,
-        },
-      );
+      const res = await api.put("/users/update-details", {
+        name,
+        email,
+      });
 
-      const updatedUser = res.data.user || { ...user, name, email, phoneNumber: formattedPhoneNumber };
+      const updatedUser = res.data.user || {
+        ...user,
+        name,
+        email,
+        phoneNumber: formattedPhoneNumber,
+      };
       setUser(updatedUser);
       localStorage.setItem("user", JSON.stringify(updatedUser));
 
@@ -62,7 +71,8 @@ function Profile() {
       setIsEditing(false);
     } catch (error) {
       console.log(error);
-      const errorMsg = error.response?.data?.message || "Failed to update profile.";
+      const errorMsg =
+        error.response?.data?.message || "Failed to update profile.";
       toast.update(toastId, {
         render: errorMsg,
         type: "error",
@@ -77,7 +87,6 @@ function Profile() {
   return (
     <section className="w-full flex items-center justify-center p-4 sm:p-6 md:p-8">
       <div className="relative w-full max-w-md bg-slate-900/90 border border-slate-800 backdrop-blur-xl p-6 sm:p-8 rounded-3xl shadow-2xl overflow-hidden group">
-        
         {/* Subtle decorative moving background glow */}
         <div className="absolute -top-24 -right-24 w-48 h-48 bg-teal-500/10 rounded-full blur-3xl group-hover:scale-125 transition-transform duration-700"></div>
         <div className="absolute -bottom-24 -left-24 w-48 h-48 bg-blue-500/10 rounded-full blur-3xl group-hover:scale-125 transition-transform duration-700"></div>
@@ -85,15 +94,14 @@ function Profile() {
         {/* Header Section */}
         <div className="relative flex flex-col items-center text-center mb-6">
           <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-linear-to-tr from-slate-800 to-slate-900 border border-slate-700/80 flex items-center justify-center text-teal-400 shadow-xl mb-4 overflow-hidden">
-            {user?.avatar ? (
-              <img
-                src={user.avatar}
-                alt={user.name}
-                className="w-full h-full object-cover"
-              />
-            ) : (
-              <FaUser className="text-3xl sm:text-4xl animate-[bounce_3s_ease-in-out_infinite]" />
-            )}
+            <img
+              src={
+                user?.avatar ||
+                "https://media.giphy.com/media/3oKIPnAiaMCws8nOsE/giphy.gif"
+              }
+              alt={user.name}
+              className="w-full h-full object-cover"
+            />
           </div>
           <h2 className="text-lg sm:text-xl font-bold text-slate-100 tracking-tight">
             User Profile
@@ -111,7 +119,9 @@ function Profile() {
                 setName(user.name || "");
                 setEmail(user.email || "");
                 const rawPhone = user.phoneNumber || "";
-                setPhoneNumber(rawPhone.startsWith("+91") ? rawPhone.slice(3) : rawPhone);
+                setPhoneNumber(
+                  rawPhone.startsWith("+91") ? rawPhone.slice(3) : rawPhone,
+                );
               }
             }}
             className="absolute top-0 right-0 flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-800/80 hover:bg-slate-800 border border-slate-700 text-teal-400 text-xs font-semibold transition-all cursor-pointer shadow-sm"
@@ -207,7 +217,6 @@ function Profile() {
             </button>
           </form>
         )}
-
       </div>
     </section>
   );

@@ -47,7 +47,7 @@ function NoteLeftHeader({
               onClick={() => {
                 window.scrollTo({ top: 0, behavior: "smooth" });
                 onGoToAllNotes();
-                navigate("/notes/all");
+                navigate("/notes");
               }}
               // onClick={navigate}
               className="flex items-center gap-2.5 cursor-pointer"
@@ -90,7 +90,7 @@ function NoteLeftHeader({
                 onClick={() => {
                   setSearchText("");
                   onClose();
-                  navigate("/notes/all");
+                  navigate("/notes");
                 }}
                 className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors cursor-pointer ${
                   currentPath === "/notes" || currentPath === "/notes/all"

@@ -12,7 +12,7 @@ import CreateNote from "../../components/NotePage/CreateNote.jsx";
 import api from "../../Api/api.js";
 import { FaStar, FaRegStar } from "react-icons/fa";
 import { toast } from "react-toastify";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function Notes() {
   const [notes, setNotes] = useState([]);
@@ -21,11 +21,12 @@ function Notes() {
   const [viewCreateNot, setViewCreateNote] = useState(false);
   const location = useLocation();
 
+  const navigate = useNavigate();
   const currentPath = location.pathname;
 
   // Get the active sidebar item from the URL
   const activeTab =
-    currentPath === "/notes" || currentPath === "/notes/all"
+    currentPath === "/notes"
       ? "all"
       : currentPath === "/notes/favorites"
         ? "favorites"
@@ -43,7 +44,7 @@ function Notes() {
     try {
       const res = await api.get("/note");
 
-      console.log("All notes: ", res.data.notes);
+      // console.log("All notes: ", res.data.notes);
 
       setNotes(res.data.notes || []);
     } catch (error) {
@@ -51,6 +52,7 @@ function Notes() {
 
       toast.error("Please sign in again to see your notes.", {
         autoClose: 3000,
+        toastId: "fetch-notes-error",
       });
 
       navigate("/");
@@ -61,7 +63,7 @@ function Notes() {
     fetchNote();
   }, []);
 
-  console.log(notes);
+  // console.log(notes);
 
   const filterNotes = notes.filter((note) =>
     note?.noteName?.toLowerCase().includes(searchText.toLowerCase()),
@@ -81,7 +83,6 @@ function Notes() {
           setIsSidebarOpen(false);
           setSearchText("");
         }}
-        fetchNote={fetchNote}
         activeTab={activeTab}
         searchText={searchText}
         setSearchText={setSearchText}
@@ -104,7 +105,7 @@ function Notes() {
           <div className="space-y-6 animate-in fade-in zoom-in-95 duration-300 fill-mode-forwards">
             {searchText === "" ? (
               <>
-                {(currentPath === "/notes" || currentPath === "/notes/all") && (
+                {currentPath === "/notes" && (
                   <NoteList notes={notes} setNotes={setNotes} />
                 )}
                 {currentPath === "/notes/favorites" && <FavoritesNotes />}
