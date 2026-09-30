@@ -2,8 +2,9 @@ import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import api from "../../Api/api.js";
 import { GoogleLogin } from "@react-oauth/google";
+import api from "../../Api/api.js";
+import ForgotPassword from "./forgotPassword.jsx";
 
 function SignIn({ onClose, onSwitchToSignUp }) {
   const [email, setEmail] = useState("");
@@ -40,7 +41,7 @@ function SignIn({ onClose, onSwitchToSignUp }) {
 
       const errorMsg =
         error?.response?.data?.message || "Something went wrong.";
-      
+
       toast.update(toastId, {
         render: errorMsg,
         type: "error",
@@ -184,11 +185,15 @@ function SignIn({ onClose, onSwitchToSignUp }) {
 
           {/* Divider */}
           <div className="flex items-center my-5">
-            <div className="flex-grow border-t border-slate-800"></div>
+            <div className="grow border-t border-slate-800"></div>
             <span className="px-3 text-xs text-slate-500 uppercase tracking-wider font-medium">
               or
             </span>
-            <div className="flex-grow border-t border-slate-800"></div>
+            <div className="grow border-t border-slate-800"></div>
+          </div>
+
+          <div className="">
+            <ForgotPassword />
           </div>
 
           {/* Google Login Section */}
@@ -208,7 +213,7 @@ function SignIn({ onClose, onSwitchToSignUp }) {
           {/* Footer Navigation Link */}
           <div className="text-center mt-5">
             <p className="text-sm text-slate-400">
-              Don't have an account?{" "}
+              Don't have an account?
               <button
                 type="button"
                 onClick={() => {
