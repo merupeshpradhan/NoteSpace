@@ -20,6 +20,9 @@ model User {
   avatar       String?
   refreshToken String?  
 
+  otp String?
+  otpExpiresAt DateTime?
+
   notes Note[]
 
   createdAt DateTime @default(now())
