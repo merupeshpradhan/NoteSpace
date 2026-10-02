@@ -2,7 +2,7 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import api from "../../Api/api.js";
 
-function ForgotPassword({ onClose }) {
+function ForgotPassword() {
   const [email, setEmail] = useState("");
   const [otp, setOtp] = useState("");
 
@@ -21,12 +21,11 @@ function ForgotPassword({ onClose }) {
     try {
       setLoading(true);
 
-      const response = await api.post("/otp/send-otp", {
+      const res = await api.post("/otp/send-otp", {
         email,
       });
 
-      toast.success(response.data.message);
-
+      toast.success(res.data.message);
       // Show OTP input after OTP is successfully sent
       setShowOtp(true);
     } catch (error) {
@@ -50,12 +49,12 @@ function ForgotPassword({ onClose }) {
     try {
       setLoading(true);
 
-      const response = await api.post("/otp/verify-otp", {
+      const res = await api.post("/otp/verify-otp", {
         email,
         otp,
       });
 
-      toast.success(response.data.message);
+      toast.success(res.data.message);
 
       // OTP verified successfully
       setOtp("");
@@ -70,7 +69,7 @@ function ForgotPassword({ onClose }) {
   };
 
   return (
-    <div>
+    <section>
       <h2>Forgot Password</h2>
 
       {/* Email */}
@@ -99,11 +98,11 @@ function ForgotPassword({ onClose }) {
           />
 
           <button type="submit" disabled={loading}>
-            {loading ? "Verifying..." : "Verify OTP"}
+            {loading ? "Varifying..." : "Varify OTP"}
           </button>
         </form>
       )}
-    </div>
+    </section>
   );
 }
 
