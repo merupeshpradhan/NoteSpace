@@ -17,7 +17,7 @@ function Home() {
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     // console.log(storedUser);
-    
+
     if (storedUser) {
       navigate("/notes", { replace: true });
     }
@@ -44,20 +44,24 @@ function Home() {
   return (
     <div className="min-h-screen w-full flex flex-col bg-white overflow-x-hidden scroll-smooth">
       {/* Sticky Header */}
-      <HomeHeader handleSignIn={handleSignIn} handleSignUp={handleSignUp} setAuthView={setAuthView} />
+      <HomeHeader
+        handleSignIn={handleSignIn}
+        handleSignUp={handleSignUp}
+        setAuthView={setAuthView}
+      />
 
       {/* Main Page Flow Sections with Matching IDs */}
       <main className="flex-1 flex flex-col">
         <HeroSection handleSignIn={handleSignIn} handleSignUp={handleSignUp} />
 
-        {/* Testimonials link will scroll here */}
-        <div id="testimonials">
-          <SocialProof />
-        </div>
-
         {/* Features link will scroll here */}
         <div id="features">
           <Feature />
+        </div>
+
+        {/* Testimonials link will scroll here */}
+        <div id="testimonials">
+          <SocialProof />
         </div>
       </main>
 

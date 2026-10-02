@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { GoogleLogin } from "@react-oauth/google";
 import api from "../../Api/api.js";
-import ForgotPassword from "./forgotPassword.jsx";
 
 function SignIn({ onClose, onSwitchToSignUp }) {
   const [email, setEmail] = useState("");
@@ -103,7 +102,7 @@ function SignIn({ onClose, onSwitchToSignUp }) {
   }
 
   return (
-    <div className="fixed top-0 min-h-screen w-screen z-50 bg-slate-950/70 backdrop-blur-md flex items-center justify-center p-4">
+    <section className="fixed top-0 min-h-screen w-screen z-50 bg-slate-950/70 backdrop-blur-md flex items-center justify-center p-4">
       {/* Outer Gradient Border Wrapper */}
       <div className="relative w-full max-w-md p-px rounded-3xl bg-linear-to-b from-teal-500/50 via-slate-800 to-indigo-500/30 shadow-2xl">
         {/* Main Glass Modal Card */}
@@ -192,10 +191,6 @@ function SignIn({ onClose, onSwitchToSignUp }) {
             <div className="grow border-t border-slate-800"></div>
           </div>
 
-          <div className="">
-            <ForgotPassword />
-          </div>
-
           {/* Google Login Section */}
           <div className="flex justify-center w-full">
             <div className="w-full flex justify-center [&>div]:w-full">
@@ -229,7 +224,7 @@ function SignIn({ onClose, onSwitchToSignUp }) {
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 }
 
