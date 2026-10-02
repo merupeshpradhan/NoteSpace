@@ -4,12 +4,14 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { GoogleLogin } from "@react-oauth/google";
 import api from "../../Api/api.js";
+import ForgotPassword from "../Auth/forgotPassword.jsx";
 
 function SignIn({ onClose, onSwitchToSignUp }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
   const navigate = useNavigate();
 
   async function handleGoogleSignIn(credentialResponse) {
@@ -173,6 +175,16 @@ function SignIn({ onClose, onSwitchToSignUp }) {
               </div>
             </div>
 
+            <div className="flex justify-end">
+              <button
+                type="button"
+                onClick={() => setShowForgotPassword(true)}
+                className="text-xs text-teal-400 hover:text-teal-300 transition-colors cursor-pointer"
+              >
+                Forgot Password?
+              </button>
+            </div>
+
             <button
               type="submit"
               disabled={loading}
@@ -222,6 +234,9 @@ function SignIn({ onClose, onSwitchToSignUp }) {
               </button>
             </p>
           </div>
+          {showForgotPassword && (
+            <ForgotPassword onClose={() => setShowForgotPassword(false)} />
+          )}
         </div>
       </div>
     </section>
