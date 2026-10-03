@@ -159,13 +159,13 @@ function Notes() {
                 {currentPath === "/notes/study" && (
                   <StudyTime
                     notes={notes}
-                    setNotes={setNotes}
+                    updateNoteView={updateNoteView}
                     setUpdateNoteView={setUpdateNoteView}
+                    selectedNote={selectedNote}
                     setSelectedNote={setSelectedNote}
                     handleStarNote={handleStarNote}
                     handleDeleteNote={handleDeleteNote}
                     handleUpdateSuccess={handleUpdateSuccess}
-                    setLoading={setLoading}
                   />
                 )}
                 {currentPath === "/notes/marketing" && <Marketing />}

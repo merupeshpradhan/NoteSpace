@@ -1,19 +1,17 @@
-import { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { FaRegStar, FaStar } from "react-icons/fa";
 
-import { toast } from "react-toastify";
-import api from "../../../Api/api.js";
+import DeleteNote from "../DeleteNote.jsx";
+import UpdateNote from "../UpdateNote.jsx";
 
 function StudyTime({
   notes,
-  setNotes,
+  updateNoteView,
   setUpdateNoteView,
+  selectedNote,
   setSelectedNote,
   handleStarNote,
   handleDeleteNote,
   handleUpdateSuccess,
-  setLoading,
 }) {
   const studyNote = notes.filter(
     (note) => note.type?.toLowerCase() === "study",
@@ -84,21 +82,42 @@ function StudyTime({
                 <h4 className="text-lg font-bold text-white tracking-tight group-hover:text-teal-400 transition-colors line-clamp-1">
                   {study.noteName}
                 </h4>
+                <p>{study.reminderDate}</p>
 
                 <p className="text-slate-300 text-sm leading-relaxed line-clamp-4 wrap-break-word">
                   {study.description}
                 </p>
               </div>
 
-              {/* Bottom accent bar / card footer */}
-              <div className="relative z-10 flex items-center justify-between mt-6 pt-4 border-t border-slate-800/80 text-xs text-slate-500">
-                <span>Study Material</span>
-                <span className="text-teal-400/80 group-hover:translate-x-1 transition-transform duration-200">
-                  View →
-                </span>
+              {/* Card Footer Actions */}
+              <div className="relative z-10 flex items-center justify-end gap-3 mt-6 pt-4 border-t border-slate-800/80">
+                <button
+                  onClick={() => {
+                    setSelectedNote(study);
+                    setUpdateNoteView(true);
+                  }}
+                  className="px-4 py-2 bg-indigo-500/10 hover:bg-indigo-500 text-indigo-400 hover:text-white text-xs font-semibold rounded-xl border border-indigo-500/25 transition-all duration-200 cursor-pointer active:scale-95 shadow-sm"
+                >
+                  Update
+                </button>
+
+                <DeleteNote deleteNote={() => handleDeleteNote(study.id)} />
               </div>
             </div>
           ))}
+        </div>
+      )}
+
+      {/* Update Modal Overlay */}
+      {updateNoteView && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-md animate-in fade-in duration-200">
+          <div className="w-full max-w-lg transform transition-all animate-in zoom-in-95 duration-200">
+            <UpdateNote
+              noteData={selectedNote}
+              viewUpdateNote={() => setUpdateNoteView(false)}
+              onUpdateSuccess={handleUpdateSuccess}
+            />
+          </div>
         </div>
       )}
     </section>
