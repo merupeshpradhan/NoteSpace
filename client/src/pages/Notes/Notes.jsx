@@ -253,7 +253,7 @@ function Notes() {
                       🔍
                     </span>
 
-                    <span className="min-w-0 break-words">
+                    <span className="min-w-0 wrap-break-word">
                       Search Results for "{searchText}"
                     </span>
                   </h2>
