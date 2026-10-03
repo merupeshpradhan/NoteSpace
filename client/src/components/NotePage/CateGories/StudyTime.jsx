@@ -1,4 +1,11 @@
 import { FaRegStar, FaStar } from "react-icons/fa";
+import {
+  FiBookOpen,
+  FiCalendar,
+  FiEdit3,
+  FiTrash2,
+  FiArrowRight,
+} from "react-icons/fi";
 
 import DeleteNote from "../DeleteNote.jsx";
 import UpdateNote from "../UpdateNote.jsx";
@@ -17,106 +24,303 @@ function StudyTime({
     (note) => note.type?.toLowerCase() === "study",
   );
 
+  const starredCount = studyNote.filter((note) => note.isStarred).length;
+
   return (
-    <section className="w-full min-h-full px-2 sm:px-6">
-      {/* Page Title Header */}
-      <div className="max-w-7xl mx-auto mb-8 flex items-center justify-between">
-        <div>
-          <h2 className="text-2xl font-bold text-white tracking-tight flex items-center gap-3">
-            <span className="w-10 h-10 rounded-xl bg-teal-500/10 border border-teal-500/20 flex items-center justify-center text-teal-400 shadow-inner">
-              📚
-            </span>
-            Study Notes
-          </h2>
-          <p className="text-slate-400 text-sm mt-1">
-            Focused repository for your learning materials and academic
-            thoughts.
-          </p>
+    <section className="relative w-full min-h-full px-2 sm:px-4 lg:px-6 pb-">
+      {/* =========================================================
+          BACKGROUND DECORATION
+      ========================================================== */}
+
+      <div className="pointer-events-none fixed inset-0 overflow-hidden">
+        <div className="absolute -top-40 left-1/4 h-80 w-80 rounded-full bg-teal-500/10 blur-[120px]" />
+        <div className="absolute top-1/2 -right-40 h-96 w-96 rounded-full bg-indigo-500/10 blur-[130px]" />
+        <div className="absolute -bottom-40 left-1/4 h-96 w-96 rounded-full bg-cyan-500/5 blur-[120px]" />
+      </div>
+
+      {/* =========================================================
+          HEADER
+      ========================================================== */}
+
+      <div className="relative z-10 max-w-7xl mx-auto mb-8">
+        <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
+          {/* Title */}
+          <div className="flex items-start gap-4">
+            <div className="shrink-0 w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-linear-to-br from-teal-400/20 to-cyan-500/5 border border-teal-400/30 flex items-center justify-center shadow-[0_0_35px_rgba(45,212,191,0.08)]">
+              <FiBookOpen className="text-teal-400 text-2xl sm:text-3xl" />
+            </div>
+
+            <div>
+              <div className="flex items-center gap-2 mb-1">
+                <span className="text-[10px] uppercase tracking-[0.2em] font-bold text-teal-400">
+                  Knowledge Base
+                </span>
+
+                <span className="w-1.5 h-1.5 rounded-full bg-teal-400 animate-pulse" />
+              </div>
+
+              <h2 className="text-3xl sm:text-4xl font-black tracking-tight text-white">
+                Study{" "}
+                <span className="text-transparent bg-clip-text bg-linear-to-r from-teal-300 to-cyan-400">
+                  Notes
+                </span>
+              </h2>
+
+              <p className="text-slate-400 text-sm sm:text-base mt-2 max-w-xl leading-relaxed">
+                Your focused repository for learning materials, technical
+                concepts, and academic thoughts.
+              </p>
+            </div>
+          </div>
+
+          {/* Stats */}
+          <div className="flex items-center self-start lg:self-auto rounded-2xl border border-slate-800/80 bg-slate-900/70 backdrop-blur-xl overflow-hidden shadow-xl">
+            <div className="px-5 py-4 min-w-28">
+              <div className="flex items-center gap-2 text-teal-400 mb-1">
+                <FiBookOpen />
+                <span className="text-xl font-bold text-white">
+                  {studyNote.length}
+                </span>
+              </div>
+
+              <p className="text-[10px] uppercase tracking-wider text-slate-500">
+                Total Notes
+              </p>
+            </div>
+
+            <div className="w-px h-10 bg-slate-800" />
+
+            <div className="px-5 py-4 min-w-28">
+              <div className="flex items-center gap-2 text-amber-400 mb-1">
+                <FaStar />
+                <span className="text-xl font-bold text-white">
+                  {starredCount}
+                </span>
+              </div>
+
+              <p className="text-[10px] uppercase tracking-wider text-slate-500">
+                Starred
+              </p>
+            </div>
+          </div>
         </div>
       </div>
 
+      {/* =========================================================
+          EMPTY STATE
+      ========================================================== */}
+
       {studyNote.length === 0 ? (
-        <div className="flex flex-col items-center justify-center py-20 text-center animate-in fade-in zoom-in-95 duration-500">
-          <div className="w-16 h-16 rounded-2xl bg-teal-500/10 border border-teal-500/20 flex items-center justify-center text-teal-400 text-2xl mb-4 shadow-inner">
-            🎓
+        <div className="relative z-10 max-w-7xl mx-auto">
+          <div className="relative overflow-hidden rounded-3xl border border-slate-800 bg-slate-900/60 backdrop-blur-xl py-24 px-6 text-center shadow-2xl">
+            {/* Glow */}
+            <div className="absolute -top-20 left-1/2 -translate-x-1/2 w-64 h-64 bg-teal-500/10 blur-[90px] rounded-full" />
+
+            <div className="relative">
+              <div className="mx-auto w-20 h-20 rounded-3xl bg-teal-500/10 border border-teal-500/20 flex items-center justify-center shadow-[0_0_40px_rgba(20,184,166,0.08)]">
+                <FiBookOpen className="text-teal-400 text-3xl" />
+              </div>
+
+              <h3 className="mt-6 text-2xl font-bold text-white">
+                No study notes yet
+              </h3>
+
+              <p className="text-slate-400 text-sm mt-2 max-w-md mx-auto leading-relaxed">
+                You haven't created any notes with the{" "}
+                <span className="text-teal-400 font-medium">Study</span> type
+                yet. Create your first study note and start building your
+                knowledge base.
+              </p>
+            </div>
           </div>
-          <h3 className="text-xl font-semibold text-white tracking-tight">
-            No study notes found
-          </h3>
-          <p className="text-slate-400 text-sm mt-1 max-w-sm">
-            You haven't created any notes with the "study" type yet. Add one to
-            see it listed here!
-          </p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
+        /* =========================================================
+           NOTE GRID
+        ========================================================== */
+
+        <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 max-w-7xl mx-auto">
           {studyNote.map((study, index) => (
-            <div
+            <article
               key={study.id}
-              style={{ animationDelay: `${index * 50}ms` }}
-              className="group relative bg-slate-900/85 backdrop-blur-xl border border-slate-800 hover:border-teal-500/40 rounded-2xl p-6 shadow-xl hover:shadow-2xl hover:shadow-teal-500/10 transition-all duration-300 flex flex-col justify-between animate-in fade-in zoom-in-95 fill-mode-forwards cursor-pointer"
+              style={{
+                animationDelay: `${index * 70}ms`,
+              }}
+              className="group relative min-w-0 overflow-hidden rounded-2xl border border-slate-800/90 bg-slate-900/75 backdrop-blur-xl p-5 shadow-xl shadow-black/10 transition-all duration-500 hover:-translate-y-1 hover:border-teal-500/40 hover:shadow-2xl hover:shadow-teal-500/5 animate-in fade-in slide-in-from-bottom-3 fill-mode-both"
             >
-              {/* Subtle top card glow effect on hover */}
-              <div className="absolute inset-0 rounded-2xl bg-linear-to-b from-teal-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
+              {/* Card hover glow */}
+              <div className="absolute inset-0 bg-linear-to-br from-teal-500/[0.07] via-transparent to-indigo-500/[0.04] opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
 
-              <div className="relative z-10 space-y-3">
-                {/* Styled Category/Type Badge */}
-                <span className="inline-block text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-lg bg-teal-500/15 text-teal-400 border border-teal-500/20 shadow-sm">
-                  {study.type}
-                </span>
+              {/* Top glow line */}
+              <div className="absolute top-0 left-8 right-8 h-px bg-linear-to-r from-transparent via-teal-400/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
-                {/* Star Toggle Button */}
-                <button
-                  type="button"
-                  onClick={() => handleStarNote(study.id)}
-                  className="w-9 h-9 rounded-xl bg-slate-800/60 hover:bg-slate-800 border border-slate-700/50 flex items-center justify-center transition-all cursor-pointer active:scale-90"
-                  title={study.isStarred ? "Unstar note" : "Star note"}
-                >
-                  {study.isStarred ? (
-                    <FaStar className="text-amber-400 text-sm drop-shadow-[0_0_8px_rgba(251,191,36,0.5)]" />
-                  ) : (
-                    <FaRegStar className="text-slate-400 hover:text-amber-300 text-sm transition-colors" />
-                  )}
-                </button>
+              <div className="relative z-10">
+                {/* =================================================
+                    CARD TOP
+                ================================================== */}
 
-                <h4 className="text-lg font-bold text-white tracking-tight group-hover:text-teal-400 transition-colors line-clamp-1">
+                <div className="flex items-start justify-between gap-3">
+                  <div className="flex items-center gap-3 min-w-0">
+                    {/* Icon */}
+                    <div className="shrink-0 w-11 h-11 rounded-xl bg-linear-to-br from-teal-400/15 to-cyan-400/5 border border-teal-400/20 flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
+                      <FiBookOpen className="text-teal-400 text-lg" />
+                    </div>
+
+                    <div className="min-w-0">
+                      {/* Type */}
+                      <span className="inline-flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-[0.15em] px-2 py-1 rounded-md bg-teal-500/10 text-teal-400 border border-teal-500/20">
+                        <span className="w-1.5 h-1.5 rounded-full bg-teal-400 animate-pulse" />
+                        {study.type}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Star */}
+                  <button
+                    type="button"
+                    onClick={() => handleStarNote(study.id)}
+                    className={`shrink-0 w-10 h-10 rounded-xl flex items-center justify-center border transition-all duration-300 cursor-pointer active:scale-90 ${
+                      study.isStarred
+                        ? "bg-amber-400/10 border-amber-400/20"
+                        : "bg-slate-800/60 border-slate-700/60 hover:border-amber-400/30 hover:bg-amber-400/5"
+                    }`}
+                    title={
+                      study.isStarred ? "Remove from favorites" : "Star note"
+                    }
+                  >
+                    {study.isStarred ? (
+                      <FaStar className="text-amber-400 text-base drop-shadow-[0_0_8px_rgba(251,191,36,0.6)] transition-transform duration-300 group-hover:scale-110" />
+                    ) : (
+                      <FaRegStar className="text-slate-500 text-base hover:text-amber-300 transition-colors" />
+                    )}
+                  </button>
+                </div>
+
+                {/* =================================================
+                    TITLE
+                ================================================== */}
+
+                <h3 className="mt-5 text-lg font-bold text-white tracking-tight line-clamp-1 group-hover:text-teal-300 transition-colors duration-300">
                   {study.noteName}
-                </h4>
-                <p>{study.reminderDate}</p>
+                </h3>
 
-                <p className="text-slate-300 text-sm leading-relaxed line-clamp-4 wrap-break-word">
-                  {study.description}
+                {/* =================================================
+                    DATE
+                ================================================== */}
+
+                {study.reminderDate && (
+                  <div className="flex items-center gap-2 mt-2 text-xs text-slate-500">
+                    <FiCalendar className="text-teal-500/80" />
+
+                    <span>
+                      {new Date(study.reminderDate).toLocaleDateString(
+                        "en-IN",
+                        {
+                          day: "2-digit",
+                          month: "short",
+                          year: "numeric",
+                        },
+                      )}
+                    </span>
+                  </div>
+                )}
+
+                {/* =================================================
+                    DESCRIPTION
+                ================================================== */}
+
+                <p className="mt-4 text-sm text-slate-400 leading-6 line-clamp-3 min-h-18">
+                  {study.description || "No description available."}
                 </p>
-              </div>
 
-              {/* Card Footer Actions */}
-              <div className="relative z-10 flex items-center justify-end gap-3 mt-6 pt-4 border-t border-slate-800/80">
-                <button
-                  onClick={() => {
-                    setSelectedNote(study);
-                    setUpdateNoteView(true);
-                  }}
-                  className="px-4 py-2 bg-indigo-500/10 hover:bg-indigo-500 text-indigo-400 hover:text-white text-xs font-semibold rounded-xl border border-indigo-500/25 transition-all duration-200 cursor-pointer active:scale-95 shadow-sm"
-                >
-                  Update
-                </button>
+                {/* =================================================
+                    DIVIDER
+                ================================================== */}
 
-                <DeleteNote deleteNote={() => handleDeleteNote(study.id)} />
+                <div className="my-5 h-px bg-linear-to-r from-slate-800 via-slate-700/70 to-transparent" />
+
+                {/* =================================================
+                    FOOTER
+                ================================================== */}
+
+                <div className="flex items-center justify-between gap-3">
+                  <span className="text-[10px] uppercase tracking-wider text-slate-600 font-medium">
+                    Study Material
+                  </span>
+
+                  <div className="flex items-center gap-2">
+                    {/* Update */}
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setSelectedNote(study);
+                        setUpdateNoteView(true);
+                      }}
+                      className="group/update inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold text-indigo-400 bg-indigo-500/5 border border-indigo-500/20 hover:bg-indigo-500 hover:border-indigo-400 hover:text-white transition-all duration-300 cursor-pointer active:scale-95"
+                    >
+                      <FiEdit3 className="text-sm group-hover/update:rotate-[-8deg] transition-transform" />
+                      Update
+                    </button>
+
+                    {/* Delete */}
+                    <DeleteNote
+                      deleteNote={() => handleDeleteNote(study.id)}
+                    />
+                  </div>
+                </div>
               </div>
-            </div>
+            </article>
           ))}
         </div>
       )}
 
-      {/* Update Modal Overlay */}
+      {/* =========================================================
+          BOTTOM MOTIVATION
+      ========================================================== */}
+
+      {studyNote.length > 0 && (
+        <div className="relative z-10 max-w-7xl mx-auto mt-8">
+          <div className="relative overflow-hidden rounded-2xl border border-slate-800/70 bg-slate-900/40 backdrop-blur-xl px-5 py-4">
+            <div className="absolute left-0 top-0 bottom-0 w-1 bg-linear-to-b from-teal-400 to-cyan-500" />
+
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pl-2">
+              <div>
+                <p className="text-sm font-semibold text-slate-300">
+                  Keep learning. Keep growing. 🚀
+                </p>
+
+                <p className="text-xs text-slate-600 mt-1">
+                  Every note is one step closer to mastering your skills.
+                </p>
+              </div>
+
+              <div className="flex items-center gap-2 text-teal-400 text-xs font-medium">
+                <span>Study Progress</span>
+                <FiArrowRight />
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* =========================================================
+          UPDATE MODAL
+      ========================================================== */}
+
       {updateNoteView && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-md animate-in fade-in duration-200">
-          <div className="w-full max-w-lg transform transition-all animate-in zoom-in-95 duration-200">
-            <UpdateNote
-              noteData={selectedNote}
-              viewUpdateNote={() => setUpdateNoteView(false)}
-              onUpdateSuccess={handleUpdateSuccess}
-            />
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-in fade-in duration-200">
+          <div className="absolute inset-0" />
+
+          <div className="relative w-full max-w-lg max-h-[90vh] overflow-y-auto transform animate-in zoom-in-95 slide-in-from-bottom-3 duration-300">
+            <div className="absolute -inset-1 bg-linear-to-r from-teal-500/20 via-cyan-500/10 to-indigo-500/20 rounded-3xl blur-xl" />
+
+            <div className="relative">
+              <UpdateNote
+                noteData={selectedNote}
+                viewUpdateNote={() => setUpdateNoteView(false)}
+                onUpdateSuccess={handleUpdateSuccess}
+              />
+            </div>
           </div>
         </div>
       )}

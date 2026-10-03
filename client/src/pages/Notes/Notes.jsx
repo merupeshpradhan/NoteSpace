@@ -28,7 +28,7 @@ function Notes() {
   const navigate = useNavigate();
   const currentPath = location.pathname;
 
-  // Get the active sidebar item from the URL
+  // Get active sidebar item from URL
   const activeTab =
     currentPath === "/notes"
       ? "all"
@@ -44,11 +44,13 @@ function Notes() {
                 ? "profile"
                 : "all";
 
+  // =========================================================
+  // FETCH NOTES
+  // =========================================================
+
   async function fetchNote() {
     try {
       const res = await api.get("/note");
-
-      // console.log("All notes: ", res.data.notes);
 
       setNotes(res.data.notes || []);
     } catch (error) {
@@ -67,28 +69,41 @@ function Notes() {
     fetchNote();
   }, []);
 
-  // console.log(notes);
+  // =========================================================
+  // SEARCH
+  // =========================================================
 
   const filterNotes = notes.filter((note) =>
     note?.noteName?.toLowerCase().includes(searchText.toLowerCase()),
   );
+
+  // =========================================================
+  // DELETE NOTE
+  // =========================================================
 
   async function handleDeleteNote(noteId) {
     setLoading(true);
 
     try {
       await api.delete(`/note/notedelete/${noteId}`);
+
       setNotes((prevNotes) => prevNotes.filter((note) => note.id !== noteId));
+
       toast.success("Note deleted successfully!", {
         autoClose: 3000,
       });
     } catch (error) {
       console.log(error);
+
       toast.error("Failed to delete note.");
     } finally {
       setLoading(false);
     }
   }
+
+  // =========================================================
+  // UPDATE NOTE
+  // =========================================================
 
   function handleUpdateSuccess(updatedNote) {
     setNotes((prevNotes) =>
@@ -98,31 +113,47 @@ function Notes() {
     );
   }
 
+  // =========================================================
+  // STAR NOTE
+  // =========================================================
+
   async function handleStarNote(noteId) {
     try {
       const res = await api.post(`/note/star/${noteId}`);
 
-      // Update state using the 'star' property matching your Prisma schema
       setNotes((prevNotes) =>
         prevNotes.map((note) =>
-          note.id === noteId ? { ...note, isStarred: !note.isStarred } : note,
+          note.id === noteId
+            ? {
+                ...note,
+                isStarred: !note.isStarred,
+              }
+            : note,
         ),
       );
 
       toast.success(res.data.message || "Note star updated!");
     } catch (error) {
       console.log(error);
+
       toast.error("Failed to update star status.");
     }
   }
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex overflow-x-hidden selection:bg-teal-500 selection:text-white relative">
-      {/* Background Ambient Glow Effects */}
-      <div className="absolute top-0 left-1/4 w-96 h-96 bg-teal-500/10 rounded-full blur-[120px] pointer-events-none"></div>
-      <div className="absolute bottom-10 right-10 w-96 h-96 bg-indigo-500/10 rounded-full blur-[120px] pointer-events-none"></div>
+    <div className="relative flex min-h-screen overflow-x-hidden bg-slate-950 text-slate-100 selection:bg-teal-500 selection:text-white">
+      {/* =========================================================
+          BACKGROUND AMBIENT GLOW
+      ========================================================== */}
 
-      {/* Left Sidebar with responsive state management */}
+      <div className="pointer-events-none absolute left-1/4 top-0 h-96 w-96 rounded-full bg-teal-500/10 blur-[120px]" />
+
+      <div className="pointer-events-none absolute bottom-10 right-10 h-96 w-96 rounded-full bg-indigo-500/10 blur-[120px]" />
+
+      {/* =========================================================
+          LEFT SIDEBAR
+      ========================================================== */}
+
       <NoteLeftHeader
         isOpen={isSidebarOpen}
         onClose={() => setIsSidebarOpen(false)}
@@ -135,27 +166,54 @@ function Notes() {
         setSearchText={setSearchText}
       />
 
-      {/* Main Content Area */}
-      <div className="flex-1 flex flex-col min-w-0 md:pl-72 transition-all duration-300 relative z-10">
+      {/* =========================================================
+          MAIN CONTENT
+
+          IMPORTANT:
+          lg:pl-72 instead of md:pl-72
+
+          Tablet:
+          768px - 1023px = no sidebar padding
+
+          Laptop/Desktop:
+          1024px+ = sidebar padding
+      ========================================================== */}
+
+      <div className="relative z-10 flex min-w-0 flex-1 flex-col transition-all duration-300 lg:pl-72">
+        {/* =======================================================
+            TOP HEADER
+        ======================================================== */}
+
         <NoteTopHeader
           onOpenSidebar={() => setIsSidebarOpen(true)}
           clickNewNote={() => setViewCreateNote(true)}
-          onSelectContent={(content) => {
-            setIsSidebarOpen(false); // Auto-close drawer on mobile
+          onSelectContent={() => {
+            setIsSidebarOpen(false);
           }}
           searchText={searchText}
           setSearchText={setSearchText}
         />
 
-        <main className="flex-1 pt-24 px-4 sm:px-8 pb-12 flex flex-col justify-between">
-          {/* Dynamic Content Container with Smooth Fade-In Animation */}
-          <div className="space-y-6 animate-in fade-in zoom-in-95 duration-300 fill-mode-forwards">
+        {/* =======================================================
+            MAIN
+        ======================================================== */}
+
+        <main className="flex flex-1 flex-col justify-between px-3 pb-12 pt-24 sm:px-6 lg:px-8">
+          <div className="w-full animate-in fade-in zoom-in-95 fill-mode-forwards space-y-6 duration-300">
             {searchText === "" ? (
               <>
+                {/* ALL NOTES */}
+
                 {currentPath === "/notes" && (
                   <NoteList notes={notes} setNotes={setNotes} />
                 )}
+
+                {/* FAVORITES */}
+
                 {currentPath === "/notes/favorites" && <FavoritesNotes />}
+
+                {/* STUDY */}
+
                 {currentPath === "/notes/study" && (
                   <StudyTime
                     notes={notes}
@@ -168,74 +226,115 @@ function Notes() {
                     handleUpdateSuccess={handleUpdateSuccess}
                   />
                 )}
+
+                {/* MARKETING */}
+
                 {currentPath === "/notes/marketing" && <Marketing />}
+
+                {/* MOVIES */}
+
                 {currentPath === "/notes/movies" && <MovieWatching />}
+
+                {/* PROFILE */}
+
                 {currentPath === "/notes/profile" && <Profile />}
               </>
             ) : (
-              <section className="w-full min-h-full py-6 px-2 sm:px-6">
-                {/* Search Header Info */}
-                <div className="max-w-7xl mx-auto mb-8">
-                  <h2 className="text-2xl font-bold text-white tracking-tight flex items-center gap-3">
-                    <span className="w-10 h-10 rounded-xl bg-teal-500/10 border border-teal-500/20 flex items-center justify-center text-teal-400 shadow-inner">
+              /* =================================================
+                 SEARCH RESULTS
+              ================================================== */
+
+              <section className="w-full px-1 py-6 sm:px-3 lg:px-6">
+                {/* Search Header */}
+
+                <div className="mx-auto mb-8 w-full max-w-7xl">
+                  <h2 className="flex items-center gap-3 text-xl font-bold tracking-tight text-white sm:text-2xl">
+                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-teal-500/20 bg-teal-500/10 text-teal-400 shadow-inner">
                       🔍
                     </span>
-                    Search Results for "{searchText}"
+
+                    <span className="min-w-0 break-words">
+                      Search Results for "{searchText}"
+                    </span>
                   </h2>
-                  <p className="text-slate-400 text-sm mt-1">
+
+                  <p className="mt-2 text-sm text-slate-400">
                     Found {filterNotes.length} matching{" "}
                     {filterNotes.length === 1 ? "note" : "notes"}.
                   </p>
                 </div>
 
+                {/* No Results */}
+
                 {filterNotes.length === 0 ? (
                   <div className="flex flex-col items-center justify-center py-20 text-center animate-in fade-in zoom-in-95 duration-500">
-                    <div className="w-16 h-16 rounded-2xl bg-slate-800/60 border border-slate-700/50 flex items-center justify-center text-slate-400 text-2xl mb-4 shadow-inner">
+                    <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl border border-slate-700/50 bg-slate-800/60 text-2xl text-slate-400 shadow-inner">
                       🔍
                     </div>
-                    <h3 className="text-xl font-semibold text-white tracking-tight">
+
+                    <h3 className="text-xl font-semibold tracking-tight text-white">
                       No matching notes found
                     </h3>
-                    <p className="text-slate-400 text-sm mt-1 max-w-sm">
+
+                    <p className="mt-2 max-w-sm text-sm text-slate-400">
                       Try searching with a different keyword or check your
                       spelling.
                     </p>
                   </div>
                 ) : (
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
+                  /* =================================================
+                     SEARCH NOTE GRID
+
+                     Tablet = 1 column
+                     Laptop = 2 columns
+                     Large = 3 columns
+                  ================================================== */
+
+                  <div className="mx-auto grid w-full max-w-7xl grid-cols-1 gap-5 lg:grid-cols-2 2xl:grid-cols-3">
                     {filterNotes.map((note, index) => (
                       <div
                         key={note.id}
-                        style={{ animationDelay: `${index * 50}ms` }}
-                        className="group relative bg-slate-900/85 backdrop-blur-xl border border-slate-800 hover:border-teal-500/40 rounded-2xl p-6 shadow-xl hover:shadow-2xl hover:shadow-teal-500/10 transition-all duration-300 flex flex-col justify-between animate-in fade-in zoom-in-95 fill-mode-forwards"
+                        style={{
+                          animationDelay: `${index * 50}ms`,
+                        }}
+                        className="group relative flex min-w-0 flex-col justify-between rounded-2xl border border-slate-800 bg-slate-900/85 p-5 shadow-xl backdrop-blur-xl transition-all duration-300 hover:border-teal-500/40 hover:shadow-2xl hover:shadow-teal-500/10 sm:p-6 animate-in fade-in zoom-in-95 fill-mode-forwards"
                       >
-                        {/* Glow effect on hover */}
-                        <div className="absolute inset-0 rounded-2xl bg-linear-to-b from-teal-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
+                        {/* Hover Glow */}
+
+                        <div className="pointer-events-none absolute inset-0 rounded-2xl bg-linear-to-b from-teal-500/5 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
 
                         <div className="relative z-10 space-y-3">
-                          <div className="w-full flex items-center justify-between">
-                            {note.type ? (
-                              <span className="inline-block text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-lg bg-teal-500/15 text-teal-400 border border-teal-500/20 shadow-sm">
-                                {note.type}
-                              </span>
-                            ) : (
-                              <span></span>
-                            )}
+                          {/* Type + Star */}
 
-                            <div className="w-9 h-9 rounded-xl bg-slate-800/60 border border-slate-700/50 flex items-center justify-center">
-                              {note.isStarred ? (
-                                <FaStar className="text-amber-400 text-sm drop-shadow-[0_0_8px_rgba(251,191,36,0.5)]" />
+                          <div className="flex w-full items-center justify-between gap-3">
+                            <div className="min-w-0">
+                              {note.type ? (
+                                <span className="inline-block max-w-full truncate rounded-lg border border-teal-500/20 bg-teal-500/15 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-teal-400 shadow-sm">
+                                  {note.type}
+                                </span>
                               ) : (
-                                <FaRegStar className="text-slate-400 text-sm" />
+                                <span />
+                              )}
+                            </div>
+
+                            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-slate-700/50 bg-slate-800/60">
+                              {note.isStarred ? (
+                                <FaStar className="text-sm text-amber-400 drop-shadow-[0_0_8px_rgba(251,191,36,0.5)]" />
+                              ) : (
+                                <FaRegStar className="text-sm text-slate-400" />
                               )}
                             </div>
                           </div>
 
-                          <h4 className="text-lg font-bold text-white tracking-tight group-hover:text-teal-400 transition-colors line-clamp-1">
+                          {/* Title */}
+
+                          <h4 className="line-clamp-1 text-lg font-bold tracking-tight text-white transition-colors group-hover:text-teal-400">
                             {note.noteName}
                           </h4>
 
-                          <p className="text-slate-300 text-sm leading-relaxed line-clamp-4 wrap-break-words">
+                          {/* Description */}
+
+                          <p className="line-clamp-4 wrap-break-words text-sm leading-relaxed text-slate-300">
                             {note.description}
                           </p>
                         </div>
@@ -248,17 +347,24 @@ function Notes() {
           </div>
         </main>
 
+        {/* =======================================================
+            FOOTER
+        ======================================================== */}
+
         <footer className="mt-auto pb-6">
-          <div className="border-t border-slate-800/80 pt-6 px-4 sm:px-8">
+          <div className="border-t border-slate-800/80 px-4 pt-6 sm:px-8">
             <NoteFooter />
           </div>
         </footer>
       </div>
 
-      {/* Create Note Modal with Smooth Backdrop Blur */}
+      {/* =========================================================
+          CREATE NOTE MODAL
+      ========================================================== */}
+
       {viewCreateNot && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 backdrop-blur-sm animate-in fade-in duration-200">
-          <div className="w-full max-w-lg transform transition-all animate-in zoom-in-95 duration-200">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/50 p-4 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="w-full max-w-lg animate-in zoom-in-95 duration-200">
             <CreateNote
               onClose={() => setViewCreateNote(false)}
               setNotes={setNotes}

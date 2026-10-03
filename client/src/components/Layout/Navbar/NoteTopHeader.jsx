@@ -34,12 +34,12 @@ function NoteTopHeader({
   }, []);
 
   return (
-    <header className="fixed top-0 left-0 md:left-72 right-0 h-16 bg-slate-900/85 backdrop-blur-xl border-b border-slate-800 px-3 sm:px-6 md:px-8 flex items-center justify-between z-30 shadow-lg gap-2 sm:gap-4">
+    <header className="fixed top-0 left-0 lg:left-72 right-0 h-16 bg-slate-900/85 backdrop-blur-xl border-b border-slate-800 px-3 sm:px-6 md:px-8 flex items-center justify-between z-30 shadow-lg gap-2 sm:gap-4">
       {/* Left side: Mobile Hamburger & Search */}
       <div className="flex items-center gap-2 sm:gap-3 flex-1 max-w-xs sm:max-w-md">
         <button
           onClick={onOpenSidebar}
-          className="md:hidden text-slate-400 hover:text-white p-2 rounded-xl hover:bg-slate-800 transition-colors cursor-pointer shrink-0"
+          className="lg:hidden text-slate-400 hover:text-white p-2 rounded-xl hover:bg-slate-800 transition-colors cursor-pointer shrink-0"
           aria-label="Open Sidebar"
         >
           <FaBars className="text-base sm:text-lg" />

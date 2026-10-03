@@ -30,7 +30,7 @@ function NoteLeftHeader({
       {isOpen && (
         <div
           onClick={onClose}
-          className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-40 md:hidden transition-opacity"
+          className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-40 lg:hidden transition-opacity"
         />
       )}
 
@@ -38,7 +38,7 @@ function NoteLeftHeader({
       <aside
         className={`fixed inset-y-0 left-0 z-50 w-72 bg-slate-900/90 backdrop-blur-xl border-r border-slate-800 flex flex-col justify-between shadow-2xl md:shadow-none transform transition-transform duration-300 ease-in-out ${
           isOpen ? "translate-x-0" : "-translate-x-full"
-        } md:translate-x-0`}
+        } lg:translate-x-0`}
       >
         {/* Top Section: Brand & Search */}
         <div>
@@ -60,7 +60,7 @@ function NoteLeftHeader({
             {/* Close button for mobile screens */}
             <button
               onClick={onClose}
-              className="md:hidden text-slate-400 hover:text-white p-1 rounded-lg cursor-pointer"
+              className="lg:hidden text-slate-400 hover:text-white p-1 rounded-lg cursor-pointer"
             >
               <FaTimes className="text-lg" />
             </button>
