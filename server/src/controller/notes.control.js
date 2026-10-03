@@ -3,7 +3,7 @@ import { ApiError } from "../utils/ApiError.js";
 
 export async function noteCreation(req, res) {
   try {
-    const { type, noteName, description } = req.body;
+    const { type, noteName, reminderDate, description } = req.body;
 
     if (!noteName || !description) {
       throw new ApiError(401, "Please provide all detials to create note.");
@@ -18,6 +18,7 @@ export async function noteCreation(req, res) {
     const NewNote = await prisma.note.create({
       data: {
         noteName,
+        reminderDate,
         description,
         type,
         userId,
