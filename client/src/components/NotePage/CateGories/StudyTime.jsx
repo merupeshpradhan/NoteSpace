@@ -1,42 +1,23 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { FaRegStar, FaStar } from "react-icons/fa";
+
 import { toast } from "react-toastify";
 import api from "../../../Api/api.js";
 
-function StudyTime() {
-  const [studyNote, setStudyNote] = useState([]);
-  const navigate = useNavigate();
-
-  const hasFetched = useRef(false);
-
-  useEffect(() => {
-    if (hasFetched.current) return;
-    hasFetched.current = true;
-
-    async function fetchStudyNotes() {
-      try {
-        const res = await api.get("/note");
-        const notes = (res.data.notes || []).reverse();
-
-        // Filter out only the study notes
-        const filteredStudyNotes = notes.filter(
-          (note) => note.type?.toLowerCase() === "study",
-        );
-
-        setStudyNote(filteredStudyNotes);
-      } catch (error) {
-        console.log(error);
-
-        toast.error("Please sign in again to see your notes.", {
-          autoClose: 3000,
-        });
-        
-        navigate("/");
-      }
-    }
-
-    fetchStudyNotes();
-  }, [navigate]);
+function StudyTime({
+  notes,
+  setNotes,
+  setUpdateNoteView,
+  setSelectedNote,
+  handleStarNote,
+  handleDeleteNote,
+  handleUpdateSuccess,
+  setLoading,
+}) {
+  const studyNote = notes.filter(
+    (note) => note.type?.toLowerCase() === "study",
+  );
 
   return (
     <section className="w-full min-h-full px-2 sm:px-6">
@@ -78,7 +59,7 @@ function StudyTime() {
               className="group relative bg-slate-900/85 backdrop-blur-xl border border-slate-800 hover:border-teal-500/40 rounded-2xl p-6 shadow-xl hover:shadow-2xl hover:shadow-teal-500/10 transition-all duration-300 flex flex-col justify-between animate-in fade-in zoom-in-95 fill-mode-forwards cursor-pointer"
             >
               {/* Subtle top card glow effect on hover */}
-              <div className="absolute inset-0 rounded-2xl bg-gradient-to-b from-teal-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
+              <div className="absolute inset-0 rounded-2xl bg-linear-to-b from-teal-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
 
               <div className="relative z-10 space-y-3">
                 {/* Styled Category/Type Badge */}
@@ -86,11 +67,25 @@ function StudyTime() {
                   {study.type}
                 </span>
 
+                {/* Star Toggle Button */}
+                <button
+                  type="button"
+                  onClick={() => handleStarNote(study.id)}
+                  className="w-9 h-9 rounded-xl bg-slate-800/60 hover:bg-slate-800 border border-slate-700/50 flex items-center justify-center transition-all cursor-pointer active:scale-90"
+                  title={study.isStarred ? "Unstar note" : "Star note"}
+                >
+                  {study.isStarred ? (
+                    <FaStar className="text-amber-400 text-sm drop-shadow-[0_0_8px_rgba(251,191,36,0.5)]" />
+                  ) : (
+                    <FaRegStar className="text-slate-400 hover:text-amber-300 text-sm transition-colors" />
+                  )}
+                </button>
+
                 <h4 className="text-lg font-bold text-white tracking-tight group-hover:text-teal-400 transition-colors line-clamp-1">
                   {study.noteName}
                 </h4>
 
-                <p className="text-slate-300 text-sm leading-relaxed line-clamp-4 break-words">
+                <p className="text-slate-300 text-sm leading-relaxed line-clamp-4 wrap-break-word">
                   {study.description}
                 </p>
               </div>

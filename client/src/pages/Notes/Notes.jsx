@@ -17,10 +17,14 @@ import { useLocation, useNavigate } from "react-router-dom";
 function Notes() {
   const [notes, setNotes] = useState([]);
   const [searchText, setSearchText] = useState("");
+
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [viewCreateNot, setViewCreateNote] = useState(false);
-  const location = useLocation();
+  const [selectedNote, setSelectedNote] = useState(null);
+  const [updateNoteView, setUpdateNoteView] = useState(false);
+  const [loading, setLoading] = useState(false);
 
+  const location = useLocation();
   const navigate = useNavigate();
   const currentPath = location.pathname;
 
@@ -69,6 +73,49 @@ function Notes() {
     note?.noteName?.toLowerCase().includes(searchText.toLowerCase()),
   );
 
+  async function handleDeleteNote(noteId) {
+    setLoading(true);
+
+    try {
+      await api.delete(`/note/notedelete/${noteId}`);
+      setNotes((prevNotes) => prevNotes.filter((note) => note.id !== noteId));
+      toast.success("Note deleted successfully!", {
+        autoClose: 3000,
+      });
+    } catch (error) {
+      console.log(error);
+      toast.error("Failed to delete note.");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  function handleUpdateSuccess(updatedNote) {
+    setNotes((prevNotes) =>
+      prevNotes.map((note) =>
+        note.id === updatedNote.id ? updatedNote : note,
+      ),
+    );
+  }
+
+  async function handleStarNote(noteId) {
+    try {
+      const res = await api.post(`/note/star/${noteId}`);
+
+      // Update state using the 'star' property matching your Prisma schema
+      setNotes((prevNotes) =>
+        prevNotes.map((note) =>
+          note.id === noteId ? { ...note, isStarred: !note.isStarred } : note,
+        ),
+      );
+
+      toast.success(res.data.message || "Note star updated!");
+    } catch (error) {
+      console.log(error);
+      toast.error("Failed to update star status.");
+    }
+  }
+
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 flex overflow-x-hidden selection:bg-teal-500 selection:text-white relative">
       {/* Background Ambient Glow Effects */}
@@ -109,7 +156,18 @@ function Notes() {
                   <NoteList notes={notes} setNotes={setNotes} />
                 )}
                 {currentPath === "/notes/favorites" && <FavoritesNotes />}
-                {currentPath === "/notes/study" && <StudyTime />}
+                {currentPath === "/notes/study" && (
+                  <StudyTime
+                    notes={notes}
+                    setNotes={setNotes}
+                    setUpdateNoteView={setUpdateNoteView}
+                    setSelectedNote={setSelectedNote}
+                    handleStarNote={handleStarNote}
+                    handleDeleteNote={handleDeleteNote}
+                    handleUpdateSuccess={handleUpdateSuccess}
+                    setLoading={setLoading}
+                  />
+                )}
                 {currentPath === "/notes/marketing" && <Marketing />}
                 {currentPath === "/notes/movies" && <MovieWatching />}
                 {currentPath === "/notes/profile" && <Profile />}
