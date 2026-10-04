@@ -244,7 +244,18 @@ function Notes() {
 
                 {/* MOVIES */}
 
-                {currentPath === "/notes/movies" && <MovieWatching />}
+                {currentPath === "/notes/movies" && (
+                  <MovieWatching
+                    notes={notes}
+                    updateNoteView={updateNoteView}
+                    setUpdateNoteView={setUpdateNoteView}
+                    selectedNote={selectedNote}
+                    setSelectedNote={setSelectedNote}
+                    handleStarNote={handleStarNote}
+                    handleDeleteNote={handleDeleteNote}
+                    handleUpdateSuccess={handleUpdateSuccess}
+                  />
+                )}
 
                 {/* PROFILE */}
 

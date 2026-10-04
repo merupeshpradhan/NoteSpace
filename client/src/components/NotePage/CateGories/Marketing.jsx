@@ -2,7 +2,6 @@ import { FaRegStar, FaStar } from "react-icons/fa";
 import {
   FiCalendar,
   FiEdit3,
-  FiTrash2,
   FiArrowRight,
   FiBriefcase,
 } from "react-icons/fi";
