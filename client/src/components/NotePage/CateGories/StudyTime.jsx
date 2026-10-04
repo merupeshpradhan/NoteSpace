@@ -229,8 +229,11 @@ function StudyTime({
                     DESCRIPTION
                 ================================================== */}
 
-                <p className="mt-4 text-sm text-slate-400 leading-6 line-clamp-3 min-h-18">
+                {/* <p className="mt-4 text-sm text-slate-400 leading-6 line-clamp-3 min-h-18">
                   {study.description || "No description available."}
+                </p> */}
+                <p className="text-slate-300 text-sm leading-relaxed line-clamp-2 wrap-break-word min-h-12">
+                  {study.description}
                 </p>
 
                 {/* =================================================
@@ -263,9 +266,7 @@ function StudyTime({
                     </button>
 
                     {/* Delete */}
-                    <DeleteNote
-                      deleteNote={() => handleDeleteNote(study.id)}
-                    />
+                    <DeleteNote deleteNote={() => handleDeleteNote(study.id)} />
                   </div>
                 </div>
               </div>
