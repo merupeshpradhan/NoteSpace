@@ -37,7 +37,7 @@ function Notes() {
         : currentPath === "/notes/study"
           ? "study"
           : currentPath === "/notes/marketing"
-            ? "marketing"
+            ? ""
             : currentPath === "/notes/movies"
               ? "movies"
               : currentPath === "/notes/profile"
@@ -229,7 +229,18 @@ function Notes() {
 
                 {/* MARKETING */}
 
-                {currentPath === "/notes/marketing" && <Marketing />}
+                {currentPath === "/notes/marketing" && (
+                  <Marketing
+                    notes={notes}
+                    updateNoteView={updateNoteView}
+                    setUpdateNoteView={setUpdateNoteView}
+                    selectedNote={selectedNote}
+                    setSelectedNote={setSelectedNote}
+                    handleStarNote={handleStarNote}
+                    handleDeleteNote={handleDeleteNote}
+                    handleUpdateSuccess={handleUpdateSuccess}
+                  />
+                )}
 
                 {/* MOVIES */}
 
@@ -285,12 +296,13 @@ function Notes() {
                   /* =================================================
                      SEARCH NOTE GRID
 
-                     Tablet = 1 column
+                     Phone = 1 column
+                     Tablet = 2 columns
                      Laptop = 2 columns
                      Large = 3 columns
                   ================================================== */
 
-                  <div className="mx-auto grid w-full max-w-7xl grid-cols-1 gap-5 lg:grid-cols-2 2xl:grid-cols-3">
+                  <div className="mx-auto grid w-full max-w-7xl grid-cols-1 gap-5 md:grid-cols-2 2xl:grid-cols-3">
                     {filterNotes.map((note, index) => (
                       <div
                         key={note.id}

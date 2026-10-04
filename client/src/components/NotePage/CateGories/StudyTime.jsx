@@ -27,7 +27,7 @@ function StudyTime({
   const starredCount = studyNote.filter((note) => note.isStarred).length;
 
   return (
-    <section className="relative w-full min-h-full px-2 sm:px-4 lg:px-6 pb-">
+    <section className="relative w-full min-h-full px-2 sm:px-4 lg:px-6">
       {/* =========================================================
           BACKGROUND DECORATION
       ========================================================== */}
@@ -149,7 +149,7 @@ function StudyTime({
               className="group relative min-w-0 overflow-hidden rounded-2xl border border-slate-800/90 bg-slate-900/75 backdrop-blur-xl p-5 shadow-xl shadow-black/10 transition-all duration-500 hover:-translate-y-1 hover:border-teal-500/40 hover:shadow-2xl hover:shadow-teal-500/5 animate-in fade-in slide-in-from-bottom-3 fill-mode-both"
             >
               {/* Card hover glow */}
-              <div className="absolute inset-0 bg-linear-to-br from-teal-500/[0.07] via-transparent to-indigo-500/[0.04] opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+              <div className="absolute inset-0 bg-linear-to-br from-teal-500/[0.07] via-transparent to-indigo-500/4 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
 
               {/* Top glow line */}
               <div className="absolute top-0 left-8 right-8 h-px bg-linear-to-r from-transparent via-teal-400/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
