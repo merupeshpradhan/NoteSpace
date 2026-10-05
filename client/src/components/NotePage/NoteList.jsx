@@ -1,161 +1,311 @@
-import { useState } from "react";
-import api from "../../Api/api.js";
-import DeleteNote from "./DeleteNote.jsx";
-import UpdateNote from "./UpdateNote.jsx";
-import { toast } from "react-toastify";
 import { FaRegStar, FaStar } from "react-icons/fa";
+import {
+  FiBookOpen,
+  FiFileText,
+  FiArrowRight,
+} from "react-icons/fi";
 
-function NoteList({ notes, setNotes }) {
-  const [selectedNote, setSelectedNote] = useState(null);
-  const [updateNoteView, setUpdateNoteView] = useState(false);
-  const [loading, setLoading] = useState(false);
-
-  async function handleDeleteNote(noteId) {
-    setLoading(true);
-
-    try {
-      await api.delete(`/note/notedelete/${noteId}`);
-      setNotes((prevNotes) => prevNotes.filter((note) => note.id !== noteId));
-      toast.success("Note deleted successfully!", {
-        autoClose: 3000,
-      });
-    } catch (error) {
-      console.log(error);
-      toast.error("Failed to delete note.");
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  function handleUpdateSuccess(updatedNote) {
-    setNotes((prevNotes) =>
-      prevNotes.map((note) =>
-        note.id === updatedNote.id ? updatedNote : note,
-      ),
-    );
-  }
-
-  async function handleStarNote(noteId) {
-    try {
-      const res = await api.post(`/note/star/${noteId}`);
-
-      // Update state using the 'star' property matching your Prisma schema
-      setNotes((prevNotes) =>
-        prevNotes.map((note) =>
-          note.id === noteId ? { ...note, isStarred: !note.isStarred } : note,
-        ),
-      );
-
-      toast.success(res.data.message || "Note star updated!");
-    } catch (error) {
-      console.log(error);
-      toast.error("Failed to update star status.");
-    }
-  }
+function NoteList({ notes, handleStarNote }) {
+  const starredCount = notes.filter((note) => note.isStarred).length;
 
   return (
-    <section className="w-full min-h-full px-2 sm:px-6">
-      {/* Page Header Section */}
-      <div className="max-w-7xl mx-auto mb-8 flex items-center justify-between">
-        <div>
-          <h2 className="text-2xl font-bold text-white tracking-tight flex items-center gap-3">
-            <span className="w-10 h-10 rounded-xl bg-teal-500/10 border border-teal-500/20 flex items-center justify-center text-teal-400 shadow-inner">
-              📝
-            </span>
-            All Notes
-          </h2>
-          <p className="text-slate-400 text-sm mt-1">
-            Manage, update, and organize all your created notes in one place.
-          </p>
+    <section className="relative w-full min-h-full px-2 sm:px-4 lg:px-6">
+      {/* =========================================================
+          BACKGROUND DECORATION
+      ========================================================== */}
+
+      <div className="pointer-events-none fixed inset-0 overflow-hidden">
+        <div className="absolute -top-40 left-1/4 h-80 w-80 rounded-full bg-teal-500/10 blur-[120px]" />
+
+        <div className="absolute top-1/2 -right-40 h-96 w-96 rounded-full bg-indigo-500/10 blur-[130px]" />
+
+        <div className="absolute -bottom-40 left-1/4 h-96 w-96 rounded-full bg-cyan-500/5 blur-[120px]" />
+      </div>
+
+      {/* =========================================================
+          HEADER
+      ========================================================== */}
+
+      <div className="relative z-10 max-w-7xl mx-auto mb-8">
+        <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
+          {/* Page Title */}
+
+          <div className="flex items-start gap-4">
+            {/* Icon */}
+
+            <div className="shrink-0 w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-linear-to-br from-teal-400/20 to-cyan-500/5 border border-teal-400/30 flex items-center justify-center shadow-[0_0_35px_rgba(45,212,191,0.08)]">
+              <FiBookOpen className="text-teal-400 text-2xl sm:text-3xl" />
+            </div>
+
+            {/* Text */}
+
+            <div>
+              <div className="flex items-center gap-2 mb-1">
+                <span className="text-[10px] uppercase tracking-[0.2em] font-bold text-teal-400">
+                  Your Workspace
+                </span>
+
+                <span className="w-1.5 h-1.5 rounded-full bg-teal-400 animate-pulse" />
+              </div>
+
+              <h2 className="text-3xl sm:text-4xl font-black tracking-tight text-white">
+                All{" "}
+                <span className="text-transparent bg-clip-text bg-linear-to-r from-teal-300 to-cyan-400">
+                  Notes
+                </span>
+              </h2>
+
+              <p className="text-slate-400 text-sm sm:text-base mt-2 max-w-xl leading-relaxed">
+                View all your notes, keep your ideas organized, and star the
+                notes that matter most.
+              </p>
+            </div>
+          </div>
+
+          {/* =====================================================
+              STATS
+          ====================================================== */}
+
+          <div className="flex items-center self-start lg:self-auto rounded-2xl border border-slate-800/80 bg-slate-900/70 backdrop-blur-xl overflow-hidden shadow-xl">
+            {/* Total Notes */}
+
+            <div className="px-5 py-4 min-w-28">
+              <div className="flex items-center gap-2 text-teal-400 mb-1">
+                <FiFileText />
+
+                <span className="text-xl font-bold text-white">
+                  {notes.length}
+                </span>
+              </div>
+
+              <p className="text-[10px] uppercase tracking-wider text-slate-500">
+                Total Notes
+              </p>
+            </div>
+
+            {/* Divider */}
+
+            <div className="w-px h-10 bg-slate-800" />
+
+            {/* Starred Notes */}
+
+            <div className="px-5 py-4 min-w-28">
+              <div className="flex items-center gap-2 text-amber-400 mb-1">
+                <FaStar />
+
+                <span className="text-xl font-bold text-white">
+                  {starredCount}
+                </span>
+              </div>
+
+              <p className="text-[10px] uppercase tracking-wider text-slate-500">
+                Starred
+              </p>
+            </div>
+          </div>
         </div>
       </div>
 
+      {/* =========================================================
+          EMPTY STATE
+      ========================================================== */}
+
       {notes.length === 0 ? (
-        <div className="flex flex-col items-center justify-center py-20 text-center animate-in fade-in zoom-in-95 duration-500">
-          <div className="w-16 h-16 rounded-2xl bg-teal-500/10 border border-teal-500/20 flex items-center justify-center text-teal-400 text-2xl mb-4 shadow-inner">
-            📝
+        <div className="relative z-10 max-w-7xl mx-auto">
+          <div className="relative overflow-hidden rounded-3xl border border-slate-800 bg-slate-900/60 backdrop-blur-xl py-24 px-6 text-center shadow-2xl">
+            {/* Glow */}
+
+            <div className="absolute -top-20 left-1/2 -translate-x-1/2 w-64 h-64 bg-teal-500/10 blur-[90px] rounded-full" />
+
+            <div className="relative">
+              {/* Icon */}
+
+              <div className="mx-auto w-20 h-20 rounded-3xl bg-teal-500/10 border border-teal-500/20 flex items-center justify-center shadow-[0_0_40px_rgba(20,184,166,0.08)]">
+                <FiBookOpen className="text-teal-400 text-3xl" />
+              </div>
+
+              <h3 className="mt-6 text-2xl font-bold text-white">
+                No notes yet
+              </h3>
+
+              <p className="text-slate-400 text-sm mt-2 max-w-md mx-auto leading-relaxed">
+                You haven't created any notes yet. Create your first note
+                using the{" "}
+                <span className="text-teal-400 font-medium">
+                  + New Note
+                </span>{" "}
+                button to start organizing your thoughts.
+              </p>
+            </div>
           </div>
-          <h3 className="text-xl font-semibold text-white tracking-tight">
-            No notes found
-          </h3>
-          <p className="text-slate-400 text-sm mt-1 max-w-sm">
-            Create your first note using the "+ New Note" button above to start
-            organizing your thoughts.
-          </p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
+        /* =========================================================
+           NOTE GRID
+        ========================================================== */
+
+        <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 max-w-7xl mx-auto">
           {notes.map((note, index) => (
-            <div
+            <article
               key={note.id}
-              style={{ animationDelay: `${index * 50}ms` }}
-              className="group relative bg-slate-900/85 backdrop-blur-xl border border-slate-800 hover:border-teal-500/40 rounded-2xl p-6 shadow-xl hover:shadow-2xl hover:shadow-teal-500/10 transition-all duration-300 flex flex-col justify-between animate-in fade-in zoom-in-95 fill-mode-forwards"
+              style={{
+                animationDelay: `${index * 70}ms`,
+              }}
+              className="group relative min-w-0 overflow-hidden rounded-2xl border border-slate-800/90 bg-slate-900/75 backdrop-blur-xl p-5 shadow-xl shadow-black/10 transition-all duration-500 hover:-translate-y-1 hover:border-teal-500/40 hover:shadow-2xl hover:shadow-teal-500/5 animate-in fade-in slide-in-from-bottom-3 fill-mode-both"
             >
-              {/* Subtle top card glow effect on hover */}
-              <div className="absolute inset-0 rounded-2xl bg-linear-to-b from-teal-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
+              {/* =================================================
+                  CARD HOVER GLOW
+              ================================================== */}
 
-              <div className="relative z-10 space-y-3">
-                <div className="w-full flex items-center justify-between">
-                  {/* Styled Category/Type Badge */}
-                  {note.type ? (
-                    <span className="inline-block text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-lg bg-teal-500/15 text-teal-400 border border-teal-500/20 shadow-sm">
-                      {note.type}
-                    </span>
-                  ) : (
-                    <span></span>
-                  )}
+              <div className="absolute inset-0 bg-linear-to-br from-teal-500/[0.07] via-transparent to-indigo-500/4 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
 
-                  {/* Star Toggle Button */}
+              {/* =================================================
+                  TOP GLOW LINE
+              ================================================== */}
+
+              <div className="absolute top-0 left-8 right-8 h-px bg-linear-to-r from-transparent via-teal-400/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+              <div className="relative z-10">
+                {/* =================================================
+                    CARD HEADER
+                ================================================== */}
+
+                <div className="flex items-start justify-between gap-3">
+                  {/* Left */}
+
+                  <div className="flex items-center gap-3 min-w-0">
+                    {/* Note Icon */}
+
+                    <div className="shrink-0 w-11 h-11 rounded-xl bg-linear-to-br from-teal-400/15 to-cyan-400/5 border border-teal-400/20 flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
+                      <FiFileText className="text-teal-400 text-lg" />
+                    </div>
+
+                    {/* Type */}
+
+                    <div className="min-w-0">
+                      {note.type ? (
+                        <span className="inline-flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-[0.15em] px-2 py-1 rounded-md bg-teal-500/10 text-teal-400 border border-teal-500/20 max-w-full">
+                          <span className="w-1.5 h-1.5 shrink-0 rounded-full bg-teal-400 animate-pulse" />
+
+                          <span className="truncate">
+                            {note.type}
+                          </span>
+                        </span>
+                      ) : (
+                        <span className="inline-flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-[0.15em] px-2 py-1 rounded-md bg-slate-800/60 text-slate-500 border border-slate-700/50">
+                          General Note
+                        </span>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* =================================================
+                      STAR BUTTON
+                  ================================================== */}
+
                   <button
                     type="button"
                     onClick={() => handleStarNote(note.id)}
-                    className="w-9 h-9 rounded-xl bg-slate-800/60 hover:bg-slate-800 border border-slate-700/50 flex items-center justify-center transition-all cursor-pointer active:scale-90"
-                    title={note.isStarred ? "Unstar note" : "Star note"}
+                    className={`shrink-0 w-10 h-10 rounded-xl flex items-center justify-center border transition-all duration-300 cursor-pointer active:scale-90 ${
+                      note.isStarred
+                        ? "bg-amber-400/10 border-amber-400/20"
+                        : "bg-slate-800/60 border-slate-700/60 hover:border-amber-400/30 hover:bg-amber-400/5"
+                    }`}
+                    title={
+                      note.isStarred
+                        ? "Remove from favorites"
+                        : "Star note"
+                    }
                   >
                     {note.isStarred ? (
-                      <FaStar className="text-amber-400 text-sm drop-shadow-[0_0_8px_rgba(251,191,36,0.5)]" />
+                      <FaStar className="text-amber-400 text-base drop-shadow-[0_0_8px_rgba(251,191,36,0.6)] transition-transform duration-300 group-hover:scale-110" />
                     ) : (
-                      <FaRegStar className="text-slate-400 hover:text-amber-300 text-sm transition-colors" />
+                      <FaRegStar className="text-slate-500 text-base hover:text-amber-300 transition-colors" />
                     )}
                   </button>
                 </div>
 
-                <h4 className="text-lg font-bold text-white tracking-tight group-hover:text-teal-400 transition-colors line-clamp-1">
+                {/* =================================================
+                    NOTE TITLE
+                ================================================== */}
+
+                <h3 className="mt-5 text-lg font-bold text-white tracking-tight line-clamp-1 group-hover:text-teal-300 transition-colors duration-300">
                   {note.noteName}
-                </h4>
+                </h3>
 
-                <p className="text-slate-300 text-sm leading-relaxed line-clamp-4 wrap-break-word">
-                  {note.description}
-                </p>
-              </div>
+                {/* =================================================
+                    NOTE DESCRIPTION
+                ================================================== */}
 
-              {/* Card Footer Actions */}
-              <div className="relative z-10 flex items-center justify-end gap-3 mt-6 pt-4 border-t border-slate-800/80">
-                <button
-                  onClick={() => {
-                    setSelectedNote(note);
-                    setUpdateNoteView(true);
-                  }}
-                  className="px-4 py-2 bg-indigo-500/10 hover:bg-indigo-500 text-indigo-400 hover:text-white text-xs font-semibold rounded-xl border border-indigo-500/25 transition-all duration-200 cursor-pointer active:scale-95 shadow-sm"
-                >
-                  Update
-                </button>
-                <DeleteNote deleteNote={() => handleDeleteNote(note.id)} />
+                <div className="mt-4 min-h-18">
+                  <p className="text-[10px] uppercase tracking-wider text-slate-600 font-semibold mb-1">
+                    Details
+                  </p>
+
+                  <p className="text-slate-300 text-sm leading-relaxed line-clamp-3 wrap-break-word">
+                    {note.description || "No description available."}
+                  </p>
+                </div>
+
+                {/* =================================================
+                    DIVIDER
+                ================================================== */}
+
+                <div className="my-5 h-px bg-linear-to-r from-slate-800 via-slate-700/70 to-transparent" />
+
+                {/* =================================================
+                    READ ONLY FOOTER
+                ================================================== */}
+
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-teal-400/70" />
+
+                    <span className="text-[10px] uppercase tracking-wider text-slate-600 font-medium">
+                      Note Details
+                    </span>
+                  </div>
+
+                  <div className="flex items-center gap-1.5 text-teal-400 text-xs font-medium">
+                    <span>View</span>
+
+                    <FiArrowRight className="text-sm transition-transform duration-300 group-hover:translate-x-1" />
+                  </div>
+                </div>
               </div>
-            </div>
+            </article>
           ))}
         </div>
       )}
 
-      {/* Update Modal Overlay */}
-      {updateNoteView && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-md animate-in fade-in duration-200">
-          <div className="w-full max-w-lg transform transition-all animate-in zoom-in-95 duration-200">
-            <UpdateNote
-              noteData={selectedNote}
-              viewUpdateNote={() => setUpdateNoteView(false)}
-              onUpdateSuccess={handleUpdateSuccess}
-            />
+      {/* =========================================================
+          BOTTOM INFORMATION
+      ========================================================== */}
+
+      {notes.length > 0 && (
+        <div className="relative z-10 max-w-7xl mx-auto mt-8">
+          <div className="relative overflow-hidden rounded-2xl border border-slate-800/70 bg-slate-900/40 backdrop-blur-xl px-5 py-4">
+            {/* Left Accent */}
+
+            <div className="absolute left-0 top-0 bottom-0 w-1 bg-linear-to-b from-teal-400 to-cyan-500" />
+
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pl-2">
+              <div>
+                <p className="text-sm font-semibold text-slate-300">
+                  Your thoughts, organized. 📝
+                </p>
+
+                <p className="text-xs text-slate-600 mt-1">
+                  Star important notes to quickly find them later.
+                </p>
+              </div>
+
+              <div className="flex items-center gap-2 text-teal-400 text-xs font-medium">
+                <span>Notes Workspace</span>
+
+                <FiArrowRight />
+              </div>
+            </div>
           </div>
         </div>
       )}

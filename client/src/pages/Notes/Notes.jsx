@@ -205,7 +205,16 @@ function Notes() {
                 {/* ALL NOTES */}
 
                 {currentPath === "/notes" && (
-                  <NoteList notes={notes} setNotes={setNotes} />
+                  <NoteList
+                    notes={notes}
+                    updateNoteView={updateNoteView}
+                    setUpdateNoteView={setUpdateNoteView}
+                    selectedNote={selectedNote}
+                    setSelectedNote={setSelectedNote}
+                    handleStarNote={handleStarNote}
+                    handleDeleteNote={handleDeleteNote}
+                    handleUpdateSuccess={handleUpdateSuccess}
+                  />
                 )}
 
                 {/* FAVORITES */}
