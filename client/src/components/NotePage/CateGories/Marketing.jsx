@@ -1,13 +1,9 @@
 import { FaRegStar, FaStar } from "react-icons/fa";
-import {
-  FiCalendar,
-  FiEdit3,
-  FiArrowRight,
-  FiBriefcase,
-} from "react-icons/fi";
+import { FiCalendar, FiEdit3, FiArrowRight, FiBriefcase } from "react-icons/fi";
 
 import DeleteNote from "../DeleteNote.jsx";
 import UpdateNote from "../UpdateNote.jsx";
+import { useEffect } from "react";
 
 function Marketing({
   notes,
@@ -19,13 +15,15 @@ function Marketing({
   handleDeleteNote,
   handleUpdateSuccess,
 }) {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const marketingNotes = notes.filter(
     (note) => note.type?.toLowerCase() === "marketing-dates",
   );
 
-  const starredCount = marketingNotes.filter(
-    (note) => note.isStarred,
-  ).length;
+  const starredCount = marketingNotes.filter((note) => note.isStarred).length;
 
   return (
     <section className="relative w-full min-h-full px-2 sm:px-4 lg:px-6">
@@ -135,11 +133,9 @@ function Marketing({
 
               <p className="text-slate-400 text-sm mt-2 max-w-md mx-auto leading-relaxed">
                 You haven't created any notes with the{" "}
-                <span className="text-teal-400 font-medium">
-                  Marketing
-                </span>{" "}
-                type yet. Create your first marketing note and start
-                organizing your campaigns and schedules.
+                <span className="text-teal-400 font-medium">Marketing</span>{" "}
+                type yet. Create your first marketing note and start organizing
+                your campaigns and schedules.
               </p>
             </div>
           </div>
@@ -231,13 +227,14 @@ function Marketing({
                     <FiCalendar className="text-teal-500/80" />
 
                     <span>
-                      {new Date(
-                        marketing.reminderDate,
-                      ).toLocaleDateString("en-IN", {
-                        day: "2-digit",
-                        month: "short",
-                        year: "numeric",
-                      })}
+                      {new Date(marketing.reminderDate).toLocaleDateString(
+                        "en-IN",
+                        {
+                          day: "2-digit",
+                          month: "short",
+                          year: "numeric",
+                        },
+                      )}
                     </span>
                   </div>
                 )}
@@ -281,7 +278,6 @@ function Marketing({
                       className="group/update inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold text-indigo-400 bg-indigo-500/5 border border-indigo-500/20 hover:bg-indigo-500 hover:border-indigo-400 hover:text-white transition-all duration-300 cursor-pointer active:scale-95"
                     >
                       <FiEdit3 className="text-sm group-hover/update:rotate-[-8deg] transition-transform" />
-
                       Update
                     </button>
 
@@ -314,8 +310,7 @@ function Marketing({
                 </p>
 
                 <p className="text-xs text-slate-600 mt-1">
-                  Keep your campaigns, schedules, and marketing ideas
-                  organized.
+                  Keep your campaigns, schedules, and marketing ideas organized.
                 </p>
               </div>
 

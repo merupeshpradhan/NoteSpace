@@ -3,6 +3,7 @@ import { FiCalendar, FiEdit3, FiArrowRight, FiFilm } from "react-icons/fi";
 
 import DeleteNote from "../DeleteNote.jsx";
 import UpdateNote from "../UpdateNote.jsx";
+import { useEffect } from "react";
 
 function MovieWatching({
   notes,
@@ -14,6 +15,10 @@ function MovieWatching({
   handleDeleteNote,
   handleUpdateSuccess,
 }) {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const movieWatchingNote = notes.filter(
     (note) => note.type?.toLowerCase() === "movie-watching-time",
   );

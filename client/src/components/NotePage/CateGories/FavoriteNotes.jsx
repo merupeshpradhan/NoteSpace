@@ -37,6 +37,10 @@ function FavoriteNotes() {
     fetchFavoriteNotes();
   }, []);
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   async function handleStarNote(noteId) {
     try {
       const res = await api.post(`/note/star/${noteId}`);

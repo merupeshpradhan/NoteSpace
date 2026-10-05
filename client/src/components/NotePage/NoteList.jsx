@@ -1,11 +1,12 @@
+import { useEffect } from "react";
 import { FaRegStar, FaStar } from "react-icons/fa";
-import {
-  FiBookOpen,
-  FiFileText,
-  FiArrowRight,
-} from "react-icons/fi";
+import { FiBookOpen, FiFileText, FiArrowRight } from "react-icons/fi";
 
 function NoteList({ notes, handleStarNote }) {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const starredCount = notes.filter((note) => note.isStarred).length;
 
   return (
@@ -129,11 +130,9 @@ function NoteList({ notes, handleStarNote }) {
               </h3>
 
               <p className="text-slate-400 text-sm mt-2 max-w-md mx-auto leading-relaxed">
-                You haven't created any notes yet. Create your first note
-                using the{" "}
-                <span className="text-teal-400 font-medium">
-                  + New Note
-                </span>{" "}
+                You haven't created any notes yet. Create your first note using
+                the{" "}
+                <span className="text-teal-400 font-medium">+ New Note</span>{" "}
                 button to start organizing your thoughts.
               </p>
             </div>
@@ -187,9 +186,7 @@ function NoteList({ notes, handleStarNote }) {
                         <span className="inline-flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-[0.15em] px-2 py-1 rounded-md bg-teal-500/10 text-teal-400 border border-teal-500/20 max-w-full">
                           <span className="w-1.5 h-1.5 shrink-0 rounded-full bg-teal-400 animate-pulse" />
 
-                          <span className="truncate">
-                            {note.type}
-                          </span>
+                          <span className="truncate">{note.type}</span>
                         </span>
                       ) : (
                         <span className="inline-flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-[0.15em] px-2 py-1 rounded-md bg-slate-800/60 text-slate-500 border border-slate-700/50">
@@ -212,9 +209,7 @@ function NoteList({ notes, handleStarNote }) {
                         : "bg-slate-800/60 border-slate-700/60 hover:border-amber-400/30 hover:bg-amber-400/5"
                     }`}
                     title={
-                      note.isStarred
-                        ? "Remove from favorites"
-                        : "Star note"
+                      note.isStarred ? "Remove from favorites" : "Star note"
                     }
                   >
                     {note.isStarred ? (

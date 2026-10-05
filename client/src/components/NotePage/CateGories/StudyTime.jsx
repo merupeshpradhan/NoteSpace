@@ -9,6 +9,7 @@ import {
 
 import DeleteNote from "../DeleteNote.jsx";
 import UpdateNote from "../UpdateNote.jsx";
+import { useEffect } from "react";
 
 function StudyTime({
   notes,
@@ -20,6 +21,10 @@ function StudyTime({
   handleDeleteNote,
   handleUpdateSuccess,
 }) {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const studyNote = notes.filter(
     (note) => note.type?.toLowerCase() === "study",
   );
