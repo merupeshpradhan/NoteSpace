@@ -1,14 +1,14 @@
-📝 NoteSpace
+# 📝 NoteSpace
 
 A simple and secure note-taking application where users can create, manage, organize, and search their personal notes.
 
-🚧 Status: Work in Progress
+**🚧 Status: Work in Progress**
 
 ---
 
-✨ Features
+## ✨ Features
 
-🔐 Authentication
+### 🔐 Authentication
 
 - ✅ User registration
 - ✅ User login with email and password
@@ -23,7 +23,7 @@ A simple and secure note-taking application where users can create, manage, orga
 - ✅ OTP expiry handling
 - ✅ Password hashing
 
-📝 Notes Management
+### 📝 Notes Management
 
 - ✅ Create notes
 - ✅ View all notes
@@ -37,7 +37,7 @@ A simple and secure note-taking application where users can create, manage, orga
 - ✅ User-specific notes
 - ✅ Notes automatically associated with the logged-in user
 
-📂 Note Organization
+### 📂 Note Organization
 
 - ✅ All Notes
 - ⭐ Favorites
@@ -46,7 +46,7 @@ A simple and secure note-taking application where users can create, manage, orga
 - 🎬 Movie Watching Notes
 - 👤 Profile section
 
-👤 Profile
+### 👤 Profile
 
 - ✅ View user profile
 - ✅ Display user name and email
@@ -54,7 +54,7 @@ A simple and secure note-taking application where users can create, manage, orga
 - ✅ Save profile changes
 - ✅ Cancel profile editing
 
-🎨 User Interface
+### 🎨 User Interface
 
 - ✅ Responsive design
 - ✅ Mobile-friendly layout
@@ -68,9 +68,9 @@ A simple and secure note-taking application where users can create, manage, orga
 
 ---
 
-🛠️ Tech Stack
+## 🛠️ Tech Stack
 
-Frontend
+### Frontend
 
 - React.js
 - JavaScript (ES6+)
@@ -81,7 +81,7 @@ Frontend
 - React Toastify
 - Tailwind CSS
 
-Backend
+### Backend
 
 - Node.js
 - Express.js
@@ -90,12 +90,12 @@ Backend
 - HTTP-only Cookies
 - Nodemailer
 
-Database
+### Database
 
 - PostgreSQL
 - Prisma ORM
 
-Authentication & Security
+### Authentication & Security
 
 - JWT
 - HTTP-only cookies
@@ -105,10 +105,10 @@ Authentication & Security
 
 ---
 
-🏗️ Project Structure
+## 🏗️ Project Structure
 
+```text
 NoteSpace/
-│
 ├── client/
 │   ├── src/
 │   │   ├── Api/
@@ -116,7 +116,6 @@ NoteSpace/
 │   │   ├── Pages/
 │   │   ├── Auth/
 │   │   └── ...
-│   │
 │   └── package.json
 │
 ├── server/
@@ -127,33 +126,35 @@ NoteSpace/
 │   └── ...
 │
 └── README.md
+```
 
 ---
 
-🔑 Authentication Flow
+## 🔑 Authentication Flow
 
 NoteSpace uses JWT-based authentication with secure HTTP-only cookies.
 
+```text
 User Login
     ↓
 Backend verifies credentials
     ↓
-JWT Access Token
-    +
-Refresh Token
+JWT Access Token + Refresh Token
     ↓
 Stored in HTTP-only cookies
     ↓
 Authenticated User
+```
 
 The access token is short-lived, while the refresh token is used to obtain a new access token when required.
 
 ---
 
-📧 Forgot Password Flow
+## 📧 Forgot Password Flow
 
 NoteSpace includes an OTP-based password reset system.
 
+```text
 Enter Email
      ↓
 Backend checks user
@@ -167,15 +168,17 @@ OTP expires after 5 minutes
 Verify OTP
      ↓
 Set New Password
+```
 
 ---
 
-🗄️ Database
+## 🗄️ Database
 
-The application uses PostgreSQL with Prisma ORM.
+The application uses **PostgreSQL** with **Prisma ORM**.
 
-User
+### User
 
+```text
 User
 ├── id
 ├── email
@@ -183,9 +186,11 @@ User
 ├── password
 ├── refreshToken
 └── notes
+```
 
-Note
+### Note
 
+```text
 Note
 ├── id
 ├── type
@@ -193,39 +198,46 @@ Note
 ├── isStarred
 ├── description
 └── userId
+```
 
 Each note belongs to a specific user.
 
 ---
 
-🔌 API Features
+## 🔌 API Features
 
 Some of the implemented API operations include:
 
-Notes
+### Notes
 
+```text
 GET     /note
 POST    /note/notecreat
 DELETE  /note/notedelete/:noteId
 PATCH   /note/star/:noteId
+```
 
-Authentication
+### Authentication
 
+```text
 POST    /users/login
 POST    /users/google-login
 POST    /users/logout
 POST    /users/refresh-token
+```
 
-Password Reset
+### Password Reset
 
+```text
 POST    /users/forgot-password
 POST    /users/reset-password
+```
 
 ---
 
-🎯 Goal
+## 🎯 Goal
 
-The goal of NoteSpace is to build a clean, secure, and practical full-stack note-taking application while learning and implementing real-world concepts such as:
+The goal of NoteSpace is to build a **clean, secure, and practical full-stack note-taking application** while learning and implementing real-world concepts such as:
 
 - Authentication
 - Authorization
@@ -243,7 +255,7 @@ The goal of NoteSpace is to build a clean, secure, and practical full-stack note
 
 ---
 
-🚧 Currently Working On
+## 🚧 Currently Working On
 
 The project is still under development.
 
@@ -259,8 +271,9 @@ Future improvements may include:
 
 ---
 
-🛣️ Development Progress
+## 🛣️ Development Progress
 
+```text
 Authentication       ✅ Completed
 Google Login         ✅ Completed
 JWT Authentication   ✅ Completed
@@ -273,21 +286,22 @@ Forgot Password       ✅ Completed
 OTP Verification      ✅ Completed
 Responsive UI         ✅ Completed
 Advanced Features     🚧 In Progress
+```
 
 ---
 
-👨‍💻 Developer
+## 👨‍💻 Developer
 
-Rupesh Pradhan
+**Rupesh Pradhan**
 
 Full Stack Developer
 
-Technologies:
+### Technologies
 
-"React.js" · "Vite" · "JavaScript" · "Node.js" · "Express.js" · "Prisma" · "PostgreSQL"
+`React.js` · `Vite` · `JavaScript` · `Node.js` · `Express.js` · `Prisma` · `PostgreSQL`
 
 ---
 
-⭐ Project
+## ⭐ Project
 
 NoteSpace is being developed as a real-world full-stack project to improve practical development skills and understand how modern web applications work from frontend to backend and database.
