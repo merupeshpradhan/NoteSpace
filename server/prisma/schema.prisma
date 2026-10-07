@@ -34,7 +34,7 @@ model Note {
   type         String
   noteName     String
   isStarred    Boolean   @default(false)
-  reminderDate DateTime?
+  reminderDate DateTime
   smsSent      Boolean   @default(false)
   description  String
 
