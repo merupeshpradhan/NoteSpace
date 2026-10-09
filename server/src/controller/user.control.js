@@ -45,16 +45,27 @@ export async function googleAuth(req, res) {
       data: { refreshToken: refreshToken },
     });
 
+    // Send Access Token to cookie (Expire in 15 minute)
+    res.cookie("accessToken", accessToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      maxAge: 15 * 60 * 1000,
+    });
+
+    // Send Refresh Token to cookie (Expire in 7 days)
+    res.cookie("refreshToken", refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      maxAge: 7 * 24 * 60 * 60 * 1000 + 5 * 60 * 1000, // Send Refresh Token to cookie (Expire in 7 day + 5 minutes)
+    });
+
     // Set cookies or send tokens back just like your regular login/register
-    return res
-      .status(200)
-      .cookie("accessToken", accessToken, { httpOnly: true, secure: true })
-      .cookie("refreshToken", refreshToken, { httpOnly: true, secure: true })
-      .json({
-        message: "Google login successful",
-        user: updateUser,
-        accessToken,
-      });
+    return res.status(200).json({
+      message: "Google login successful",
+      user: updateUser,
+    });
   } catch (error) {
     console.error("Google Auth Error:", error);
     return res.status(400).json({ error: "Google authentication faild" });
