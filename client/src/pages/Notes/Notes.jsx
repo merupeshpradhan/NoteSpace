@@ -105,12 +105,8 @@ function Notes() {
   // UPDATE NOTE
   // =========================================================
 
-  function handleUpdateSuccess(updatedNote) {
-    setNotes((prevNotes) =>
-      prevNotes.map((note) =>
-        note.id === updatedNote.id ? updatedNote : note,
-      ),
-    );
+  async function handleUpdateSuccess(updatedNote) {
+    await fetchNote();
   }
 
   // =========================================================

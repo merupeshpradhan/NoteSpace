@@ -3,13 +3,13 @@ import {
   FiBookOpen,
   FiCalendar,
   FiEdit3,
-  FiTrash2,
   FiArrowRight,
 } from "react-icons/fi";
 
 import DeleteNote from "../DeleteNote.jsx";
 import UpdateNote from "../UpdateNote.jsx";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import AiSuggest from "../../AI/AiSuggest.jsx";
 
 function StudyTime({
   notes,
@@ -21,6 +21,9 @@ function StudyTime({
   handleDeleteNote,
   handleUpdateSuccess,
 }) {
+  // Track which note card currently has the AI menu open
+  const [activeAiNoteId, setActiveAiNoteId] = useState(null);
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -141,142 +144,164 @@ function StudyTime({
         </div>
       ) : (
         /* =========================================================
-           NOTE GRID
+            NOTE GRID
         ========================================================== */
 
         <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 max-w-7xl mx-auto">
-          {studyNote.map((study, index) => (
-            <article
-              key={study.id}
-              style={{
-                animationDelay: `${index * 70}ms`,
-              }}
-              className="group relative min-w-0 overflow-hidden rounded-2xl border border-slate-800/90 bg-slate-900/75 backdrop-blur-xl p-5 shadow-xl shadow-black/10 transition-all duration-500 hover:-translate-y-1 hover:border-teal-500/40 hover:shadow-2xl hover:shadow-teal-500/5 animate-in fade-in slide-in-from-bottom-3 fill-mode-both"
-            >
-              {/* Card hover glow */}
-              <div className="absolute inset-0 bg-linear-to-br from-teal-500/[0.07] via-transparent to-indigo-500/4 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+          {studyNote.map((study, index) => {
+            const isAiOpen = activeAiNoteId === study.id;
 
-              {/* Top glow line */}
-              <div className="absolute top-0 left-8 right-8 h-px bg-linear-to-r from-transparent via-teal-400/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            return (
+              <article
+                key={study.id}
+                style={{
+                  animationDelay: `${index * 70}ms`,
+                }}
+                className="group relative min-w-0 overflow-hidden rounded-2xl border border-slate-800/90 bg-slate-900/75 backdrop-blur-xl p-5 shadow-xl shadow-black/10 transition-all duration-500 hover:-translate-y-1 hover:border-teal-500/40 hover:shadow-2xl hover:shadow-teal-500/5 animate-in fade-in slide-in-from-bottom-3 fill-mode-both"
+              >
+                {/* Card hover glow */}
+                <div className="absolute inset-0 bg-linear-to-br from-teal-500/[0.07] via-transparent to-indigo-500/4 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
 
-              <div className="relative z-10">
-                {/* =================================================
-                    CARD TOP
-                ================================================== */}
+                {/* Top glow line */}
+                <div className="absolute top-0 left-8 right-8 h-px bg-linear-to-r from-transparent via-teal-400/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
-                <div className="flex items-start justify-between gap-3">
-                  <div className="flex items-center gap-3 min-w-0">
-                    {/* Icon */}
-                    <div className="shrink-0 w-11 h-11 rounded-xl bg-linear-to-br from-teal-400/15 to-cyan-400/5 border border-teal-400/20 flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
-                      <FiBookOpen className="text-teal-400 text-lg" />
+                <div className="relative z-10">
+                  {/* =================================================
+                      CARD TOP
+                  ================================================== */}
+
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="flex items-center gap-3 min-w-0">
+                      {/* Icon */}
+                      <div className="shrink-0 w-11 h-11 rounded-xl bg-linear-to-br from-teal-400/15 to-cyan-400/5 border border-teal-400/20 flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
+                        <FiBookOpen className="text-teal-400 text-lg" />
+                      </div>
+
+                      <div className="min-w-0">
+                        {/* Type */}
+                        <span className="inline-flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-[0.15em] px-2 py-1 rounded-md bg-teal-500/10 text-teal-400 border border-teal-500/20">
+                          <span className="w-1.5 h-1.5 rounded-full bg-teal-400 animate-pulse" />
+                          {study.type}
+                        </span>
+                      </div>
                     </div>
 
-                    <div className="min-w-0">
-                      {/* Type */}
-                      <span className="inline-flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-[0.15em] px-2 py-1 rounded-md bg-teal-500/10 text-teal-400 border border-teal-500/20">
-                        <span className="w-1.5 h-1.5 rounded-full bg-teal-400 animate-pulse" />
-                        {study.type}
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Star */}
-                  <button
-                    type="button"
-                    onClick={() => handleStarNote(study.id)}
-                    className={`shrink-0 w-10 h-10 rounded-xl flex items-center justify-center border transition-all duration-300 cursor-pointer active:scale-90 ${
-                      study.isStarred
-                        ? "bg-amber-400/10 border-amber-400/20"
-                        : "bg-slate-800/60 border-slate-700/60 hover:border-amber-400/30 hover:bg-amber-400/5"
-                    }`}
-                    title={
-                      study.isStarred ? "Remove from favorites" : "Star note"
-                    }
-                  >
-                    {study.isStarred ? (
-                      <FaStar className="text-amber-400 text-base drop-shadow-[0_0_8px_rgba(251,191,36,0.6)] transition-transform duration-300 group-hover:scale-110" />
-                    ) : (
-                      <FaRegStar className="text-slate-500 text-base hover:text-amber-300 transition-colors" />
-                    )}
-                  </button>
-                </div>
-
-                {/* =================================================
-                    TITLE
-                ================================================== */}
-
-                <h3 className="mt-5 text-lg font-bold text-white tracking-tight line-clamp-1 group-hover:text-teal-300 transition-colors duration-300">
-                  {study.noteName}
-                </h3>
-
-                {/* =================================================
-                    DATE
-                ================================================== */}
-
-                {study.reminderDate && (
-                  <div className="flex items-center gap-2 mt-2 text-xs text-slate-500">
-                    <FiCalendar className="text-teal-500/80" />
-
-                    <span>
-                      {new Date(study.reminderDate).toLocaleDateString(
-                        "en-IN",
-                        {
-                          day: "2-digit",
-                          month: "short",
-                          year: "numeric",
-                        },
-                      )}
-                    </span>
-                  </div>
-                )}
-
-                {/* =================================================
-                    DESCRIPTION
-                ================================================== */}
-
-                {/* <p className="mt-4 text-sm text-slate-400 leading-6 line-clamp-3 min-h-18">
-                  {study.description || "No description available."}
-                </p> */}
-                <p className="text-slate-300 text-sm leading-relaxed line-clamp-2 wrap-break-word min-h-12">
-                  {study.description}
-                </p>
-
-                {/* =================================================
-                    DIVIDER
-                ================================================== */}
-
-                <div className="my-5 h-px bg-linear-to-r from-slate-800 via-slate-700/70 to-transparent" />
-
-                {/* =================================================
-                    FOOTER
-                ================================================== */}
-
-                <div className="flex items-center justify-between gap-3">
-                  <span className="text-[10px] uppercase tracking-wider text-slate-600 font-medium">
-                    Study Material
-                  </span>
-
-                  <div className="flex items-center gap-2">
-                    {/* Update */}
+                    {/* Star */}
                     <button
                       type="button"
-                      onClick={() => {
-                        setSelectedNote(study);
-                        setUpdateNoteView(true);
-                      }}
-                      className="group/update inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold text-indigo-400 bg-indigo-500/5 border border-indigo-500/20 hover:bg-indigo-500 hover:border-indigo-400 hover:text-white transition-all duration-300 cursor-pointer active:scale-95"
+                      onClick={() => handleStarNote(study.id)}
+                      className={`shrink-0 w-10 h-10 rounded-xl flex items-center justify-center border transition-all duration-300 cursor-pointer active:scale-90 ${
+                        study.isStarred
+                          ? "bg-amber-400/10 border-amber-400/20"
+                          : "bg-slate-800/60 border-slate-700/60 hover:border-amber-400/30 hover:bg-amber-400/5"
+                      }`}
+                      title={
+                        study.isStarred ? "Remove from favorites" : "Star note"
+                      }
                     >
-                      <FiEdit3 className="text-sm group-hover/update:rotate-[-8deg] transition-transform" />
-                      Update
+                      {study.isStarred ? (
+                        <FaStar className="text-amber-400 text-base drop-shadow-[0_0_8px_rgba(251,191,36,0.6)] transition-transform duration-300 group-hover:scale-110" />
+                      ) : (
+                        <FaRegStar className="text-slate-500 text-base hover:text-amber-300 transition-colors" />
+                      )}
                     </button>
+                  </div>
 
-                    {/* Delete */}
-                    <DeleteNote deleteNote={() => handleDeleteNote(study.id)} />
+                  {/* =================================================
+                      TITLE
+                  ================================================== */}
+
+                  <h3 className="mt-5 text-lg font-bold text-white tracking-tight line-clamp-1 group-hover:text-teal-300 transition-colors duration-300">
+                    {study.noteName}
+                  </h3>
+
+                  {/* =================================================
+                      DATE
+                  ================================================== */}
+
+                  {study.reminderDate && (
+                    <div className="flex items-center gap-2 mt-2 text-xs text-slate-500">
+                      <FiCalendar className="text-teal-500/80" />
+
+                      <span>
+                        {new Date(study.reminderDate).toLocaleDateString(
+                          "en-IN",
+                          {
+                            day: "2-digit",
+                            month: "short",
+                            year: "numeric",
+                          },
+                        )}
+                      </span>
+                    </div>
+                  )}
+
+                  {/* =================================================
+                      DESCRIPTION
+                  ================================================== */}
+
+                  <p className="text-slate-300 text-sm leading-relaxed line-clamp-2 wrap-break-word min-h-12 mt-2">
+                    {study.description}
+                  </p>
+
+                  {/* =================================================
+                      AI SUGGEST PANEL (Toggles when Update is clicked)
+                  ================================================== */}
+
+                  {isAiOpen && (
+                    <div className="my-4 p-3 rounded-xl bg-slate-950/80 border border-teal-500/30 animate-in fade-in duration-200">
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-[10px] uppercase font-bold text-teal-400 tracking-wider">
+                          ✨ AI Assistant
+                        </span>
+                        <button
+                          type="button"
+                          onClick={() => setActiveAiNoteId(null)}
+                          className="text-xs text-slate-400 hover:text-white"
+                        >
+                          ✕ Close
+                        </button>
+                      </div>
+                      <AiSuggest note={study} onUpdated={handleUpdateSuccess} />
+                    </div>
+                  )}
+
+                  {/* =================================================
+                      DIVIDER
+                  ================================================== */}
+
+                  <div className="my-5 h-px bg-linear-to-r from-slate-800 via-slate-700/70 to-transparent" />
+
+                  {/* =================================================
+                      FOOTER
+                  ================================================== */}
+
+                  <div className="flex items-center justify-between gap-3">
+                    <span className="text-[10px] uppercase tracking-wider text-slate-600 font-medium">
+                      Study Material
+                    </span>
+
+                    <div className="flex items-center gap-2">
+                      {/* Update Toggle Button */}
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setActiveAiNoteId(isAiOpen ? null : study.id)
+                        }
+                        className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold text-indigo-400 bg-indigo-500/5 border border-indigo-500/20 hover:bg-indigo-500 hover:border-indigo-400 hover:text-white transition-all duration-300 cursor-pointer active:scale-95"
+                      >
+                        <FiEdit3 className="text-sm" />
+                        {isAiOpen ? "Cancel" : "Update"}
+                      </button>
+
+                      {/* Delete */}
+                      <DeleteNote deleteNote={() => handleDeleteNote(study.id)} />
+                    </div>
                   </div>
                 </div>
-              </div>
-            </article>
-          ))}
+              </article>
+            );
+          })}
         </div>
       )}
 
@@ -304,28 +329,6 @@ function StudyTime({
                 <span>Study Progress</span>
                 <FiArrowRight />
               </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* =========================================================
-          UPDATE MODAL
-      ========================================================== */}
-
-      {updateNoteView && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-in fade-in duration-200">
-          <div className="absolute inset-0" />
-
-          <div className="relative w-full max-w-lg max-h-[90vh] overflow-y-auto transform animate-in zoom-in-95 slide-in-from-bottom-3 duration-300">
-            <div className="absolute -inset-1 bg-linear-to-r from-teal-500/20 via-cyan-500/10 to-indigo-500/20 rounded-3xl blur-xl" />
-
-            <div className="relative">
-              <UpdateNote
-                noteData={selectedNote}
-                viewUpdateNote={() => setUpdateNoteView(false)}
-                onUpdateSuccess={handleUpdateSuccess}
-              />
             </div>
           </div>
         </div>
