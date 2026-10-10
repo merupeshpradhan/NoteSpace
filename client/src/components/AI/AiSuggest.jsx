@@ -1,405 +1,224 @@
-import { useState } from "react";
-import api from "../../Api/api.js";
-import { toast } from "react-toastify";
+import React from "react";
 
-const FIELD_BUTTONS = [
-  { key: "noteName", label: "✏️ Title" },
-  { key: "description", label: "📝 Description" },
-];
-
-const FIELD_NAMES = {
-  noteName: "Title",
-  description: "Description",
-};
-
-export default function AiSuggest({ note, onUpdated }) {
-  const [loading, setLoading] = useState(null);
-  const [saving, setSaving] = useState(false);
-
-  const [field, setField] = useState(null);
-  const [options, setOptions] = useState([]);
-  const [picked, setPicked] = useState("");
-
-  const [showVersions, setShowVersions] = useState(false);
-  const [versions, setVersions] = useState([]);
-  const [pickedIdx, setPickedIdx] = useState(0);
-
-  const [checked, setChecked] = useState({
-    noteName: true,
-    description: true,
-  });
-
-  // Check whether the note has a valid ID.
-  const hasNoteId =
-    note?.id !== undefined && note?.id !== null && note.id !== "";
-
-  // Generate AI suggestions.
-  const callAI = (path, body) => {
-    if (!hasNoteId) {
-      throw new Error("Note ID is missing.");
-    }
-
-    // 2. Use api.post (which automatically includes baseURL and cookies)
-    return api.post(`/ai/${path}/${note.id}`, body, { withCredentials: true });
-  };
-
-  // Update only the fields supplied in the request.
-  const updateNote = (body) => {
-    if (!hasNoteId) {
-      throw new Error("Note ID is missing.");
-    }
-
-    // 3. Use api.put instead of axios.put
-    return api.put(`/note/noteupdate/${note.id}`, body, {
-      withCredentials: true,
-    });
-  };
-
-  const getErrorMessage = (err, fallback) => {
-    if (err.message === "Note ID is missing.") {
-      return "Cannot process this note because its ID is missing.";
-    }
-
-    return err.response?.data?.message || fallback;
-  };
-
-  // Generate title OR description suggestions.
-  const getOptions = async (key) => {
-    try {
-      setLoading(key);
-
-      const { data } = await callAI("options", {
-        field: key,
-      });
-
-      if (!Array.isArray(data?.options) || data.options.length === 0) {
-        throw new Error("The AI did not return any valid options.");
-      }
-
-      setShowVersions(false);
-      setField(key);
-      setOptions(data.options);
-      setPicked(data.options[0]);
-    } catch (err) {
-      toast.error(getErrorMessage(err, "AI failed. Try again."));
-    } finally {
-      setLoading(null);
-    }
-  };
-
-  // Save one selected field.
-  const saveField = async () => {
-    if (!field || !picked) {
-      toast.info("Select one option.");
-      return;
-    }
-
-    try {
-      setSaving(true);
-
-      await updateNote({
-        [field]: picked,
-      });
-
-      toast.success("Note updated!");
-
-      setField(null);
-      setOptions([]);
-      setPicked("");
-
-      if (onUpdated) {
-        await onUpdated();
-      }
-    } catch (err) {
-      toast.error(getErrorMessage(err, "Update failed."));
-    } finally {
-      setSaving(false);
-    }
-  };
-
-  // Generate three title + description versions.
-  const getVersions = async () => {
-    try {
-      setLoading("versions");
-
-      const { data } = await callAI("versions", {});
-
-      if (!Array.isArray(data?.versions) || data.versions.length === 0) {
-        throw new Error("The AI did not return any valid versions.");
-      }
-
-      setField(null);
-      setOptions([]);
-      setVersions(data.versions);
-      setPickedIdx(0);
-
-      setChecked({
-        noteName: true,
-        description: true,
-      });
-
-      setShowVersions(true);
-    } catch (err) {
-      toast.error(getErrorMessage(err, "AI failed. Try again."));
-    } finally {
-      setLoading(null);
-    }
-  };
-
-  // Save selected fields from the chosen version.
-  const saveVersion = async () => {
-    const version = versions[pickedIdx];
-
-    if (!version) {
-      toast.error("Please select a valid version.");
-      return;
-    }
-
-    const body = {};
-
-    if (checked.noteName) {
-      body.noteName = version.noteName;
-    }
-
-    if (checked.description) {
-      body.description = version.description;
-    }
-
-    if (Object.keys(body).length === 0) {
-      toast.info("Select at least one field.");
-      return;
-    }
-
-    if (Object.values(body).some((value) => typeof value !== "string")) {
-      toast.error("The selected version contains invalid data.");
-      return;
-    }
-
-    try {
-      setSaving(true);
-
-      await updateNote(body);
-
-      toast.success("Note updated!");
-
-      setShowVersions(false);
-      setVersions([]);
-
-      if (onUpdated) {
-        await onUpdated();
-      }
-    } catch (err) {
-      toast.error(getErrorMessage(err, "Update failed."));
-    } finally {
-      setSaving(false);
-    }
-  };
-
+function AiSuggest({
+  noteData,
+  FIELD_BUTTONS,
+  field,
+  FIELD_NAMES,
+  saveField,
+  saving,
+  setField,
+  getOptions,
+  aiLoading,
+  options,
+  picked,
+  setPicked,
+  hasNoteId,
+  showVersions,
+  versions,
+  pickedIdx,
+  setPickedIdx,
+  checked,
+  setChecked,
+  saveVersion,
+  getVersions,
+  setShowVersions
+}) {
   return (
-    <>
-      {/* AI action buttons */}
-      <div className="flex flex-wrap gap-2 mt-3">
+    <div className="space-y-4">
+      <p className="text-xs text-slate-400">
+        Choose what you want the AI to optimize:
+      </p>
+
+      {/* AI Action Buttons */}
+      <div className="flex flex-wrap gap-2">
         {FIELD_BUTTONS.map((item) => (
           <button
             key={item.key}
             type="button"
             onClick={() => getOptions(item.key)}
-            disabled={loading !== null || saving || !hasNoteId}
-            className="px-3 py-2 text-sm rounded-lg bg-purple-600 text-white hover:bg-purple-700 disabled:opacity-50"
+            disabled={aiLoading !== null || saving || !hasNoteId}
+            className={`px-4 py-2.5 text-xs font-semibold rounded-xl transition-all cursor-pointer disabled:opacity-50 ${
+              field === item.key
+                ? "bg-purple-700 text-white ring-2 ring-purple-400"
+                : "bg-purple-600 text-white hover:bg-purple-700"
+            }`}
           >
-            {loading === item.key ? "Thinking..." : item.label}
+            {aiLoading === item.key ? "Thinking..." : item.label}
           </button>
         ))}
 
         <button
           type="button"
           onClick={getVersions}
-          disabled={loading !== null || saving || !hasNoteId}
-          className="px-3 py-2 text-sm rounded-lg bg-teal-600 text-white hover:bg-teal-700 disabled:opacity-50"
+          disabled={aiLoading !== null || saving || !hasNoteId}
+          className={`px-4 py-2.5 text-xs font-semibold rounded-xl transition-all cursor-pointer disabled:opacity-50 ${
+            showVersions
+              ? "bg-teal-700 text-white ring-2 ring-teal-400"
+              : "bg-teal-600 text-white hover:bg-teal-700"
+          }`}
         >
-          {loading === "versions" ? "Thinking..." : "📄 Title + Description"}
+          {aiLoading === "versions" ? "Thinking..." : "📄 Title + Description"}
         </button>
       </div>
 
-      {/* Single-field suggestion modal */}
+      {/* Single-field options display area */}
       {field && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
-          <div
-            role="dialog"
-            aria-modal="true"
-            className="bg-white text-gray-900 rounded-xl p-5 max-w-lg w-full max-h-[90vh] overflow-y-auto shadow-2xl"
-          >
-            <h3 className="font-bold text-lg mb-1">
-              AI options for {FIELD_NAMES[field]}
-            </h3>
+        <div className="p-4 rounded-2xl border border-slate-800 bg-slate-950/60 animate-in fade-in duration-200 mt-3">
+          <h4 className="font-bold text-sm text-white mb-1">
+            AI Options for {FIELD_NAMES[field]}
+          </h4>
+          <p className="text-xs text-slate-400 mb-3">
+            Current: {noteData?.[field] || "Empty"}
+          </p>
 
-            <p className="text-sm text-gray-500 mb-4 whitespace-pre-wrap">
-              Current: {note?.[field] || "Empty"}
-            </p>
-
+          <div className="space-y-2 max-h-48 overflow-y-auto pr-1">
             {options.map((option, index) => (
               <label
                 key={`${index}-${option}`}
-                className={`flex items-start gap-3 border rounded-lg p-3 mb-2 cursor-pointer ${
+                className={`flex items-start gap-3 border rounded-xl p-3 cursor-pointer text-xs transition-all ${
                   picked === option
-                    ? "border-green-600 bg-green-50"
-                    : "border-gray-200"
+                    ? "border-teal-500 bg-teal-500/10 text-white"
+                    : "border-slate-800 text-slate-300 hover:border-slate-700"
                 }`}
               >
                 <input
                   type="radio"
-                  name={`ai-option-${note.id}`}
+                  name={`ai-option-${noteData.id}`}
                   checked={picked === option}
                   onChange={() => setPicked(option)}
-                  className="mt-1"
+                  className="mt-0.5 accent-teal-500"
                 />
-
-                <span className="text-sm whitespace-pre-wrap wrap-break-word">
+                <span className="whitespace-pre-wrap break-words">
                   {option}
                 </span>
               </label>
             ))}
+          </div>
 
-            <div className="flex flex-wrap gap-2 mt-4">
-              <button
-                type="button"
-                onClick={saveField}
-                disabled={saving || loading !== null}
-                className="px-4 py-2 rounded-lg bg-green-600 text-white disabled:opacity-50"
-              >
-                {saving ? "Saving..." : "Use this"}
-              </button>
-
-              <button
-                type="button"
-                onClick={() => getOptions(field)}
-                disabled={loading !== null || saving}
-                className="px-4 py-2 rounded-lg bg-gray-200 text-gray-800 disabled:opacity-50"
-              >
-                {loading === field ? "Thinking..." : "🔄 More options"}
-              </button>
-
-              <button
-                type="button"
-                onClick={() => setField(null)}
-                disabled={saving}
-                className="px-4 py-2 rounded-lg bg-gray-200 text-gray-800"
-              >
-                Close
-              </button>
-            </div>
+          <div className="flex flex-wrap gap-2 mt-4">
+            <button
+              type="button"
+              onClick={saveField}
+              disabled={saving || aiLoading !== null}
+              className="px-4 py-2 rounded-xl bg-teal-500 text-slate-950 font-bold text-xs hover:bg-teal-400 disabled:opacity-50 cursor-pointer"
+            >
+              {saving ? "Saving..." : "Use This"}
+            </button>
+            <button
+              type="button"
+              onClick={() => getOptions(field)}
+              disabled={aiLoading !== null || saving}
+              className="px-4 py-2 rounded-xl bg-slate-800 text-slate-200 text-xs hover:bg-slate-700 disabled:opacity-50 cursor-pointer"
+            >
+              {aiLoading === field ? "Thinking..." : "🔄 More"}
+            </button>
+            <button
+              type="button"
+              onClick={() => setField(null)}
+              disabled={saving}
+              className="px-4 py-2 rounded-xl bg-slate-800/50 text-slate-400 text-xs hover:bg-slate-800 cursor-pointer"
+            >
+              Close
+            </button>
           </div>
         </div>
       )}
 
-      {/* Three-version modal */}
+      {/* Versions view display area */}
       {showVersions && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
-          <div
-            role="dialog"
-            aria-modal="true"
-            className="bg-white text-gray-900 rounded-xl p-5 max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl"
-          >
-            <h3 className="font-bold text-lg mb-1">
-              Title + Description Versions
-            </h3>
+        <div className="p-4 rounded-2xl border border-slate-800 bg-slate-950/60 max-h-80 overflow-y-auto animate-in fade-in duration-200 mt-3">
+          <h4 className="font-bold text-sm text-white mb-1">
+            Title + Description Versions
+          </h4>
+          <p className="text-xs text-slate-400 mb-3">
+            Select a version and fields to save:
+          </p>
 
-            <p className="text-sm text-gray-500 mb-4">
-              Select a version, then choose which fields to save. The note type
-              will not change.
-            </p>
+          {versions.map((version, index) => (
+            <label
+              key={index}
+              className={`block border rounded-xl p-3 mb-2.5 cursor-pointer text-xs transition-all ${
+                pickedIdx === index
+                  ? "border-teal-500 bg-teal-500/10 text-white"
+                  : "border-slate-800 text-slate-300 hover:border-slate-700"
+              }`}
+            >
+              <div className="flex items-center gap-2 mb-2">
+                <input
+                  type="radio"
+                  name={`ai-version-${noteData.id}`}
+                  checked={pickedIdx === index}
+                  onChange={() => setPickedIdx(index)}
+                  className="accent-teal-500"
+                />
+                <span className="font-semibold text-teal-400">
+                  Version {index + 1}
+                </span>
+              </div>
+              <p className="mb-1">
+                <strong className="text-slate-400">Title:</strong>{" "}
+                {version.noteName}
+              </p>
+              <p className="whitespace-pre-wrap">
+                <strong className="text-slate-400">Description:</strong>{" "}
+                {version.description}
+              </p>
+            </label>
+          ))}
 
-            {versions.map((version, index) => (
+          <div className="flex gap-4 my-3 p-3 rounded-xl bg-slate-900 border border-slate-800 text-xs text-slate-200">
+            {["noteName", "description"].map((key) => (
               <label
-                key={index}
-                className={`block border rounded-lg p-4 mb-3 cursor-pointer ${
-                  pickedIdx === index
-                    ? "border-green-600 bg-green-50"
-                    : "border-gray-200"
-                }`}
+                key={key}
+                className="flex items-center gap-2 cursor-pointer"
               >
-                <div className="flex items-center gap-2 mb-3">
-                  <input
-                    type="radio"
-                    name={`ai-version-${note.id}`}
-                    checked={pickedIdx === index}
-                    onChange={() => setPickedIdx(index)}
-                  />
-
-                  <span className="font-semibold text-sm">
-                    Version {index + 1}
-                    {index === 0 && " (Grammar fixed)"}
-                    {index === 1 && " (Clearer)"}
-                    {index === 2 && " (Shorter)"}
-                  </span>
-                </div>
-
-                <p className="text-sm mb-2 wrap-break-word">
-                  <strong>Title:</strong> {version.noteName}
-                </p>
-
-                <p className="text-sm whitespace-pre-wrap wrap-break-word">
-                  <strong>Description:</strong> {version.description}
-                </p>
+                <input
+                  type="checkbox"
+                  checked={checked[key]}
+                  onChange={() =>
+                    setChecked((prev) => ({
+                      ...prev,
+                      [key]: !prev[key],
+                    }))
+                  }
+                  className="accent-teal-500"
+                />
+                Save {FIELD_NAMES[key]}
               </label>
             ))}
+          </div>
 
-            <div className="border rounded-lg p-3 mb-4 bg-gray-50">
-              <p className="text-sm font-semibold mb-3">
-                Save from Version {pickedIdx + 1}
-              </p>
-
-              <div className="flex flex-wrap gap-4">
-                {["noteName", "description"].map((key) => (
-                  <label key={key} className="flex items-center gap-2 text-sm">
-                    <input
-                      type="checkbox"
-                      checked={checked[key]}
-                      onChange={() =>
-                        setChecked((previous) => ({
-                          ...previous,
-                          [key]: !previous[key],
-                        }))
-                      }
-                    />
-
-                    {FIELD_NAMES[key]}
-                  </label>
-                ))}
-              </div>
-            </div>
-
-            <div className="flex flex-wrap gap-2">
-              <button
-                type="button"
-                onClick={saveVersion}
-                disabled={saving || loading !== null}
-                className="px-4 py-2 rounded-lg bg-green-600 text-white disabled:opacity-50"
-              >
-                {saving ? "Saving..." : "Save selected"}
-              </button>
-
-              <button
-                type="button"
-                onClick={getVersions}
-                disabled={loading !== null || saving}
-                className="px-4 py-2 rounded-lg bg-gray-200 text-gray-800 disabled:opacity-50"
-              >
-                {loading === "versions" ? "Thinking..." : "🔄 New versions"}
-              </button>
-
-              <button
-                type="button"
-                onClick={() => setShowVersions(false)}
-                disabled={saving}
-                className="px-4 py-2 rounded-lg bg-gray-200 text-gray-800"
-              >
-                Close
-              </button>
-            </div>
+          <div className="flex flex-wrap gap-2">
+            <button
+              type="button"
+              onClick={saveVersion}
+              disabled={saving || aiLoading !== null}
+              className="px-4 py-2 rounded-xl bg-teal-500 text-slate-950 font-bold text-xs hover:bg-teal-400 disabled:opacity-50 cursor-pointer"
+            >
+              {saving ? "Saving..." : "Save Selected"}
+            </button>
+            <button
+              type="button"
+              onClick={getVersions}
+              disabled={aiLoading !== null || saving}
+              className="px-4 py-2 rounded-xl bg-slate-800 text-slate-200 text-xs hover:bg-slate-700 disabled:opacity-50 cursor-pointer"
+            >
+              {aiLoading === "versions" ? "Thinking..." : "🔄 New Versions"}
+            </button>
+            <button
+              type="button"
+              onClick={() => setShowVersions(false)}
+              disabled={saving}
+              className="px-4 py-2 rounded-xl bg-slate-800/50 text-slate-400 text-xs hover:bg-slate-800 cursor-pointer"
+            >
+              Close
+            </button>
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 }
+
+export default AiSuggest;

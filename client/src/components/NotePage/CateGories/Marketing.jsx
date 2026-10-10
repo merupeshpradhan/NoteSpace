@@ -2,7 +2,7 @@ import { FaRegStar, FaStar } from "react-icons/fa";
 import { FiCalendar, FiEdit3, FiArrowRight, FiBriefcase } from "react-icons/fi";
 
 import DeleteNote from "../DeleteNote.jsx";
-import UpdateNote from "../UpdateNote.jsx";
+import UpdateNote from "../Update/UpdateNote.jsx";
 import { useEffect } from "react";
 
 function Marketing({
