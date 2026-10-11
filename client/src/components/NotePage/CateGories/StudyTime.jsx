@@ -292,7 +292,7 @@ function StudyTime({
       )}
 
       {/* Update modal: rendered once, outside the note cards */}
-      {updateNoteView && selectedNote && (
+      {updateNoteView && (
         <UpdateNote
           noteData={selectedNote}
           viewUpdateNote={closeUpdateModal}
