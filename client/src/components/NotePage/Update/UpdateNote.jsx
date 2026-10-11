@@ -226,7 +226,7 @@ function UpdateNote({ noteData, viewUpdateNote, onUpdateSuccess }) {
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-in fade-in duration-200 overflow-y-auto lg:pl-64">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/50 backdrop-blur-md animate-in fade-in duration-200 overflow-y-auto lg:pl-64">
       {/* Modal Container */}
       <div className="relative w-full max-w-lg bg-slate-900 border border-slate-800 p-6 sm:p-8 rounded-3xl shadow-2xl overflow-hidden my-auto">
         {/* Glow Effects */}

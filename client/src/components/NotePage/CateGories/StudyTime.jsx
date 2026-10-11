@@ -1,6 +1,13 @@
 import { useEffect } from "react";
 import { FaRegStar, FaStar } from "react-icons/fa";
-import { FiBookOpen, FiCalendar, FiEdit3, FiArrowRight } from "react-icons/fi";
+import {
+  FiBookOpen,
+  FiCalendar,
+  FiEdit3,
+  FiArrowRight,
+  FiFileText,
+  FiAlignLeft,
+} from "react-icons/fi";
 
 import DeleteNote from "../DeleteNote.jsx";
 import UpdateNote from "../Update/UpdateNote.jsx";
@@ -187,16 +194,23 @@ function StudyTime({
                   </button>
                 </div>
 
-                {/* Note title */}
-                <h3 className="mt-5 line-clamp-1 text-lg font-bold tracking-tight text-white transition-colors duration-300 group-hover:text-teal-300">
-                  {study.noteName || "Untitled note"}
-                </h3>
+                {/* Note title with Icon */}
+                <div className="mt-5 flex items-start gap-2.5">
+                  <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-indigo-500/10 text-indigo-400 ring-1 ring-indigo-500/25 mt-0.5">
+                    <FiFileText className="text-sm" />
+                  </div>
+                  <h3 className="line-clamp-1 text-lg font-bold tracking-tight text-white transition-colors duration-300 group-hover:text-teal-300">
+                    {study.noteName || "Untitled note"}
+                  </h3>
+                </div>
 
-                {/* Date */}
-                {study.reminderDate && (
-                  <div className="mt-2 flex items-center gap-2 text-xs text-slate-500">
-                    <FiCalendar className="text-teal-500/80" />
-                    <span>
+                {/* Reminder Date with Icon */}
+                <div className="mt-3 flex items-center gap-2.5 text-xs text-slate-400">
+                  <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-teal-500/10 text-teal-400 ring-1 ring-teal-500/25">
+                    <FiCalendar className="text-sm" />
+                  </div>
+                  {study.reminderDate ? (
+                    <span className="inline-flex items-center rounded-md bg-slate-800/80 px-2.5 py-1 font-medium text-slate-200 ring-1 ring-inset ring-slate-700/50">
                       {new Date(study.reminderDate).toLocaleDateString(
                         "en-IN",
                         {
@@ -206,13 +220,20 @@ function StudyTime({
                         },
                       )}
                     </span>
-                  </div>
-                )}
+                  ) : (
+                    <span className="italic text-slate-500">No date set</span>
+                  )}
+                </div>
 
-                {/* Description */}
-                <p className="mt-3 min-h-12 line-clamp-2 break-words text-sm leading-relaxed text-slate-300">
-                  {study.description || "No description available."}
-                </p>
+                {/* Description with Icon */}
+                <div className="mt-3 flex items-start gap-2.5">
+                  <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-slate-800/80 text-slate-400 ring-1 ring-slate-700/50 mt-0.5">
+                    <FiAlignLeft className="text-sm" />
+                  </div>
+                  <p className="min-h-12 line-clamp-2 wrap-break-word text-sm leading-relaxed text-slate-300">
+                    {study.description || "No description available."}
+                  </p>
+                </div>
 
                 {/* Divider */}
                 <div className="my-5 h-px bg-linear-to-r from-slate-800 via-slate-700/70 to-transparent" />
