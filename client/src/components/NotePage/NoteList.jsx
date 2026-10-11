@@ -1,6 +1,12 @@
 import { useEffect } from "react";
 import { FaRegStar, FaStar } from "react-icons/fa";
-import { FiBookOpen, FiFileText, FiArrowRight } from "react-icons/fi";
+import { 
+  FiBookOpen, 
+  FiFileText, 
+  FiAlignLeft, 
+  FiCalendar, 
+  FiArrowRight 
+} from "react-icons/fi";
 
 function NoteList({ notes, handleStarNote }) {
   useEffect(() => {
@@ -10,53 +16,53 @@ function NoteList({ notes, handleStarNote }) {
   const starredCount = notes.filter((note) => note.isStarred).length;
 
   return (
-    <section className="relative w-full min-h-full px-2 sm:px-4 lg:px-6">
+    <section className="relative min-h-full w-full px-2 sm:px-4 lg:px-6">
       {/* =========================================================
-          BACKGROUND DECORATION
+         BACKGROUND DECORATION
       ========================================================== */}
 
       <div className="pointer-events-none fixed inset-0 overflow-hidden">
         <div className="absolute -top-40 left-1/4 h-80 w-80 rounded-full bg-teal-500/10 blur-[120px]" />
 
-        <div className="absolute top-1/2 -right-40 h-96 w-96 rounded-full bg-indigo-500/10 blur-[130px]" />
+        <div className="absolute -right-40 top-1/2 h-96 w-96 rounded-full bg-indigo-500/10 blur-[130px]" />
 
         <div className="absolute -bottom-40 left-1/4 h-96 w-96 rounded-full bg-cyan-500/5 blur-[120px]" />
       </div>
 
       {/* =========================================================
-          HEADER
+         HEADER
       ========================================================== */}
 
-      <div className="relative z-10 max-w-7xl mx-auto mb-8">
-        <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
+      <div className="relative z-10 mx-auto mb-8 max-w-7xl">
+        <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
           {/* Page Title */}
 
           <div className="flex items-start gap-4">
             {/* Icon */}
 
-            <div className="shrink-0 w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-linear-to-br from-teal-400/20 to-cyan-500/5 border border-teal-400/30 flex items-center justify-center shadow-[0_0_35px_rgba(45,212,191,0.08)]">
-              <FiBookOpen className="text-teal-400 text-2xl sm:text-3xl" />
+            <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-teal-400/30 bg-linear-to-br from-teal-400/20 to-cyan-500/5 shadow-[0_0_35px_rgba(45,212,191,0.08)] sm:h-16 sm:w-16">
+              <FiBookOpen className="text-2xl text-teal-400 sm:text-3xl" />
             </div>
 
             {/* Text */}
 
             <div>
-              <div className="flex items-center gap-2 mb-1">
-                <span className="text-[10px] uppercase tracking-[0.2em] font-bold text-teal-400">
+              <div className="mb-1 flex items-center gap-2">
+                <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-teal-400">
                   Your Workspace
                 </span>
 
-                <span className="w-1.5 h-1.5 rounded-full bg-teal-400 animate-pulse" />
+                <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-teal-400" />
               </div>
 
-              <h2 className="text-3xl sm:text-4xl font-black tracking-tight text-white">
+              <h2 className="text-3xl font-black tracking-tight text-white sm:text-4xl">
                 All{" "}
-                <span className="text-transparent bg-clip-text bg-linear-to-r from-teal-300 to-cyan-400">
+                <span className="bg-linear-to-r from-teal-300 to-cyan-400 bg-clip-text text-transparent">
                   Notes
                 </span>
               </h2>
 
-              <p className="text-slate-400 text-sm sm:text-base mt-2 max-w-xl leading-relaxed">
+              <p className="mt-2 max-w-xl text-sm leading-relaxed text-slate-400 sm:text-base">
                 View all your notes, keep your ideas organized, and star the
                 notes that matter most.
               </p>
@@ -67,11 +73,11 @@ function NoteList({ notes, handleStarNote }) {
               STATS
           ====================================================== */}
 
-          <div className="flex items-center self-start lg:self-auto rounded-2xl border border-slate-800/80 bg-slate-900/70 backdrop-blur-xl overflow-hidden shadow-xl">
+          <div className="flex items-center self-start overflow-hidden rounded-2xl border border-slate-800/80 bg-slate-900/70 shadow-xl backdrop-blur-xl lg:self-auto">
             {/* Total Notes */}
 
-            <div className="px-5 py-4 min-w-28">
-              <div className="flex items-center gap-2 text-teal-400 mb-1">
+            <div className="min-w-28 px-5 py-4">
+              <div className="mb-1 flex items-center gap-2 text-teal-400">
                 <FiFileText />
 
                 <span className="text-xl font-bold text-white">
@@ -86,12 +92,12 @@ function NoteList({ notes, handleStarNote }) {
 
             {/* Divider */}
 
-            <div className="w-px h-10 bg-slate-800" />
+            <div className="h-10 w-px bg-slate-800" />
 
             {/* Starred Notes */}
 
-            <div className="px-5 py-4 min-w-28">
-              <div className="flex items-center gap-2 text-amber-400 mb-1">
+            <div className="min-w-28 px-5 py-4">
+              <div className="mb-1 flex items-center gap-2 text-amber-400">
                 <FaStar />
 
                 <span className="text-xl font-bold text-white">
@@ -108,31 +114,31 @@ function NoteList({ notes, handleStarNote }) {
       </div>
 
       {/* =========================================================
-          EMPTY STATE
+         EMPTY STATE
       ========================================================== */}
 
       {notes.length === 0 ? (
-        <div className="relative z-10 max-w-7xl mx-auto">
-          <div className="relative overflow-hidden rounded-3xl border border-slate-800 bg-slate-900/60 backdrop-blur-xl py-24 px-6 text-center shadow-2xl">
+        <div className="relative z-10 mx-auto max-w-7xl">
+          <div className="relative overflow-hidden rounded-3xl border border-slate-800 bg-slate-900/60 px-6 py-24 text-center shadow-2xl backdrop-blur-xl">
             {/* Glow */}
 
-            <div className="absolute -top-20 left-1/2 -translate-x-1/2 w-64 h-64 bg-teal-500/10 blur-[90px] rounded-full" />
+            <div className="absolute -top-20 left-1/2 h-64 w-64 -translate-x-1/2 rounded-full bg-teal-500/10 blur-[90px]" />
 
             <div className="relative">
               {/* Icon */}
 
-              <div className="mx-auto w-20 h-20 rounded-3xl bg-teal-500/10 border border-teal-500/20 flex items-center justify-center shadow-[0_0_40px_rgba(20,184,166,0.08)]">
-                <FiBookOpen className="text-teal-400 text-3xl" />
+              <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-3xl border border-teal-500/20 bg-teal-500/10 shadow-[0_0_40px_rgba(20,184,166,0.08)]">
+                <FiBookOpen className="text-3xl text-teal-400" />
               </div>
 
               <h3 className="mt-6 text-2xl font-bold text-white">
                 No notes yet
               </h3>
 
-              <p className="text-slate-400 text-sm mt-2 max-w-md mx-auto leading-relaxed">
+              <p className="mx-auto mt-2 max-w-md text-sm leading-relaxed text-slate-400">
                 You haven't created any notes yet. Create your first note using
                 the{" "}
-                <span className="text-teal-400 font-medium">+ New Note</span>{" "}
+                <span className="font-medium text-teal-400">+ New Note</span>{" "}
                 button to start organizing your thoughts.
               </p>
             </div>
@@ -143,26 +149,26 @@ function NoteList({ notes, handleStarNote }) {
            NOTE GRID
         ========================================================== */
 
-        <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 max-w-7xl mx-auto">
+        <div className="relative z-10 mx-auto grid max-w-7xl grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
           {notes.map((note, index) => (
             <article
               key={note.id}
               style={{
                 animationDelay: `${index * 70}ms`,
               }}
-              className="group relative min-w-0 overflow-hidden rounded-2xl border border-slate-800/90 bg-slate-900/75 backdrop-blur-xl p-5 shadow-xl shadow-black/10 transition-all duration-500 hover:-translate-y-1 hover:border-teal-500/40 hover:shadow-2xl hover:shadow-teal-500/5 animate-in fade-in slide-in-from-bottom-3 fill-mode-both"
+              className="group relative min-w-0 overflow-hidden rounded-2xl border border-slate-800/90 bg-slate-900/75 p-5 shadow-xl shadow-black/15 backdrop-blur-xl transition-all duration-500 hover:-translate-y-1 hover:border-teal-500/40 hover:shadow-2xl hover:shadow-teal-500/5"
             >
               {/* =================================================
                   CARD HOVER GLOW
               ================================================== */}
 
-              <div className="absolute inset-0 bg-linear-to-br from-teal-500/[0.07] via-transparent to-indigo-500/4 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+              <div className="pointer-events-none absolute inset-0 bg-linear-to-br from-teal-500/[0.07] via-transparent to-indigo-500/4 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
 
               {/* =================================================
                   TOP GLOW LINE
               ================================================== */}
 
-              <div className="absolute top-0 left-8 right-8 h-px bg-linear-to-r from-transparent via-teal-400/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <div className="pointer-events-none absolute left-8 right-8 top-0 h-px bg-linear-to-r from-transparent via-teal-400/50 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
 
               <div className="relative z-10">
                 {/* =================================================
@@ -172,27 +178,27 @@ function NoteList({ notes, handleStarNote }) {
                 <div className="flex items-start justify-between gap-3">
                   {/* Left */}
 
-                  <div className="flex items-center gap-3 min-w-0">
-                    {/* Note Icon */}
+                  <div className="flex min-w-0 items-center gap-3">
+                    {/* Note Icon Container with Type Badge integrated */}
+                    <div className="flex items-center gap-2.5 min-w-0">
+                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-teal-400/20 bg-linear-to-br from-teal-400/15 to-cyan-400/5 transition-transform duration-300 group-hover:scale-105">
+                        <FiFileText className="text-base text-teal-400" />
+                      </div>
 
-                    <div className="shrink-0 w-11 h-11 rounded-xl bg-linear-to-br from-teal-400/15 to-cyan-400/5 border border-teal-400/20 flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
-                      <FiFileText className="text-teal-400 text-lg" />
-                    </div>
+                      {/* Type Badge */}
+                      <div className="min-w-0">
+                        {note.type ? (
+                          <span className="inline-flex max-w-full items-center gap-1.5 rounded-md border border-teal-500/25 bg-teal-500/10 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.15em] text-teal-300 shadow-xs">
+                            <span className="h-1.5 w-1.5 shrink-0 animate-pulse rounded-full bg-teal-400" />
 
-                    {/* Type */}
-
-                    <div className="min-w-0">
-                      {note.type ? (
-                        <span className="inline-flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-[0.15em] px-2 py-1 rounded-md bg-teal-500/10 text-teal-400 border border-teal-500/20 max-w-full">
-                          <span className="w-1.5 h-1.5 shrink-0 rounded-full bg-teal-400 animate-pulse" />
-
-                          <span className="truncate">{note.type}</span>
-                        </span>
-                      ) : (
-                        <span className="inline-flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-[0.15em] px-2 py-1 rounded-md bg-slate-800/60 text-slate-500 border border-slate-700/50">
-                          General Note
-                        </span>
-                      )}
+                            <span className="truncate">{note.type}</span>
+                          </span>
+                        ) : (
+                          <span className="inline-flex items-center gap-1.5 rounded-md border border-slate-700/50 bg-slate-800/60 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.15em] text-slate-400">
+                            General Note
+                          </span>
+                        )}
+                      </div>
                     </div>
                   </div>
 
@@ -203,43 +209,70 @@ function NoteList({ notes, handleStarNote }) {
                   <button
                     type="button"
                     onClick={() => handleStarNote(note.id)}
-                    className={`shrink-0 w-10 h-10 rounded-xl flex items-center justify-center border transition-all duration-300 cursor-pointer active:scale-90 ${
+                    className={`flex h-10 w-10 shrink-0 cursor-pointer items-center justify-center rounded-xl border transition-all duration-300 active:scale-90 ${
                       note.isStarred
-                        ? "bg-amber-400/10 border-amber-400/20"
-                        : "bg-slate-800/60 border-slate-700/60 hover:border-amber-400/30 hover:bg-amber-400/5"
+                        ? "border-amber-400/20 bg-amber-400/10"
+                        : "border-slate-700/60 bg-slate-800/60 hover:border-amber-400/30 hover:bg-amber-400/5"
                     }`}
                     title={
                       note.isStarred ? "Remove from favorites" : "Star note"
                     }
                   >
                     {note.isStarred ? (
-                      <FaStar className="text-amber-400 text-base drop-shadow-[0_0_8px_rgba(251,191,36,0.6)] transition-transform duration-300 group-hover:scale-110" />
+                      <FaStar className="text-base text-amber-400 drop-shadow-[0_0_8px_rgba(251,191,36,0.6)] transition-transform duration-300 group-hover:scale-110" />
                     ) : (
-                      <FaRegStar className="text-slate-500 text-base hover:text-amber-300 transition-colors" />
+                      <FaRegStar className="text-base text-slate-500 transition-colors hover:text-amber-300" />
                     )}
                   </button>
                 </div>
 
                 {/* =================================================
-                    NOTE TITLE
+                    NOTE TITLE WITH ICON
                 ================================================== */}
 
-                <h3 className="mt-5 text-lg font-bold text-white tracking-tight line-clamp-1 group-hover:text-teal-300 transition-colors duration-300">
-                  {note.noteName}
-                </h3>
+                <div className="mt-5 flex items-start gap-2.5">
+                  <div className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-indigo-500/10 text-indigo-400 ring-1 ring-indigo-500/25">
+                    <FiFileText className="text-sm" />
+                  </div>
+                  <h3 className="line-clamp-1 text-lg font-bold tracking-tight text-white transition-colors duration-300 group-hover:text-teal-300">
+                    {note.noteName || "Untitled note"}
+                  </h3>
+                </div>
 
                 {/* =================================================
-                    NOTE DESCRIPTION
+                    REMINDER DATE WITH ICON
                 ================================================== */}
 
-                <div className="mt-4 min-h-18">
-                  <p className="text-[10px] uppercase tracking-wider text-slate-600 font-semibold mb-1">
-                    Details
-                  </p>
+                <div className="mt-3 flex items-center gap-2.5 text-xs text-slate-400">
+                  <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-teal-500/10 text-teal-400 ring-1 ring-teal-500/25">
+                    <FiCalendar className="text-sm" />
+                  </div>
+                  {note.reminderDate ? (
+                    <span className="inline-flex items-center rounded-md bg-slate-800/80 px-2.5 py-1 font-medium text-slate-200 ring-1 ring-inset ring-slate-700/50">
+                      {new Date(note.reminderDate).toLocaleDateString("en-IN", {
+                        day: "2-digit",
+                        month: "short",
+                        year: "numeric",
+                      })}
+                    </span>
+                  ) : (
+                    <span className="italic text-slate-500">No date set</span>
+                  )}
+                </div>
 
-                  <p className="text-slate-300 text-sm leading-relaxed line-clamp-3 wrap-break-word">
-                    {note.description || "No description available."}
-                  </p>
+                {/* =================================================
+                    NOTE DESCRIPTION WITH ICON
+                ================================================== */}
+
+                <div className="mt-3 flex items-start gap-2.5">
+                  <div className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-slate-800/80 text-slate-400 ring-1 ring-slate-700/50">
+                    <FiAlignLeft className="text-sm" />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <p className="line-clamp-2 text-sm leading-relaxed text-slate-300 wrap-break-word">
+                      {note.description || "No description available."}
+                    </p>
+                  </div>
                 </div>
 
                 {/* =================================================
@@ -254,14 +287,14 @@ function NoteList({ notes, handleStarNote }) {
 
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-teal-400/70" />
+                    <span className="h-2 w-2 rounded-full bg-teal-400/70" />
 
-                    <span className="text-[10px] uppercase tracking-wider text-slate-600 font-medium">
+                    <span className="text-[10px] font-medium uppercase tracking-wider text-slate-600">
                       Note Details
                     </span>
                   </div>
 
-                  <div className="flex items-center gap-1.5 text-teal-400 text-xs font-medium">
+                  <div className="flex items-center gap-1.5 text-xs font-medium text-teal-400">
                     <span>View</span>
 
                     <FiArrowRight className="text-sm transition-transform duration-300 group-hover:translate-x-1" />
@@ -274,28 +307,28 @@ function NoteList({ notes, handleStarNote }) {
       )}
 
       {/* =========================================================
-          BOTTOM INFORMATION
+         BOTTOM INFORMATION
       ========================================================== */}
 
       {notes.length > 0 && (
-        <div className="relative z-10 max-w-7xl mx-auto mt-8">
-          <div className="relative overflow-hidden rounded-2xl border border-slate-800/70 bg-slate-900/40 backdrop-blur-xl px-5 py-4">
+        <div className="relative z-10 mx-auto mt-8 max-w-7xl">
+          <div className="relative overflow-hidden rounded-2xl border border-slate-800/70 bg-slate-900/40 px-5 py-4 backdrop-blur-xl">
             {/* Left Accent */}
 
-            <div className="absolute left-0 top-0 bottom-0 w-1 bg-linear-to-b from-teal-400 to-cyan-500" />
+            <div className="absolute bottom-0 left-0 top-0 w-1 bg-linear-to-b from-teal-400 to-cyan-500" />
 
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pl-2">
+            <div className="flex flex-col justify-between gap-3 pl-2 sm:flex-row sm:items-center">
               <div>
                 <p className="text-sm font-semibold text-slate-300">
                   Your thoughts, organized. 📝
                 </p>
 
-                <p className="text-xs text-slate-600 mt-1">
+                <p className="mt-1 text-xs text-slate-600">
                   Star important notes to quickly find them later.
                 </p>
               </div>
 
-              <div className="flex items-center gap-2 text-teal-400 text-xs font-medium">
+              <div className="flex items-center gap-2 text-xs font-medium text-teal-400">
                 <span>Notes Workspace</span>
 
                 <FiArrowRight />
