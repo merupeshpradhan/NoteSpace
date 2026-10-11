@@ -6,8 +6,12 @@ import {
   FaRegStar,
   FaStar,
   FaBookmark,
-  FaFileAlt,
 } from "react-icons/fa";
+import {
+  FiFileText,
+  FiAlignLeft,
+  FiCalendar,
+} from "react-icons/fi";
 
 function FavoriteNotes() {
   const [starNotes, setStarNotes] = useState([]);
@@ -73,47 +77,47 @@ function FavoriteNotes() {
   const totalFavorites = starNotes.length;
 
   return (
-    <section className="relative w-full min-h-full px-2 sm:px-4 lg:px-6 overflow-hidden">
+    <section className="relative min-h-full w-full overflow-hidden px-2 sm:px-4 lg:px-6">
       {/* =====================================================
-          BACKGROUND GLOW
+         BACKGROUND GLOW
       ====================================================== */}
 
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute -top-32 -left-32 w-72 h-72 rounded-full bg-amber-500/5 blur-[100px]" />
+        <div className="absolute -left-32 -top-32 h-72 w-72 rounded-full bg-amber-500/5 blur-[100px]" />
 
-        <div className="absolute top-1/3 -right-40 w-80 h-80 rounded-full bg-orange-500/5 blur-[120px]" />
+        <div className="absolute -right-40 top-1/3 h-80 w-80 rounded-full bg-orange-500/5 blur-[120px]" />
 
-        <div className="absolute bottom-0 left-1/3 w-72 h-72 rounded-full bg-yellow-500/5 blur-[110px]" />
+        <div className="absolute bottom-0 left-1/3 h-72 w-72 rounded-full bg-yellow-500/5 blur-[110px]" />
       </div>
 
       {/* =====================================================
-          MAIN CONTENT
+         MAIN CONTENT
       ====================================================== */}
 
-      <div className="relative z-10 max-w-7xl mx-auto">
+      <div className="relative z-10 mx-auto max-w-7xl">
         {/* ===================================================
             HEADER
         ==================================================== */}
 
         <div className="mb-6 sm:mb-8">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-5">
+          <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
             {/* Title */}
 
-            <div className="flex items-center gap-3 sm:gap-4 min-w-0">
-              <div className="w-11 h-11 sm:w-13 sm:h-13 shrink-0 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400 shadow-[0_0_25px_rgba(245,158,11,0.08)]">
+            <div className="flex min-w-0 items-center gap-3 sm:gap-4">
+              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-amber-500/20 bg-amber-500/10 text-amber-400 shadow-[0_0_25px_rgba(245,158,11,0.08)] sm:h-13 sm:w-13">
                 <FaBookmark className="text-lg sm:text-xl" />
               </div>
 
               <div className="min-w-0">
-                <p className="text-[10px] sm:text-xs uppercase tracking-[0.2em] text-amber-400/70 font-semibold mb-1">
+                <p className="mb-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-amber-400/70 sm:text-xs">
                   Your Collection
                 </p>
 
-                <h2 className="text-2xl sm:text-3xl font-bold tracking-tight bg-linear-to-r from-white via-amber-100 to-amber-400 bg-clip-text text-transparent">
+                <h2 className="bg-linear-to-r from-white via-amber-100 to-amber-400 bg-clip-text text-2xl font-bold tracking-tight text-transparent sm:text-3xl">
                   Favorite Notes
                 </h2>
 
-                <p className="text-slate-400 text-xs sm:text-sm mt-1">
+                <p className="mt-1 text-xs text-slate-400 sm:text-sm">
                   Your important notes, saved in one place.
                 </p>
               </div>
@@ -123,17 +127,17 @@ function FavoriteNotes() {
                 STATS
             ================================================== */}
 
-            <div className="w-full sm:w-auto flex items-center gap-3">
-              <div className="flex-1 sm:flex-none min-w-28 px-4 py-3 rounded-2xl bg-slate-900/70 border border-slate-800 backdrop-blur-xl">
+            <div className="flex w-full items-center gap-3 sm:w-auto">
+              <div className="min-w-28 flex-1 rounded-2xl border border-slate-800 bg-slate-900/70 px-4 py-3 backdrop-blur-xl sm:flex-none">
                 <div className="flex items-center gap-2">
-                  <FaStar className="text-amber-400 text-sm" />
+                  <FaStar className="text-sm text-amber-400" />
 
                   <span className="text-[10px] uppercase tracking-wider text-slate-500">
                     Starred
                   </span>
                 </div>
 
-                <p className="text-xl font-bold text-white mt-1">
+                <p className="mt-1 text-xl font-bold text-white">
                   {totalFavorites}
                 </p>
               </div>
@@ -146,21 +150,21 @@ function FavoriteNotes() {
         ==================================================== */}
 
         {starNotes.length === 0 ? (
-          <div className="relative overflow-hidden rounded-3xl border border-slate-800 bg-slate-900/60 backdrop-blur-xl py-20 px-5 text-center shadow-xl">
+          <div className="relative overflow-hidden rounded-3xl border border-slate-800 bg-slate-900/60 px-5 py-20 text-center shadow-xl backdrop-blur-xl">
             {/* Background glow */}
 
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-64 h-32 bg-amber-500/5 blur-[70px]" />
+            <div className="absolute left-1/2 top-0 h-32 w-64 -translate-x-1/2 bg-amber-500/5 blur-[70px]" />
 
             <div className="relative">
-              <div className="mx-auto w-16 h-16 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400 text-2xl shadow-[0_0_30px_rgba(245,158,11,0.08)]">
+              <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl border border-amber-500/20 bg-amber-500/10 text-2xl text-amber-400 shadow-[0_0_30px_rgba(245,158,11,0.08)]">
                 <FaRegStar />
               </div>
 
-              <h3 className="text-xl font-semibold text-white mt-5">
+              <h3 className="mt-5 text-xl font-semibold text-white">
                 No Favorite Notes
               </h3>
 
-              <p className="text-slate-400 text-sm mt-2 max-w-md mx-auto leading-relaxed">
+              <p className="mx-auto mt-2 max-w-md text-sm leading-relaxed text-slate-400">
                 You haven't starred any notes yet. Star your important notes
                 and they will appear here for quick access.
               </p>
@@ -177,22 +181,22 @@ function FavoriteNotes() {
                 NOTE GRID
             ================================================== */}
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 lg:gap-6">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3 lg:gap-6">
               {starNotes.map((note, index) => (
                 <div
                   key={note.id}
                   style={{
                     animationDelay: `${index * 60}ms`,
                   }}
-                  className="group relative overflow-hidden rounded-3xl border border-slate-800 bg-slate-900/75 backdrop-blur-xl p-5 sm:p-6 shadow-xl hover:border-amber-500/40 hover:shadow-[0_20px_50px_-20px_rgba(245,158,11,0.2)] hover:-translate-y-1 transition-all duration-300 animate-in fade-in zoom-in-95 fill-mode-forwards"
+                  className="group relative overflow-hidden rounded-3xl border border-slate-800 bg-slate-900/75 p-5 backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:border-amber-500/40 hover:shadow-[0_20px_50px_-20px_rgba(245,158,11,0.2)] sm:p-6 animate-in fade-in zoom-in-95 fill-mode-forwards"
                 >
                   {/* =================================================
                       TOP HOVER GLOW
                   ================================================== */}
 
-                  <div className="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-amber-400/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <div className="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-amber-400/70 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
 
-                  <div className="absolute inset-0 bg-linear-to-b from-amber-500/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+                  <div className="pointer-events-none absolute inset-0 bg-linear-to-b from-amber-500/5 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
 
                   {/* =================================================
                       CARD CONTENT
@@ -201,11 +205,11 @@ function FavoriteNotes() {
                   <div className="relative z-10">
                     {/* Top Row */}
 
-                    <div className="flex items-center justify-between gap-3 mb-5">
+                    <div className="mb-5 flex items-center justify-between gap-3">
                       {/* Type */}
 
                       {note.type ? (
-                        <span className="max-w-[70%] truncate text-[9px] sm:text-[10px] font-bold uppercase tracking-wider px-2.5 py-1.5 rounded-lg bg-amber-500/10 text-amber-400 border border-amber-500/20">
+                        <span className="max-w-[70%] truncate rounded-lg border border-amber-500/20 bg-amber-500/10 px-2.5 py-1.5 text-[9px] font-bold uppercase tracking-wider text-amber-400 sm:text-[10px]">
                           {note.type}
                         </span>
                       ) : (
@@ -219,57 +223,83 @@ function FavoriteNotes() {
                       <button
                         type="button"
                         onClick={() => handleStarNote(note.id)}
-                        className="shrink-0 w-9 h-9 rounded-xl bg-slate-800/70 border border-slate-700/60 flex items-center justify-center cursor-pointer hover:border-amber-500/50 hover:bg-amber-500/10 transition-all duration-200 active:scale-90"
+                        className="flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-xl border border-slate-700/60 bg-slate-800/70 transition-all duration-200 hover:border-amber-500/50 hover:bg-amber-500/10 active:scale-90"
                         title="Remove from favorites"
                       >
-                        <FaStar className="text-amber-400 text-sm drop-shadow-[0_0_8px_rgba(251,191,36,0.6)]" />
+                        <FaStar className="text-sm text-amber-400 drop-shadow-[0_0_8px_rgba(251,191,36,0.6)]" />
                       </button>
                     </div>
 
                     {/* =================================================
-                        TITLE
+                        TITLE WITH ICON
                     ================================================== */}
 
-                    <div className="flex items-start gap-3">
-                      <div className="mt-0.5 shrink-0 w-9 h-9 rounded-xl bg-slate-800/70 border border-slate-700/60 flex items-center justify-center text-amber-400">
-                        <FaFileAlt className="text-sm" />
+                    <div className="flex items-start gap-2.5">
+                      <div className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-amber-500/25 bg-amber-500/10 text-amber-400">
+                        <FiFileText className="text-sm" />
                       </div>
 
                       <div className="min-w-0">
-                        <h4 className="text-base sm:text-lg font-bold text-white tracking-tight line-clamp-2 group-hover:text-amber-400 transition-colors">
-                          {note.noteName}
+                        <h4 className="line-clamp-2 text-base font-bold tracking-tight text-white transition-colors group-hover:text-amber-400 sm:text-lg">
+                          {note.noteName || "Untitled note"}
                         </h4>
                       </div>
                     </div>
 
                     {/* =================================================
-                        DESCRIPTION
+                        REMINDER DATE WITH ICON
                     ================================================== */}
 
-                    <div className="mt-5">
-                      <p className="text-[10px] uppercase tracking-widest text-slate-600 mb-1">
-                        Details
-                      </p>
+                    <div className="mt-3 flex items-center gap-2.5 text-xs text-slate-400">
+                      <div className="flex h-7 w-7 items-center justify-center rounded-lg border border-amber-500/25 bg-amber-500/10 text-amber-400">
+                        <FiCalendar className="text-sm" />
+                      </div>
+                      {note.reminderDate ? (
+                        <span className="inline-flex items-center rounded-md bg-slate-800/80 px-2.5 py-1 font-medium text-slate-200 ring-1 ring-inset ring-slate-700/50">
+                          {new Date(note.reminderDate).toLocaleDateString(
+                            "en-IN",
+                            {
+                              day: "2-digit",
+                              month: "short",
+                              year: "numeric",
+                            },
+                          )}
+                        </span>
+                      ) : (
+                        <span className="italic text-slate-500">No date set</span>
+                      )}
+                    </div>
 
-                      <p className="text-slate-300 text-sm leading-relaxed line-clamp-3 wrap-break-word min-h-15">
-                        {note.description || "No description available."}
-                      </p>
+                    {/* =================================================
+                        DESCRIPTION WITH ICON
+                    ================================================== */}
+
+                    <div className="mt-3 flex items-start gap-2.5">
+                      <div className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-slate-700/50 bg-slate-800/80 text-slate-400">
+                        <FiAlignLeft className="text-sm" />
+                      </div>
+
+                      <div className="min-w-0 flex-1">
+                        <p className="min-h-15 line-clamp-3 text-sm leading-relaxed text-slate-300 wrap-break-word">
+                          {note.description || "No description available."}
+                        </p>
+                      </div>
                     </div>
 
                     {/* =================================================
                         DIVIDER
                     ================================================== */}
 
-                    <div className="mt-5 pt-4 border-t border-slate-800/80 flex items-center justify-between gap-3">
-                      <div className="flex items-center gap-2 min-w-0">
-                        <span className="w-1.5 h-1.5 rounded-full bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.7)] shrink-0" />
+                    <div className="mt-5 flex items-center justify-between gap-3 border-t border-slate-800/80 pt-4">
+                      <div className="flex min-w-0 items-center gap-2">
+                        <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.7)]" />
 
-                        <span className="text-[10px] sm:text-xs text-amber-400/80 font-medium truncate">
+                        <span className="truncate text-[10px] font-medium text-amber-400/80 sm:text-xs">
                           Favorite Note
                         </span>
                       </div>
 
-                      <span className="text-[9px] uppercase tracking-wider text-slate-600 shrink-0">
+                      <span className="shrink-0 text-[9px] uppercase tracking-wider text-slate-600">
                         Saved
                       </span>
                     </div>
@@ -282,17 +312,16 @@ function FavoriteNotes() {
                 BOTTOM INFO
             ================================================== */}
 
-            <div className="mt-6 sm:mt-8 rounded-2xl border border-slate-800 bg-slate-900/50 backdrop-blur-xl px-4 sm:px-5 py-4">
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 text-xs">
+            <div className="mt-6 sm:mt-8 rounded-2xl border border-slate-800 bg-slate-900/50 px-4 py-4 backdrop-blur-xl sm:px-5">
+              <div className="flex flex-col gap-2 text-xs sm:flex-row sm:items-center sm:justify-between">
                 <div className="flex items-center gap-2 text-slate-500">
                   <FaStar className="text-amber-400" />
                   <span>
                     You have{" "}
-                    <span className="text-amber-400 font-semibold">
+                    <span className="font-semibold text-amber-400">
                       {totalFavorites}
                     </span>{" "}
-                    favorite{" "}
-                    {totalFavorites === 1 ? "note" : "notes"}.
+                    favorite {totalFavorites === 1 ? "note" : "notes"}.
                   </span>
                 </div>
 
