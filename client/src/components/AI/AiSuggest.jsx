@@ -89,7 +89,7 @@ function AiSuggest({
                   onChange={() => setPicked(option)}
                   className="mt-0.5 accent-teal-500"
                 />
-                <span className="whitespace-pre-wrap break-words">
+                <span className="whitespace-pre-wrap wrap-break-word">
                   {option}
                 </span>
               </label>

@@ -70,12 +70,6 @@ function NoteTopHeader({
           <span className="hidden xs:inline sm:inline">New Note</span>
         </button>
 
-        {/* Notification Bell */}
-        <button className="relative p-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded-full transition-colors cursor-pointer shrink-0">
-          <FaBell className="text-xs sm:text-sm" />
-          <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 sm:w-2 sm:h-2 bg-teal-500 rounded-full ring-2 ring-slate-900"></span>
-        </button>
-
         {/* User Details */}
         <div className="flex items-center gap-2 sm:gap-3 pl-2 border-l border-slate-800">
           <div className="text-right hidden md:block">
