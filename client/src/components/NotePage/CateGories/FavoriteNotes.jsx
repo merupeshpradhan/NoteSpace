@@ -77,7 +77,7 @@ function FavoriteNotes() {
   const totalFavorites = starNotes.length;
 
   return (
-    <section className="relative min-h-full w-full overflow-hidden px-2 sm:px-4 lg:px-6">
+    <section className="relative min-h-full w-full overflow-hidden px-2 sm:px-4 lg:px-6 cursor-default">
       {/* =====================================================
          BACKGROUND GLOW
       ====================================================== */}

@@ -1,8 +1,6 @@
 import {
   FaBook,
   FaStar,
-  FaSearch,
-  FaUser,
   FaGraduationCap,
   FaBullhorn,
   FaFilm,
@@ -11,18 +9,36 @@ import {
 import SignOut from "../../Auth/SignOut.jsx";
 import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { useEffect, useState } from "react";
 
-function NoteLeftHeader({
-  isOpen,
-  onClose,
-  onGoToAllNotes,
-  searchText,
-  setSearchText,
-}) {
+function NoteLeftHeader({ isOpen, onClose, onGoToAllNotes, onSelectContent }) {
   const navigate = useNavigate();
   const location = useLocation();
 
   const currentPath = location.pathname;
+
+  const [user, setUser] = useState({ name: "", email: "" });
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      try {
+        setUser(JSON.parse(storedUser));
+      } catch (e) {
+        setUser({ name: "User", email: "" });
+
+        toast.update(toastId, {
+          render: "Please signIn again to access your notes.",
+          type: "error",
+          isLoading: false,
+          autoClose: 3000,
+        });
+
+        console.log(error);
+        navigate("/");
+      }
+    }
+  }, []);
 
   return (
     <section>
@@ -66,7 +82,7 @@ function NoteLeftHeader({
             </button>
           </div>
 
-          <div className="px-4 pt-5">
+          <div className="px-4 pt-5 cursor-default">
             <div className="relative bg-slate-900/60 border border-slate-800/80 rounded-2xl p-3 backdrop-blur-xl flex items-center gap-3 group hover:border-teal-500/40 transition-all duration-300">
               {/* Compact Animated GIF Thumbnail */}
               <div className="relative w-11 h-11 shrink-0 rounded-xl bg-slate-950 border border-slate-800 p-1 flex items-center justify-center overflow-hidden shadow-inner group-hover:border-teal-500/50">
@@ -104,7 +120,6 @@ function NoteLeftHeader({
               </p>
               <button
                 onClick={() => {
-                  setSearchText("");
                   onClose();
                   navigate("/notes");
                 }}
@@ -119,7 +134,6 @@ function NoteLeftHeader({
               </button>
               <button
                 onClick={() => {
-                  setSearchText("");
                   navigate("/notes/favorites");
                   onClose();
                 }}
@@ -141,7 +155,6 @@ function NoteLeftHeader({
               </p>
               <button
                 onClick={() => {
-                  setSearchText("");
                   navigate("/notes/study");
                   onClose();
                 }}
@@ -156,7 +169,6 @@ function NoteLeftHeader({
               </button>
               <button
                 onClick={() => {
-                  setSearchText("");
                   navigate("/notes/marketing");
                   onClose();
                 }}
@@ -171,7 +183,6 @@ function NoteLeftHeader({
               </button>
               <button
                 onClick={() => {
-                  setSearchText("");
                   navigate("/notes/movies");
                   onClose();
                 }}
@@ -192,14 +203,20 @@ function NoteLeftHeader({
         <div className="p-4 border-t border-slate-800/80 bg-slate-950/30">
           <button
             onClick={() => {
-              setSearchText("");
               navigate("/notes/profile");
               onClose();
             }}
             className="flex items-center gap-3 mb-3 px-2 cursor-pointer w-full text-left"
           >
-            <div className="w-9 h-9 rounded-full bg-slate-800 flex items-center justify-center text-slate-300 font-semibold text-sm border border-slate-700">
-              <FaUser className="text-xs" />
+            <div className="w-9 h-9 rounded-full bg-slate-800 flex items-center justify-center text-slate-300 font-semibold text-sm border border-slate-700 ">
+              <img
+                src={
+                  user?.avatar ||
+                  "https://media.giphy.com/media/3oKIPnAiaMCws8nOsE/giphy.gif"
+                }
+                alt={user?.name || "User Profile"}
+                className="w-full h-full rounded-full object-cover"
+              />
             </div>
             <div className="overflow-hidden">
               <p className="text-sm font-semibold text-slate-200 truncate">

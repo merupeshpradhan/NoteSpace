@@ -104,7 +104,7 @@ function SignIn({ onClose, onSwitchToSignUp }) {
   }
 
   return (
-    <section className="fixed top-0 min-h-screen w-screen z-50 bg-slate-950/70 backdrop-blur-md flex items-center justify-center p-4">
+    <section className="fixed top-0 min-h-screen w-screen z-50 bg-slate-950/70 backdrop-blur-md flex items-center justify-center p-4 cursor-default">
       {/* Outer Gradient Border Wrapper */}
       <div className="relative w-full max-w-md p-px rounded-3xl bg-linear-to-b from-teal-500/50 via-slate-800 to-indigo-500/30 shadow-2xl">
         {/* Main Glass Modal Card */}

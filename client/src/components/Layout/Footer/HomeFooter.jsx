@@ -2,7 +2,7 @@ import { FaTwitter, FaGithub, FaLinkedin, FaArrowRight } from "react-icons/fa";
 
 function Footer() {
   return (
-    <footer className="w-full bg-zinc-950 text-zinc-400 py-16 px-6 border-t border-zinc-800">
+    <footer className="w-full bg-zinc-950 text-zinc-400 py-16 px-6 border-t border-zinc-800 cursor-default">
       <div className="max-w-7xl mx-auto flex flex-col gap-12">
         {/* Top Grid Section */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10">

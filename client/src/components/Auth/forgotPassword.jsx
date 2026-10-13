@@ -129,7 +129,7 @@ function ForgotPassword({ onClose }) {
   };
 
   return (
-    <section className="fixed inset-0 z-60 bg-slate-950/70 backdrop-blur-md flex items-center justify-center p-4">
+    <section className="fixed inset-0 z-60 bg-slate-950/70 backdrop-blur-md flex items-center justify-center p-4 cursor-default">
       <div className="relative w-full max-w-md p-px rounded-3xl bg-linear-to-b from-teal-500/50 via-slate-800 to-indigo-500/30 shadow-2xl">
         <div className="relative bg-slate-900/95 backdrop-blur-xl rounded-[23px] p-6 sm:p-8 text-slate-100 overflow-hidden">
 

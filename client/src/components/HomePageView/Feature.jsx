@@ -12,7 +12,7 @@ function Feature() {
   ];
 
   return (
-    <section className="w-full bg-zinc-50 py-16 px-6 border-y border-zinc-200">
+    <section className="w-full bg-zinc-50 py-16 px-6 border-y border-zinc-200 cursor-default">
       <div className="max-w-7xl mx-auto flex flex-col items-center gap-12">
         
         {/* Trusted By Section */}

@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 function HeroSection({ handleSignIn }) {
   return (
-    <section className="relative w-full min-h-[70vh] lg:h-[80vh] flex items-center justify-center bg-gradient-to-br from-lime-400 to-lime-600 px-6 py-12 lg:px-16 overflow-hidden">
+    <section className="relative w-full min-h-[70vh] lg:h-[80vh] flex items-center justify-center bg-linear-to-br from-lime-400 to-lime-600 px-6 py-12 lg:px-16 overflow-hidden cursor-default">
       <div className="max-w-7xl w-full mx-auto flex flex-col lg:flex-row items-center justify-between gap-12">
         {/* Text Content */}
         <div className="text-black flex flex-col items-start text-left max-w-xl space-y-6">

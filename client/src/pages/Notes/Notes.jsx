@@ -157,9 +157,9 @@ function Notes() {
           setIsSidebarOpen(false);
           setSearchText("");
         }}
-        activeTab={activeTab}
-        searchText={searchText}
-        setSearchText={setSearchText}
+        onSelectContent={() => {
+          setIsSidebarOpen(false);
+        }}
       />
 
       {/* =========================================================

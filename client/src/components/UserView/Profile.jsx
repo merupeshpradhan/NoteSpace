@@ -124,7 +124,7 @@ function Profile() {
   );
 
   return (
-    <section className="relative w-full min-h-screen flex items-start justify-center px-3 py-5 sm:px-5 sm:py-8 md:px-8 md:py-10 bg-black font-mono selection:bg-cyan-500 selection:text-black overflow-x-hidden">
+    <section className="relative w-full min-h-screen flex items-start justify-center px-3 py-5 sm:px-5 sm:py-8 md:px-8 md:py-10 bg-black font-mono selection:bg-cyan-500 selection:text-black overflow-x-hidden cursor-default">
       {/* =========================================================
           BACKGROUND GLOW
       ========================================================== */}

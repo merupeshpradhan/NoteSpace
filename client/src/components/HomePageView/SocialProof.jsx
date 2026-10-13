@@ -26,7 +26,7 @@ function SocialProof() {
   ];
 
   return (
-    <section className="w-full bg-white py-12 px-6 border-b border-zinc-200">
+    <section className="w-full bg-white py-12 px-6 border-b border-zinc-200 cursor-default">
       <div className="max-w-7xl mx-auto flex flex-col items-center gap-10">
         {/* Top Mini-Header with Avatars */}
         <div className="flex flex-col sm:flex-row items-center gap-4 text-center sm:text-left">

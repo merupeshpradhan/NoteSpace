@@ -16,7 +16,7 @@ function NoteList({ notes, handleStarNote }) {
   const starredCount = notes.filter((note) => note.isStarred).length;
 
   return (
-    <section className="relative min-h-full w-full px-2 sm:px-4 lg:px-6">
+    <section className="relative min-h-full w-full px-2 sm:px-4 lg:px-6 cursor-default">
       {/* =========================================================
          BACKGROUND DECORATION
       ========================================================== */}

@@ -6,7 +6,7 @@ function HomeHeader({ handleSignUp, handleSignIn }) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-white/85 backdrop-blur-md border-b border-zinc-200">
+    <header className="sticky top-0 z-50 w-full bg-white/85 backdrop-blur-md border-b border-zinc-200 cursor-default">
       <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
         {/* Brand / Logo (Unified to NoteSpace) */}
         <Link

@@ -48,7 +48,7 @@ function StudyTime({
   };
 
   return (
-    <section className="relative min-h-full w-full px-2 sm:px-4 lg:px-6">
+    <section className="relative min-h-full w-full px-2 sm:px-4 lg:px-6 cursor-default">
       {/* Background decoration */}
       <div className="pointer-events-none fixed inset-0 overflow-hidden">
         <div className="absolute -top-40 left-1/4 h-80 w-80 rounded-full bg-teal-500/10 blur-[120px]" />
@@ -266,25 +266,22 @@ function StudyTime({
       )}
 
       {/* Bottom motivation */}
+
       {studyNote.length > 0 && (
         <div className="relative z-10 mx-auto mt-8 max-w-7xl">
           <div className="relative overflow-hidden rounded-2xl border border-slate-800/70 bg-slate-900/40 px-5 py-4 backdrop-blur-xl">
+            {/* Accent Bar */}
             <div className="absolute bottom-0 left-0 top-0 w-1 bg-linear-to-b from-teal-400 to-cyan-500" />
 
             <div className="flex flex-col justify-between gap-3 pl-2 sm:flex-row sm:items-center">
               <div>
-                <p className="text-sm font-semibold text-slate-300">
+                <p className="text-sm font-semibold text-slate-200">
                   Keep learning. Keep growing. 🚀
                 </p>
 
-                <p className="mt-1 text-xs text-slate-600">
+                <p className="mt-1 text-xs text-slate-400">
                   Every note is one step closer to mastering your skills.
                 </p>
-              </div>
-
-              <div className="flex items-center gap-2 text-xs font-medium text-teal-400">
-                <span>Study Progress</span>
-                <FiArrowRight />
               </div>
             </div>
           </div>

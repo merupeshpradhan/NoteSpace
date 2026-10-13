@@ -33,7 +33,7 @@ function Marketing({
   const starredCount = marketingNotes.filter((note) => note.isStarred).length;
 
   return (
-    <section className="relative min-h-full w-full px-2 sm:px-4 lg:px-6">
+    <section className="relative min-h-full w-full px-2 sm:px-4 lg:px-6 cursor-default">
       {/* =========================================================
          BACKGROUND DECORATION
       ========================================================== */}
@@ -319,24 +319,18 @@ function Marketing({
 
       {marketingNotes.length > 0 && (
         <div className="relative z-10 mx-auto mt-8 max-w-7xl">
-          <div className="relative overflow-hidden rounded-2xl border border-slate-800/70 bg-slate-900/40 px-5 py-4 backdrop-blur-xl">
-            <div className="absolute bottom-0 left-0 top-0 w-1 bg-linear-to-b from-teal-400 to-cyan-500" />
+          <div className="group relative overflow-hidden rounded-2xl border border-slate-800/70 bg-slate-900/40 px-5 py-4 backdrop-blur-xl transition-all duration-300 hover:border-slate-700 hover:bg-slate-900/60">
+            {/* Accent Line */}
+            <div className="absolute bottom-0 left-0 top-0 w-1 bg-gradient-to-b from-teal-400 to-cyan-500 transition-opacity duration-300 group-hover:opacity-100" />
 
             <div className="flex flex-col justify-between gap-3 pl-2 sm:flex-row sm:items-center">
               <div>
-                <p className="text-sm font-semibold text-slate-300">
+                <p className="text-sm font-semibold text-slate-200">
                   Plan smart. Market better. 🚀
                 </p>
-
-                <p className="mt-1 text-xs text-slate-600">
+                <p className="mt-1 text-xs text-slate-400">
                   Keep your campaigns, schedules, and marketing ideas organized.
                 </p>
-              </div>
-
-              <div className="flex items-center gap-2 text-xs font-medium text-teal-400">
-                <span>Marketing Progress</span>
-
-                <FiArrowRight />
               </div>
             </div>
           </div>
@@ -348,11 +342,11 @@ function Marketing({
       ========================================================== */}
 
       {updateNoteView && (
-          <UpdateNote
-            noteData={selectedNote}
-            viewUpdateNote={() => setUpdateNoteView(false)}
-            onUpdateSuccess={handleUpdateSuccess}
-          />
+        <UpdateNote
+          noteData={selectedNote}
+          viewUpdateNote={() => setUpdateNoteView(false)}
+          onUpdateSuccess={handleUpdateSuccess}
+        />
       )}
     </section>
   );

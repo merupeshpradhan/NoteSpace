@@ -72,7 +72,7 @@ function NoteTopHeader({
 
         {/* User Details */}
         <div className="flex items-center gap-2 sm:gap-3 pl-2 border-l border-slate-800">
-          <div className="text-right hidden md:block">
+          <div className="text-right hidden md:block cursor-default">
             <p className="text-xs font-semibold text-slate-200 truncate max-w-30">
               {user?.name || "User"}
             </p>
